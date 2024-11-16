@@ -1,14 +1,15 @@
 {
     "manifest_version": 3,
-    "name": "Test Extension",
+    "name": "Quick Notes",
     "version": "1.0",
-    "description": "A simple Chrome extension for testing",
-    "permissions": ["storage"],
+    "description": "A simple note-taking Chrome extension.",
     "action": {
-      "default_popup": "index.html",
-      "default_title": "Quick Notes - Test Extension"
+      "default_popup": "entry.html",
+      "default_icon": "dev_diary.png"
     },
     "background": {
       "service_worker": "background.js"
-    }
-}  
+    },
+    "permissions": ["storage"]
+  }
+  
