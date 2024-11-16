@@ -1,0 +1,12 @@
+{
+    "manifest_version": 3,
+    "name": "Quick Notes",
+    "version": "1.0",
+    "description": "A simple note-taking Chrome extension.",
+    "action": {
+      "default_popup": "entry.html",
+      "default_icon": "dev_diary.png"
+    },
+    "permissions": ["storage"]
+  }
+  
