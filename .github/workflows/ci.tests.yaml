@@ -5,7 +5,7 @@ on:
   pull_request:
     paths:
       - ".github/workflow/ci.tests.yaml"
-      - "index.js"
+      - "src/**"
       - "tests/**"
       - "Makefile"
 
