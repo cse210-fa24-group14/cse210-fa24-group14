@@ -1,4 +1,5 @@
-import { fetchNotes, updateNotes } from './crudNotes.js';
+import { fetchNotes, updateNotes} from './utils.js';
+import { displayNotes } from './displayNotes.js';
 
 export async function saveNote(newNote, notesList) {
   const notes = await fetchNotes();

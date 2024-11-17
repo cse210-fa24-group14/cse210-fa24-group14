@@ -1,4 +1,4 @@
-import { fetchNotes, deleteNote } from './crudNotes.js';
+import { fetchNotes, deleteNote } from './utils.js';
 
 export async function displayNotes(notesList) {
   const notes = await fetchNotes();
