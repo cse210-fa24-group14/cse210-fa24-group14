@@ -1,7 +1,10 @@
 import { test, expect } from '../../playwright/fixtures';
 
 test.describe('displayNotes Functionality', () => {
-  test('should display notes correctly from chrome storage', async ({ context, extensionId }) => {
+  test('should display notes correctly from chrome storage', async ({
+    context,
+    extensionId,
+  }) => {
     const popupUrl = `chrome-extension://${extensionId}/src/entry.html`;
 
     // Open the extension popup
@@ -18,13 +21,13 @@ test.describe('displayNotes Functionality', () => {
     await page.reload();
 
     // Check if the note is displayed in the UI
-    const displayedNote = await page.$$eval('#notesList li', (items) =>
-      { return items.map((item) => item.textContent); }   //text content will contain 'Delete' as well
+    const displayedNote = await page.$$eval(
+      '#notesList li',
+      (items) => {
+        return items.map((item) => item.textContent);
+      }, //text content will contain 'Delete' as well
     );
 
-
-
-    expect(displayedNote).toContain(testNote+'Delete');
-
+    expect(displayedNote).toContain(testNote + 'Delete');
   });
 });

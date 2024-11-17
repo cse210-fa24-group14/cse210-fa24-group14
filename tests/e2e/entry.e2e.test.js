@@ -1,7 +1,10 @@
 import { test, expect } from '../../playwright/fixtures';
 
 test.describe('Chrome Extension E2E Test', () => {
-  test('should save and display notes in the popup', async ({ context, extensionId }) => {
+  test('should save and display notes in the popup', async ({
+    context,
+    extensionId,
+  }) => {
     const popupUrl = `chrome-extension://${extensionId}/src/entry.html`;
 
     // Open the extension popup
@@ -17,9 +20,9 @@ test.describe('Chrome Extension E2E Test', () => {
 
     // Verify the note appears in the UI
     const displayedNotes = await page.$$eval('#notesList li', (items) =>
-      items.map((item) => item.textContent.trim())
+      items.map((item) => item.textContent.trim()),
     );
-    expect(displayedNotes).toContain(testNote+'Delete');
+    expect(displayedNotes).toContain(testNote + 'Delete');
 
     // Verify the note is saved in Chrome's storage
     const storedNotes = await page.evaluate(() => {

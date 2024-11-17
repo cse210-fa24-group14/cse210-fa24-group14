@@ -1,7 +1,10 @@
 import { test, expect } from '../../playwright/fixtures';
 
 test.describe('saveNotes Functionality', () => {
-  test('should save a new note and display it', async ({ context, extensionId }) => {
+  test('should save a new note and display it', async ({
+    context,
+    extensionId,
+  }) => {
     const popupUrl = `chrome-extension://${extensionId}/src/entry.html`;
 
     // Open the extension popup
@@ -17,9 +20,9 @@ test.describe('saveNotes Functionality', () => {
 
     // Verify the note is displayed in the list
     const displayedNotes = await page.$$eval('#notesList li', (items) =>
-      items.map((item) => item.textContent)
+      items.map((item) => item.textContent),
     );
-    expect(displayedNotes).toContain(newNote+'Delete'); //text content will contain 'Delete' as well
+    expect(displayedNotes).toContain(newNote + 'Delete'); //text content will contain 'Delete' as well
 
     // Verify the note is saved in Chrome storage
     const storedNotes = await page.evaluate(() => {
@@ -27,6 +30,6 @@ test.describe('saveNotes Functionality', () => {
         chrome.storage.sync.get('notes', (data) => resolve(data.notes));
       });
     });
-    expect(storedNotes).toContain(newNote); 
+    expect(storedNotes).toContain(newNote);
   });
 });
