@@ -16,5 +16,5 @@ Ideas for the product:
 9. Skip authentication and link to the profile through Google (MVP)
 10. Light/Dark mode is the same as Chrome settings (GTH)
 
-MVP - Minimum Viable Product
+MVP - Minimum Viable Product,
 GTH - Goot To Have
