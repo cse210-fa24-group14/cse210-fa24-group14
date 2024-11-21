@@ -1,4 +1,5 @@
 Attended by: Rashi Bhansali, Shyam Sriram, Mitch, Shouhardik, Kenny Liu, Philemon Putra, Zihan, Jet Zhao
+
 Sprint Goal:
 The focus of this sprint was to enhance the CI/CD pipeline, implement robust testing mechanisms, and improve the browser extension functionality.
 
