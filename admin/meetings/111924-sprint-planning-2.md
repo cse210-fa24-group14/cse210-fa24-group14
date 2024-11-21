@@ -1,3 +1,6 @@
+Attended by: 
+Rashi Bhansali, Shyam Sriram, Mitch, Shouhardik, Kenny Liu, Philemon Putra, Zihan, Jet Zhao
+
 Meeting Notes:
 - Use templates for commits, issues, and PRs: Shyam
 - Protect main branch: Shyam
