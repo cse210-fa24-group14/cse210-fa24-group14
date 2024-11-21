@@ -3,6 +3,10 @@ body {
     margin: 0;
     padding: 0;
     width: 300px;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 400px;
   }
   
@@ -14,6 +18,10 @@ body {
     width: 100%;
     height: 100px;
     margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
     font-size: 14px;
   }
   
@@ -42,4 +50,62 @@ body {
     padding: 10px;
     border-radius: 5px;
   }
+  #notesList {
+    padding: 0;
+    margin: 10px 0;
+    list-style: none; /* Remove bullets from the list */
+    width: 100%; /* Match the width of the input */
+  }
   
+  
+  .note-cell {
+    display: flex;
+    flex-direction: column; /* Stack text and button */
+    align-items: flex-start; /* Align text and button to the left */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px; /* Add spacing between note cells */
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    width: 100%; /* Match the width of the textarea */
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Text for the note */
+  .note-text {
+    font-size: 14px;
+    font-family: inherit;
+    padding: 5px;
+    margin: 0;
+    word-wrap: break-word; /* Prevent overflow */
+    width: 100%; /* Ensure text spans full width of the cell */
+    box-sizing: border-box;
+    border: none; /* Remove borders */
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+  }
+  
+  /* Delete button styling */
+  .note-delete-btn {
+    align-self: flex-end; /* Align delete button to the right */
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 5px; /* Add spacing between text and button */
+  }
+  
+  .note-delete-btn:hover {
+    background-color: #ff1a1a;
+  }
