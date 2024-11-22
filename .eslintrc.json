@@ -1,0 +1,22 @@
+{
+    "extends": [
+      "eslint:recommended",
+      "plugin:jsdoc/recommended"
+    ],
+    "plugins": ["jsdoc"],
+    "rules": {
+      "jsdoc/check-alignment": "warn",
+      "jsdoc/check-param-names": "warn",
+      "jsdoc/check-types": "warn",
+      "jsdoc/require-jsdoc": [
+        "warn",
+        {
+          "require": {
+            "FunctionDeclaration": true,
+            "MethodDefinition": true,
+            "ClassDeclaration": false
+          }
+        }
+      ]
+    }
+  }
