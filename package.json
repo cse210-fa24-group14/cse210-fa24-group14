@@ -1,18 +1,21 @@
 {
   "name": "dev-journal",
   "devDependencies": {
-    "@playwright/test": "^1.48.2",
-    "playwright": "^1.48.2",
     "@eslint/js": "^9.15.0",
+    "@playwright/test": "^1.48.2",
+    "acorn": "^8.14.0",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-html": "^8.1.2",
     "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.5.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.12.0",
     "htmlhint": "^1.1.4",
-    "husky": "^9.1.6",
+    "husky": "^9.1.7",
+    "jsdoc": "^4.0.4",
     "lint-staged": "^15.2.10",
+    "playwright": "^1.48.2",
     "prettier": "^3.3.3"
   },
   "lint-staged": {
@@ -20,6 +23,13 @@
     "*.css": "stylelint --fix"
   },
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky", 
+    "generate-docs": "node scripts/generateJsDoc.js", 
+    "docs": "jsdoc -c jsdoc.json"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run docs && lint-staged && run generate-docs"
+    }
   }
 }
