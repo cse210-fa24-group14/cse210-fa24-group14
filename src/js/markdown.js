@@ -13,6 +13,15 @@ export function parseMarkdown(markdownText) {
       { regex: /`(.*?)`/g, replacement: '<code>$1</code>' },
       { regex: /\n-{3,}\n/g, replacement: '<hr />' },
       { regex: /\n/g, replacement: '<br />' },
+      { regex: /\b(https?:\/\/[^\s]+)\b/g, replacement: '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>' },
+      { regex: /\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b/g, replacement: '<a href="mailto:$1">$1</a>' },
+      /* 
+        Change font size
+        example use: 
+        {{size=24}} This is 24px text
+        {{size=16}} This is 16px text
+      */
+      {  regex: /\{\{size=(\d+)\}\}(.*?)(?=\{\{size=|\n|$)/g, replacement: '<span style="font-size:$1px">$2</span>'},
     ];
   
     let htmlText = markdownText;
