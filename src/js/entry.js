@@ -1,10 +1,16 @@
 import { NoteRepository } from './repositories/NoteRepository.js';
 import { NoteListView } from './components/NoteListView.js';
 
+// This is the main app/entry point
 class NotesApp {
   constructor() {
+    // This is the where the notes are stored (communication with backend)
     this.noteRepository = new NoteRepository();
+    // This is the where the notes are displayed
     this.noteListView = new NoteListView(document.getElementById('notesList'));
+
+    // This is where the notes are inputted.
+    // We can also extract this to a component, but when it gets more complex.
     this.noteInput = document.getElementById('noteInput');
     this.saveButton = document.getElementById('saveBtn');
 
@@ -23,6 +29,7 @@ class NotesApp {
 
   setupEventListeners() {
     this.saveButton.addEventListener('click', () => this.handleSaveNote());
+    // This is to set the callback for when a note is deleted in NoteListView
     this.noteListView.setOnDeleteNote((timestamp) =>
       this.handleDeleteNote(timestamp),
     );

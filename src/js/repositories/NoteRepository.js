@@ -1,6 +1,7 @@
 import { StorageService } from '../services/StorageService.js';
 import { Note } from '../models/Note.js';
 
+// This is layer between our app's business logic and the data storage layer
 export class NoteRepository {
   constructor() {
     this.storageService = new StorageService();

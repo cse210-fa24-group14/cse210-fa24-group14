@@ -1,9 +1,11 @@
+// This is the main component for the notes list view
 export class NoteListView {
   constructor(containerElement) {
     this.container = containerElement; // DOM element to render the notes
     this.onDeleteNote = null; // Callback to be set by parent
   }
 
+  // This is to set the callback for when a note is deleted in NoteListView
   setOnDeleteNote(callback) {
     this.onDeleteNote = callback;
   }
@@ -36,6 +38,7 @@ export class NoteListView {
     });
   }
 
+  // This is to handle the deletion of a note, calling the callback set by the parent
   async handleDelete(note) {
     if (!this.onDeleteNote) return;
     await this.onDeleteNote(note.timestamp);
