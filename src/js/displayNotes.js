@@ -1,4 +1,5 @@
 import { fetchNotes, deleteNote } from './utils.js';
+import { parseMarkdown } from './markdown.js';
 
 export async function displayNotes(notesList) {
   const notes = await fetchNotes();
@@ -6,7 +7,7 @@ export async function displayNotes(notesList) {
 
   notes.forEach((note, index) => {
     const listItem = document.createElement('li');
-    listItem.textContent = note;
+    listItem.innerHTML = parseMarkdown(note); // Parse Markdown to HTML
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
