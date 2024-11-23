@@ -1,5 +1,7 @@
 # 11/22/24 Progress Check-in
 
+Attended by: Rashi Bhansali, Shyam Sriram, Mitch, Shouhardik, Kenny Liu, Philemon Putra, Zihan, Jet Zhao
+
 ## Introduction
 
 This meeting serves as a progress check-in for team members to report their current tasks and responsibilities for sprint 2. Team members shared updates on their assigned work including documentation setup, backend planning, and development infrastructure improvements.
