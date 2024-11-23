@@ -18,7 +18,6 @@ class NotesApp {
 
   async loadNotes() {
     const notes = await this.noteRepository.getAllNotes();
-    console.log(notes);
     this.noteListView.render(notes);
   }
 
@@ -32,7 +31,6 @@ class NotesApp {
   async handleSaveNote() {
     const content = this.noteInput.value.trim();
     if (content) {
-      console.log(content);
       await this.noteRepository.addNote(content);
       this.noteInput.value = '';
       await this.loadNotes();
