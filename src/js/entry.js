@@ -1,21 +1,49 @@
-import { displayNotes } from './displayNotes.js';
-import { saveNote } from './saveNotes.js';
+import { NoteRepository } from './repositories/NoteRepository.js';
+import { NoteListView } from './components/NoteListView.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const notesList = document.getElementById('notesList');
-  const saveButton = document.getElementById('saveBtn');
-  const noteInput = document.getElementById('noteInput');
+class NotesApp {
+  constructor() {
+    this.noteRepository = new NoteRepository();
+    this.noteListView = new NoteListView(document.getElementById('notesList'));
+    this.noteInput = document.getElementById('noteInput');
+    this.saveButton = document.getElementById('saveBtn');
 
-  // Initial display of notes
-  displayNotes(notesList);
+    this.initialize();
+  }
 
-  // Save new note when button is clicked
-  saveButton.addEventListener('click', async () => {
-    const newNote = noteInput.value;
-    console.log(newNote);
-    if (newNote) {
-      await saveNote(newNote, notesList);
-      noteInput.value = ''; // Clear input field after saving
+  async initialize() {
+    await this.loadNotes();
+    this.setupEventListeners();
+  }
+
+  async loadNotes() {
+    const notes = await this.noteRepository.getAllNotes();
+    this.noteListView.render(notes);
+  }
+
+  setupEventListeners() {
+    this.saveButton.addEventListener('click', () => this.handleSaveNote());
+    this.noteListView.setOnDeleteNote((timestamp) =>
+      this.handleDeleteNote(timestamp),
+    );
+  }
+
+  async handleSaveNote() {
+    const content = this.noteInput.value.trim();
+    if (content) {
+      await this.noteRepository.addNote(content);
+      this.noteInput.value = '';
+      await this.loadNotes();
     }
-  });
+  }
+
+  async handleDeleteNote(timestamp) {
+    await this.noteRepository.deleteNote(timestamp);
+    await this.loadNotes();
+  }
+}
+
+// Initialize the app when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  new NotesApp();
 });
