@@ -14,8 +14,10 @@ export class NoteListView {
     this.container.innerHTML = '';
 
     if (notes.length === 0) {
-      this.container.innerHTML =
-        '<p class="empty-state">No notes yet. Add your first note!</p>';
+      const emptyState = document.createElement('p');
+      emptyState.className = 'empty-state';
+      emptyState.textContent = 'No notes yet. Add your first note!';
+      this.container.appendChild(emptyState);
       return;
     }
 
@@ -27,6 +29,7 @@ export class NoteListView {
       content.textContent = note.content;
 
       const deleteBtn = document.createElement('button');
+      deleteBtn.setAttribute('aria-label', `Delete note ${note.content}`);
       deleteBtn.textContent = 'Delete';
       deleteBtn.addEventListener('click', async () => {
         await this.handleDelete(note);
