@@ -18,8 +18,12 @@ class NotesApp {
   }
 
   async initialize() {
-    await this.loadNotes();
-    this.setupEventListeners();
+    try {
+      await this.loadNotes();
+      this.setupEventListeners();
+    } catch (error) {
+      console.error('Error in initializing app', error);
+    }
   }
 
   async loadNotes() {
@@ -38,15 +42,23 @@ class NotesApp {
   async handleSaveNote() {
     const content = this.noteInput.value.trim();
     if (content) {
-      await this.noteRepository.addNote(content);
-      this.noteInput.value = '';
-      await this.loadNotes();
+      try {
+        await this.noteRepository.addNote(content);
+        this.noteInput.value = '';
+        await this.loadNotes();
+      } catch (error) {
+        console.error('Error in handling save note', error);
+      }
     }
   }
 
   async handleDeleteNote(timestamp) {
-    await this.noteRepository.deleteNote(timestamp);
-    await this.loadNotes();
+    try {
+      await this.noteRepository.deleteNote(timestamp);
+      await this.loadNotes();
+    } catch (error) {
+      console.error('Error in handling delete note', error);
+    }
   }
 }
 
