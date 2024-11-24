@@ -44,6 +44,22 @@ export class NoteListView {
   // This is to handle the deletion of a note, calling the callback set by the parent
   async handleDelete(note) {
     if (!this.onDeleteNote) return;
-    await this.onDeleteNote(note.timestamp);
+    try {
+      await this.onDeleteNote(note.timestamp);
+    } catch (error) {
+      this.showErrorToast(`Failed to delete note, please try again: ${error}`);
+    }
+  }
+
+  showErrorToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast toast-error';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    // Remove toast after 3 seconds
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
   }
 }

@@ -27,8 +27,12 @@ class NotesApp {
   }
 
   async loadNotes() {
-    const notes = await this.noteRepository.getAllNotes();
-    this.noteListView.render(notes);
+    try {
+      const notes = await this.noteRepository.getAllNotes();
+      this.noteListView.render(notes);
+    } catch (error) {
+      console.error('Error in loading notes', error);
+    }
   }
 
   setupEventListeners() {
