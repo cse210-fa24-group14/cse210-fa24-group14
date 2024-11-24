@@ -11,9 +11,7 @@ export class NoteRepository {
   async getAllNotes() {
     try {
       const notes = await this.storageService.get(this.STORAGE_KEY, []);
-      return notes.map(
-        (note) => new Note(note.content, note.url, note.timestamp),
-      );
+      return notes;
     } catch (error) {
       console.error('Failed to retrieve notes from storage:', error);
       throw error;
@@ -32,12 +30,10 @@ export class NoteRepository {
     }
   }
 
-  async deleteNote(timestamp) {
+  async deleteNote(id) {
     try {
       const notes = await this.getAllNotes();
-      const filteredNotes = notes.filter(
-        (note) => note.timestamp !== timestamp,
-      );
+      const filteredNotes = notes.filter((note) => note.id !== id);
       await this.storageService.set(this.STORAGE_KEY, filteredNotes);
     } catch (error) {
       console.error('Failed to delete note from storage:', error);

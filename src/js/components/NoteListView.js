@@ -45,7 +45,7 @@ export class NoteListView {
   async handleDelete(note) {
     if (!this.onDeleteNote) return;
     try {
-      await this.onDeleteNote(note.timestamp);
+      await this.onDeleteNote(note.id);
     } catch (error) {
       this.showErrorToast(`Failed to delete note, please try again: ${error}`);
     }

@@ -38,9 +38,7 @@ class NotesApp {
   setupEventListeners() {
     this.saveButton.addEventListener('click', () => this.handleSaveNote());
     // This is to set the callback for when a note is deleted in NoteListView
-    this.noteListView.setOnDeleteNote((timestamp) =>
-      this.handleDeleteNote(timestamp),
-    );
+    this.noteListView.setOnDeleteNote((id) => this.handleDeleteNote(id));
   }
 
   async handleSaveNote() {
@@ -56,9 +54,9 @@ class NotesApp {
     }
   }
 
-  async handleDeleteNote(timestamp) {
+  async handleDeleteNote(id) {
     try {
-      await this.noteRepository.deleteNote(timestamp);
+      await this.noteRepository.deleteNote(id);
       await this.loadNotes();
     } catch (error) {
       console.error('Error in handling delete note', error);
