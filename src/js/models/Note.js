@@ -1,8 +1,8 @@
 // This is the main model for the notes
 export class Note {
-  constructor(content, url = null, id = null) {
-    this.id = id || new Date().toISOString();
-    this.content = content;
+  constructor(url = null) {
+    // this.id = id || new Date().toISOString(); The url to cells can be a unique map?
+    this.cells = [];
     this.url = url;
   }
 }
