@@ -1,21 +1,70 @@
-import { displayNotes } from './displayNotes.js';
-import { saveNote } from './saveNotes.js';
+import { NoteRepository } from './repositories/NoteRepository.js';
+import { NoteListView } from './components/NoteListView.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const notesList = document.getElementById('notesList');
-  const saveButton = document.getElementById('saveBtn');
-  const noteInput = document.getElementById('noteInput');
+// This is the main app/entry point
+class NotesApp {
+  constructor() {
+    // This is the where the notes are stored (communication with backend)
+    this.noteRepository = new NoteRepository();
+    // This is the where the notes are displayed
+    this.noteListView = new NoteListView(document.getElementById('notesList'));
 
-  // Initial display of notes
-  displayNotes(notesList);
+    // This is where the notes are inputted.
+    // We can also extract this to a component, but when it gets more complex.
+    this.noteInput = document.getElementById('noteInput');
+    this.saveButton = document.getElementById('saveBtn');
 
-  // Save new note when button is clicked
-  saveButton.addEventListener('click', async () => {
-    const newNote = noteInput.value;
-    console.log(newNote);
-    if (newNote) {
-      await saveNote(newNote, notesList);
-      noteInput.value = ''; // Clear input field after saving
+    this.initialize();
+  }
+
+  async initialize() {
+    try {
+      await this.loadNotes();
+      this.setupEventListeners();
+    } catch (error) {
+      console.error('Error in initializing app', error);
     }
-  });
+  }
+
+  async loadNotes() {
+    try {
+      const notes = await this.noteRepository.getAllNotes();
+      this.noteListView.render(notes);
+    } catch (error) {
+      console.error('Error in loading notes', error);
+    }
+  }
+
+  setupEventListeners() {
+    this.saveButton.addEventListener('click', () => this.handleSaveNote());
+    // This is to set the callback for when a note is deleted in NoteListView
+    this.noteListView.setOnDeleteNote((id) => this.handleDeleteNote(id));
+  }
+
+  async handleSaveNote() {
+    const content = this.noteInput.value.trim();
+    if (content) {
+      try {
+        await this.noteRepository.addNote(content);
+        this.noteInput.value = '';
+        await this.loadNotes();
+      } catch (error) {
+        console.error('Error in handling save note', error);
+      }
+    }
+  }
+
+  async handleDeleteNote(id) {
+    try {
+      await this.noteRepository.deleteNote(id);
+      await this.loadNotes();
+    } catch (error) {
+      console.error('Error in handling delete note', error);
+    }
+  }
+}
+
+// Initialize the app when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  new NotesApp();
 });
