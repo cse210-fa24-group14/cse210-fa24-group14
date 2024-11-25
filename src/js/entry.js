@@ -1,5 +1,6 @@
 import { NoteRepository } from './repositories/NoteRepository.js';
 import { NotesView } from './components/NotesView.js';
+import { DarkModeComponent } from './components/DarkModeComponent.js';
 
 // This is the main app/entry point
 class NotesApp {
@@ -8,6 +9,8 @@ class NotesApp {
     this.noteRepository = new NoteRepository();
     // This is the where the notes are displayed
     this.notesView = new NotesView(document.getElementById('container'));
+    // This is the service for managing dark mode
+    this.darkModeComponent = new DarkModeComponent();
 
     this.initialize();
   }
@@ -15,6 +18,11 @@ class NotesApp {
   async initialize() {
     this.setupEventListeners();
     await this.loadNotes();
+
+    this.darkModeComponent.initializeSystemTheme(); // Sync with system theme
+    this.darkModeComponent.initializeManualThemeToggle(
+      document.querySelector('#container'), // Pass the container for the toggle button
+    );
   }
 
   async loadNotes() {
