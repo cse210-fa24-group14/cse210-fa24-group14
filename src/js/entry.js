@@ -20,8 +20,10 @@ class NotesApp {
   async loadNotes() {
     try{
       const url = await this.getUrl();
-      const note = await this.noteRepository.getNoteByUrl(url) || await this.noteRepository.addNote(url);
-      console.log("Inside load notes: ", note);
+      const note =
+      (await this.noteRepository.getNoteByUrl(url)) ||
+      (await this.noteRepository.addNote(url));
+      console.log('Inside load notes: ', note);
       await this.notesView.render(note);
     }
     catch (error) {
@@ -43,7 +45,13 @@ class NotesApp {
 
   async handleAddCell(timestamp, content, cellType, targetTimestamp) {
     try{
-      await this.noteRepository.addCellToNote(await this.getUrl(), timestamp, content, cellType, targetTimestamp);
+      await this.noteRepository.addCellToNote(
+      await this.getUrl(),
+      timestamp,
+      content,
+      cellType,
+      targetTimestamp,
+    );
     }
     catch (error) {
       console.error('Error in adding new cell to the note', error);
@@ -52,7 +60,10 @@ class NotesApp {
 
   async handleDeleteCell(timestamp) {
     try{
-      await this.noteRepository.deleteCellFromNote(await this.getUrl(), timestamp);
+      await this.noteRepository.deleteCellFromNote(
+      await this.getUrl(),
+      timestamp,
+    );
     }
     catch (error) {
       console.error('Error in deleting cell from the note', error);
@@ -61,7 +72,12 @@ class NotesApp {
 
   async handleUpdateCell(timestamp, content, cellType) {
     try{
-      await this.noteRepository.updateCellContent(await this.getUrl(), timestamp, content, cellType);
+      await this.noteRepository.updateCellContent(
+      await this.getUrl(),
+      timestamp,
+      content,
+      cellType,
+    );
     }
     catch (error) {
       console.error('Error in saving cell content to the note', error);

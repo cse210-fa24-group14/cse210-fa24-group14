@@ -69,19 +69,21 @@ export class NoteRepository {
 
   async addCellToNote(url, timestamp, content, cellType, targetTimestamp) {
     const notes = await this.getAllNotes();
-    const noteToUpdate = notes.find((note) => note.url === url) || this.addNote(url);
+    const noteToUpdate =
+      notes.find((note) => note.url === url) || this.addNote(url);
     const newCell = new NoteCell(timestamp, content, cellType);
-    if(noteToUpdate){
+    if (noteToUpdate) {
       if (targetTimestamp) {
         // Find the target cell index
-        const targetIndex = noteToUpdate.cells.findIndex(cell => cell.timestamp === targetTimestamp);
-        
+        const targetIndex = noteToUpdate.cells.findIndex(
+          (cell) => cell.timestamp === targetTimestamp,
+        );
+
         if (targetIndex !== -1) {
           // Insert the new cell after the target cell
           noteToUpdate.cells.splice(targetIndex, 0, newCell);
         }
-      } 
-      else {
+      } else {
         // If no targetTimestamp is provided, add at the end of the cells array
         noteToUpdate.cells.push(newCell);
       }
@@ -92,18 +94,18 @@ export class NoteRepository {
   async updateCellContent(url, timestamp, content, cellType) {
     const notes = await this.getAllNotes();
     const note = notes.find((note) => note.url === url);
-    
+
     if (!note || !note.cells) {
       console.error('Note not found while updating content.');
       return;
     }
-  
+
     // Find the cell by timestamp and update its content
-    const cell = note.cells.find(cell => cell.timestamp === timestamp);
+    const cell = note.cells.find((cell) => cell.timestamp === timestamp);
     if (cell) {
       cell.content = content;
       cell.cellType = cellType;
-  
+
       // Save the updated note to the database
       await this.storageService.set(this.STORAGE_KEY, notes);
       console.log('Updated cell content saved:', cell);
@@ -115,9 +117,12 @@ export class NoteRepository {
   async deleteCellFromNote(url, cellTimestamp) {
     try{
       const notes = await this.getAllNotes();
-      const noteToUpdate = notes.find((note) => note.url === url) || this.addNote(url);
-      if(noteToUpdate){
-        noteToUpdate.cells = noteToUpdate.cells.filter((cell) => cell.timestamp !== cellTimestamp);
+      const noteToUpdate =
+        notes.find((note) => note.url === url) || this.addNote(url);
+      if (noteToUpdate) {
+        noteToUpdate.cells = noteToUpdate.cells.filter(
+          (cell) => cell.timestamp !== cellTimestamp,
+        );
         await this.storageService.set(this.STORAGE_KEY, notes);
       }
     }
