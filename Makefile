@@ -9,15 +9,12 @@ test-code-quality:
 	@echo "🧪 Checking code quality"
 	@npx eslint
 
-.PHONY: test-generic
-test-generic:
-	@echo "🧪 $(suite) tests"
-	@npx playwright test --project=$(suite)
-
 .PHONY: test-unit
 test-unit:
-	@$(MAKE) test-generic suite=unit
+	@echo "🧪 unit tests"
+	@npx jest tests/unit --verbose --coverage
 
 .PHONY: test-e2e
 test-e2e:
-	@$(MAKE) test-generic suite=e2e
+	@echo "🧪 e2e tests"
+	@npx playwright test --project=e2e
