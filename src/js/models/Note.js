@@ -7,7 +7,6 @@ export class Note {
   }
 }
 
-
 export class NoteCell {
   constructor(timestamp, content, cellType) {
     this.content = content;

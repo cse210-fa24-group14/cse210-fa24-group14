@@ -19,37 +19,58 @@ class NotesApp {
 
   async loadNotes() {
     const url = await this.getUrl();
-    const note = await this.noteRepository.getNoteByUrl(url) || await this.noteRepository.addNote(url);
-    console.log("Inside load notes: ", note);
+    const note =
+      (await this.noteRepository.getNoteByUrl(url)) ||
+      (await this.noteRepository.addNote(url));
+    console.log('Inside load notes: ', note);
     await this.notesView.render(note);
   }
 
   setupEventListeners() {
-    this.notesView.setOnDeleteCell(async (timestamp) =>
-      await this.handleDeleteCell(timestamp),
+    this.notesView.setOnDeleteCell(
+      async (timestamp) => await this.handleDeleteCell(timestamp),
     );
-    this.notesView.setOnAddCell(async (timestamp, content, cellType, targetTimestamp) =>
-      await this.handleAddCell(timestamp, content, cellType, targetTimestamp),
+    this.notesView.setOnAddCell(
+      async (timestamp, content, cellType, targetTimestamp) =>
+        await this.handleAddCell(timestamp, content, cellType, targetTimestamp),
     );
-    this.notesView.setOnUpdateCell(async (timestamp, content, cellType) =>
-      await this.handleUpdateCell(timestamp, content, cellType),
+    this.notesView.setOnUpdateCell(
+      async (timestamp, content, cellType) =>
+        await this.handleUpdateCell(timestamp, content, cellType),
     );
   }
 
   async handleAddCell(timestamp, content, cellType, targetTimestamp) {
-    await this.noteRepository.addCellToNote(await this.getUrl(), timestamp, content, cellType, targetTimestamp);
+    await this.noteRepository.addCellToNote(
+      await this.getUrl(),
+      timestamp,
+      content,
+      cellType,
+      targetTimestamp,
+    );
   }
 
   async handleDeleteCell(timestamp) {
-    await this.noteRepository.deleteCellFromNote(await this.getUrl(), timestamp);
+    await this.noteRepository.deleteCellFromNote(
+      await this.getUrl(),
+      timestamp,
+    );
   }
 
   async handleUpdateCell(timestamp, content, cellType) {
-    await this.noteRepository.updateCellContent(await this.getUrl(), timestamp, content, cellType);
+    await this.noteRepository.updateCellContent(
+      await this.getUrl(),
+      timestamp,
+      content,
+      cellType,
+    );
   }
 
   async getUrl() {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
     return tab.url;
   }
 }
