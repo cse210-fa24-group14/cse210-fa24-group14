@@ -10,19 +10,24 @@ describe('Util ParseMarkdown', () => {
   test('should parse header 1', () => {
     const input = '# Header 1';
     const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('<h1>Header 1</h1>');
+    expect(parseMarkdownOut).toBe('<h1>Header 1</h1><br />');
+  });
+  test('should parse header 1 br ', () => {
+    const input = '# Header 1\n';
+    const parseMarkdownOut = parseMarkdown(input);
+    expect(parseMarkdownOut).toBe('<h1>Header 1</h1><br />');
   });
 
   test('should parse header 2', () => {
     const input = '## Header 2';
     const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('<h2>Header 2</h2>');
+    expect(parseMarkdownOut).toBe('<h2>Header 2</h2><br />');
   });
 
   test('should parse header 6', () => {
     const input = '###### Header 6';
     const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('<h6>Header 6</h6>');
+    expect(parseMarkdownOut).toBe('<h6>Header 6</h6><br />');
   });
 
   test('should parse bold text', () => {
@@ -68,6 +73,32 @@ describe('Util ParseMarkdown', () => {
     const parseMarkdownOut = parseMarkdown(input);
     expect(parseMarkdownOut).toBe(
       '<a href="mailto:test@example.com">test@example.com</a>',
+    );
+  });
+
+  test('should parse header 1', () => {
+    const input = '# Header 1\n\n\n';
+    const parseMarkdownOut = parseMarkdown(input);
+    expect(parseMarkdownOut).toBe('<h1>Header 1</h1><br /><br /><br />');
+  });
+
+  test('should parse a combination of markdown features', () => {
+    const input = `# Header 1
+
+## Header 2
+###### Header 6
+**bold**
+*italic*
+~~strikethrough~~
+\`code\`
+https://example.com
+test@example.com`;
+
+    const parseMarkdownOut = parseMarkdown(input);
+
+    // Expected output
+    expect(parseMarkdownOut).toBe(
+      `<h1>Header 1</h1><br /><br /><h2>Header 2</h2><br /><h6>Header 6</h6><br /><strong>bold</strong><br /><em>italic</em><br /><del>strikethrough</del><br /><code>code</code><br /><a href="https://example.com" target="_blank" rel="noopener noreferrer">https://example.com</a><br /><a href="mailto:test@example.com">test@example.com</a>`,
     );
   });
 });

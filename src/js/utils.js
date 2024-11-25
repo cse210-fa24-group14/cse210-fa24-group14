@@ -1,18 +1,17 @@
 export function parseMarkdown(markdownText) {
   // Simple Markdown to HTML parser
   const rules = [
-    { regex: /###### (.*?)(\n|$)/g, replacement: '<h6>$1</h6>' },
-    { regex: /##### (.*?)(\n|$)/g, replacement: '<h5>$1</h5>' },
-    { regex: /#### (.*?)(\n|$)/g, replacement: '<h4>$1</h4>' },
-    { regex: /### (.*?)(\n|$)/g, replacement: '<h3>$1</h3>' },
-    { regex: /## (.*?)(\n|$)/g, replacement: '<h2>$1</h2>' },
-    { regex: /# (.*?)(\n|$)/g, replacement: '<h1>$1</h1>' },
+    { regex: /###### (.*?)(\n|$)/g, replacement: '<h6>$1</h6><br />' },
+    { regex: /##### (.*?)(\n|$)/g, replacement: '<h5>$1</h5><br />' },
+    { regex: /#### (.*?)(\n|$)/g, replacement: '<h4>$1</h4><br />' },
+    { regex: /### (.*?)(\n|$)/g, replacement: '<h3>$1</h3><br />' },
+    { regex: /## (.*?)(\n|$)/g, replacement: '<h2>$1</h2><br />' },
+    { regex: /# (.*?)(\n|$)/g, replacement: '<h1>$1</h1><br />' },
     { regex: /\*\*(.*?)\*\*/g, replacement: '<strong>$1</strong>' },
     { regex: /\*(.*?)\*/g, replacement: '<em>$1</em>' },
     { regex: /~~(.*?)~~/g, replacement: '<del>$1</del>' },
     { regex: /`(.*?)`/g, replacement: '<code>$1</code>' },
     { regex: /\n-{3,}\n/g, replacement: '<hr />' },
-    { regex: /\n/g, replacement: '<br />' },
     {
       regex: /\b(https?:\/\/[^\s]+)\b/g,
       replacement:
@@ -22,6 +21,7 @@ export function parseMarkdown(markdownText) {
       regex: /\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b/g,
       replacement: '<a href="mailto:$1">$1</a>',
     },
+    { regex: /\n/g, replacement: '<br />' },
     /* 
         Change font size
         example use: 
