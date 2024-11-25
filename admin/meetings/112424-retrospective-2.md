@@ -1,2 +1,2 @@
 Attended by: Rashi Bhansali, Shyam Sriram, Mitch, Shouhardik, Kenny Liu, Philemon Putra, Zihan, Jet Zhao.
-![retro-02](https://github.com/user-attachments/assets/f3d11886-0b01-425d-a6eb-48e528d33914)
+![Colorful Foundational Retrospective Online Whiteboard](https://github.com/user-attachments/assets/ca0ae046-1ffa-4f07-a5fb-a0bc43a3ab8f)
