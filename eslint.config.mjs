@@ -18,6 +18,14 @@ export default [
       },
     },
   },
+  {
+    files: ['**/*.test.js'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+  },
   pluginJs.configs.recommended,
   prettierConfig,
   {
