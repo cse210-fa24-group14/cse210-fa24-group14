@@ -1,6 +1,6 @@
 // services/DarkModeService.js
 
-export class DarkModeService {
+export class DarkModeComponent {
   constructor() {
     this.body = document.body;
     this.darkModeBtn = null;
