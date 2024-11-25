@@ -26,10 +26,5 @@
     "prepare": "husky", 
     "generate-docs": "node scripts/generateJsDoc.js", 
     "docs": "jsdoc -c jsdoc.json"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run docs && lint-staged && npm run generate-docs"
-    }
   }
 }
