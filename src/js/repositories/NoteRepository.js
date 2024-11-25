@@ -1,4 +1,4 @@
-import { StorageService } from '../services/StorageService.js'
+import { StorageService } from '../services/StorageService.js';
 import { Note, NoteCell } from '../models/Note.js';
 
 // This is layer between our app's business logic and the data storage layer
@@ -28,7 +28,7 @@ export class NoteRepository {
   async addCellToNote(url, timestamp, content, cellType, targetTimestamp) {
     const notes = await this.getAllNotes();
     const noteToUpdate = notes.find((note) => note.url === url) || this.addNote(url);
-    const newCell = new NoteCell(timestamp = timestamp, cellType = cellType, content = content);
+    const newCell = new NoteCell(timestamp, content, cellType);
     if(noteToUpdate){
       if (targetTimestamp) {
         // Find the target cell index
