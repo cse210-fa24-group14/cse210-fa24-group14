@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const acorn = require('acorn');
 
-const files = ['./src/js/index.js']; // Add your file paths here
+const files = ['./src/js/testFunctions.js']; // Add your file paths here
 
 files.forEach((file) => {
   const content = fs.readFileSync(file, 'utf-8');
