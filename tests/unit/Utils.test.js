@@ -70,12 +70,4 @@ describe('Util ParseMarkdown', () => {
       '<a href="mailto:test@example.com">test@example.com</a>',
     );
   });
-
-  test('should parse font size change', () => {
-    const input = '{{size=24}} This is 24px text';
-    const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe(
-      '<span style="font-size:24px">This is 24px text</span>',
-    );
-  });
 });

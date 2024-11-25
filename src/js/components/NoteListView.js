@@ -1,4 +1,4 @@
-import { parseMarkdown } from '../utils';
+import { parseMarkdown } from '../utils.js';
 
 // This is the main component for the notes list view
 export class NoteListView {
@@ -28,7 +28,8 @@ export class NoteListView {
       li.className = 'note-item';
 
       const content = document.createElement('span');
-      content.textContent = parseMarkdown(note.content);
+      content.textContent = note.content;
+      content.innerHTML = parseMarkdown(note.content);
 
       const deleteBtn = document.createElement('button');
       deleteBtn.setAttribute('aria-label', `Delete note ${note.content}`);
