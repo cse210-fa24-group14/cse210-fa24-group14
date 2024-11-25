@@ -5,13 +5,13 @@ html
 
 .cell {
     position: relative; /* Enables positioning of the icon and button inside the cell */
-    margin-bottom: 10px;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
     width: 100%; /* Ensure the cell takes full width of the container */
     box-sizing: border-box; /* Include padding and border in width/height calculations */
     background-color: #eee;
+    margin-bottom: 8px; /* Increased margin for better spacing */
   }
 
   .cell-content {
@@ -86,7 +86,7 @@ html
     border-width: 1px;
     padding: 2px 5px;
     color: #007BFF;
-} 
+  } 
 
 
 
@@ -104,13 +104,12 @@ html
     visibility: hidden;
   }
 
-  .add-new-buttons:hover 
-  .new-cell-buttons{ /* when the separator line is hovered, add buttons appear*/
+  .add-new-buttons:hover .new-cell-buttons{ /* when the separator line is hovered, add buttons appear */
     visibility: visible;
     opacity: 1;
   }
 
-  .add-new-buttons:hover hr{ /* when the separator line is hovered, add buttons appear*/
+  .add-new-buttons:hover hr{ /* when the separator line is hovered, add buttons appear */
     visibility: visible;
     opacity: 1;
   }
@@ -118,3 +117,101 @@ html
   button.new-cell-buttons:hover{
     border-color: #007BFF;
   } 
+
+/* Dark Mode Styles */
+body.dark-mode .cell {
+  border: 1px solid #555; /* Dark border */
+  background-color: #333; /* Cell background color */
+  color: #ddd; /* Light text color */
+}
+
+
+body.dark-mode .cell-content {
+  color: #ddd; /* Ensure text is visible in dark mode */
+}
+
+body.dark-mode textarea {
+  background-color: #444; /* Dark background for text areas */
+  color: #ddd; /* Light text color for readability */
+  border: 1px solid #555; /* Dark border for text areas */
+}
+
+body.dark-mode .delete-btn {
+  color: #ccc; /* Light icon color for delete button */
+}
+
+body.dark-mode .delete-btn:hover {
+  color: #fff; /* Bright icon color on hover */
+}
+
+body.dark-mode .toggle-btn {
+  color: #ccc; /* Light icon color for toggle button */
+}
+
+body.dark-mode .toggle-btn:hover {
+  color: #fff; /* Bright icon color on hover */
+}
+
+body.dark-mode .add-new-buttons {
+  background-color: #333; /* Dark background for button container */
+}
+
+body.dark-mode .new-cell-buttons:hover {
+  border-color: #007BFF; /* Highlighted border on hover */
+}
+
+body.dark-mode .add-new-buttons > hr {
+  border-color: #555; /* Dark separator line */
+}
+
+body.dark-mode {
+  background-color: #222; /* Dark background for the entire extension */
+  color: #ddd; /* Light text color for the overall content */
+}
+
+body.dark-mode html {
+  background-color: #222; /* Ensure no white strip in the root element */
+}
+
+body.dark-mode .container {
+  background-color: #222; /* Ensure the container blends into the dark theme */
+  color: #ddd; /* Light text color for container elements */
+}
+
+/* Style the dark mode toggle button */
+#dark-mode-toggle {
+  position: absolute; /* Relative to the container */
+  top: 13px; /* Align at the top */
+  left: 13px; /* Align at the left */
+  width: 30px; /* Circular button with fixed size */
+  height: 30px;
+  background-color: #007BFF; /* Modern blue color */
+  color: white; /* Icon color */
+  border: none; /* No border for a clean look */
+  border-radius: 50%; /* Make it circular */
+  font-size: 1.5rem; /* Icon size */
+  cursor: pointer; /* Pointer cursor for interactivity */
+  z-index: 1000; /* Ensure it stays above other elements */
+  display: flex; /* Center the icon */
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 20%); /* Subtle shadow for depth */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth effects */
+}
+
+/* Hover effect for the toggle button */
+#dark-mode-toggle:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Adjust dark mode toggle button styling in dark mode */
+body.dark-mode #dark-mode-toggle {
+  background-color: #444; /* Darker background for dark mode */
+  color: #ddd; /* Light icon color for contrast */
+}
+
+body.dark-mode #dark-mode-toggle:hover {
+  background-color: #222; /* Even darker on hover */
+  transform: scale(1.1); /* Hover effect */
+}
