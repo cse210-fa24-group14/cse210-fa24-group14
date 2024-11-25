@@ -1,5 +1,5 @@
 import { NoteRepository } from './repositories/NoteRepository.js';
-import { NoteListView } from './components/NoteListView.js';
+import { NotesView } from './components/NotesView.js';
 
 // This is the main app/entry point
 class NotesApp {
@@ -7,60 +7,87 @@ class NotesApp {
     // This is the where the notes are stored (communication with backend)
     this.noteRepository = new NoteRepository();
     // This is the where the notes are displayed
-    this.noteListView = new NoteListView(document.getElementById('notesList'));
-
-    // This is where the notes are inputted.
-    // We can also extract this to a component, but when it gets more complex.
-    this.noteInput = document.getElementById('noteInput');
-    this.saveButton = document.getElementById('saveBtn');
+    this.notesView = new NotesView(document.getElementById('container'));
 
     this.initialize();
   }
 
   async initialize() {
-    try {
-      await this.loadNotes();
-      this.setupEventListeners();
-    } catch (error) {
-      console.error('Error in initializing app', error);
-    }
+    this.setupEventListeners();
+    await this.loadNotes();
   }
 
   async loadNotes() {
     try {
-      const notes = await this.noteRepository.getAllNotes();
-      this.noteListView.render(notes);
+      const url = await this.getUrl();
+      const note =
+        (await this.noteRepository.getNoteByUrl(url)) ||
+        (await this.noteRepository.addNote(url));
+      console.log('Inside load notes: ', note);
+      await this.notesView.render(note);
     } catch (error) {
       console.error('Error in loading notes', error);
     }
   }
 
   setupEventListeners() {
-    this.saveButton.addEventListener('click', () => this.handleSaveNote());
-    // This is to set the callback for when a note is deleted in NoteListView
-    this.noteListView.setOnDeleteNote((id) => this.handleDeleteNote(id));
+    this.notesView.setOnDeleteCell(
+      async (timestamp) => await this.handleDeleteCell(timestamp),
+    );
+    this.notesView.setOnAddCell(
+      async (timestamp, content, cellType, targetTimestamp) =>
+        await this.handleAddCell(timestamp, content, cellType, targetTimestamp),
+    );
+    this.notesView.setOnUpdateCell(
+      async (timestamp, content, cellType) =>
+        await this.handleUpdateCell(timestamp, content, cellType),
+    );
   }
 
-  async handleSaveNote() {
-    const content = this.noteInput.value.trim();
-    if (content) {
-      try {
-        await this.noteRepository.addNote(content);
-        this.noteInput.value = '';
-        await this.loadNotes();
-      } catch (error) {
-        console.error('Error in handling save note', error);
-      }
-    }
-  }
-
-  async handleDeleteNote(id) {
+  async handleAddCell(timestamp, content, cellType, targetTimestamp) {
     try {
-      await this.noteRepository.deleteNote(id);
-      await this.loadNotes();
+      await this.noteRepository.addCellToNote(
+        await this.getUrl(),
+        timestamp,
+        content,
+        cellType,
+        targetTimestamp,
+      );
     } catch (error) {
-      console.error('Error in handling delete note', error);
+      console.error('Error in adding new cell to the note', error);
     }
+  }
+
+  async handleDeleteCell(timestamp) {
+    try {
+      await this.noteRepository.deleteCellFromNote(
+        await this.getUrl(),
+        timestamp,
+      );
+    } catch (error) {
+      console.error('Error in deleting cell from the note', error);
+    }
+  }
+
+  async handleUpdateCell(timestamp, content, cellType) {
+    try {
+      await this.noteRepository.updateCellContent(
+        await this.getUrl(),
+        timestamp,
+        content,
+        cellType,
+      );
+    } catch (error) {
+      console.error('Error in saving cell content to the note', error);
+    }
+  }
+
+  async getUrl() {
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    return tab.url;
   }
 }
 
