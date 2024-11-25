@@ -18,74 +18,75 @@ class NotesApp {
   }
 
   async loadNotes() {
-    try{
+    try {
       const url = await this.getUrl();
       const note =
-      (await this.noteRepository.getNoteByUrl(url)) ||
-      (await this.noteRepository.addNote(url));
+        (await this.noteRepository.getNoteByUrl(url)) ||
+        (await this.noteRepository.addNote(url));
       console.log('Inside load notes: ', note);
       await this.notesView.render(note);
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error in loading notes', error);
     }
   }
 
   setupEventListeners() {
-    this.notesView.setOnDeleteCell(async (timestamp) =>
-      await this.handleDeleteCell(timestamp),
+    this.notesView.setOnDeleteCell(
+      async (timestamp) => await this.handleDeleteCell(timestamp),
     );
-    this.notesView.setOnAddCell(async (timestamp, content, cellType, targetTimestamp) =>
-      await this.handleAddCell(timestamp, content, cellType, targetTimestamp),
+    this.notesView.setOnAddCell(
+      async (timestamp, content, cellType, targetTimestamp) =>
+        await this.handleAddCell(timestamp, content, cellType, targetTimestamp),
     );
-    this.notesView.setOnUpdateCell(async (timestamp, content, cellType) =>
-      await this.handleUpdateCell(timestamp, content, cellType),
+    this.notesView.setOnUpdateCell(
+      async (timestamp, content, cellType) =>
+        await this.handleUpdateCell(timestamp, content, cellType),
     );
   }
 
   async handleAddCell(timestamp, content, cellType, targetTimestamp) {
-    try{
+    try {
       await this.noteRepository.addCellToNote(
-      await this.getUrl(),
-      timestamp,
-      content,
-      cellType,
-      targetTimestamp,
-    );
-    }
-    catch (error) {
+        await this.getUrl(),
+        timestamp,
+        content,
+        cellType,
+        targetTimestamp,
+      );
+    } catch (error) {
       console.error('Error in adding new cell to the note', error);
     }
   }
 
   async handleDeleteCell(timestamp) {
-    try{
+    try {
       await this.noteRepository.deleteCellFromNote(
-      await this.getUrl(),
-      timestamp,
-    );
-    }
-    catch (error) {
+        await this.getUrl(),
+        timestamp,
+      );
+    } catch (error) {
       console.error('Error in deleting cell from the note', error);
     }
   }
 
   async handleUpdateCell(timestamp, content, cellType) {
-    try{
+    try {
       await this.noteRepository.updateCellContent(
-      await this.getUrl(),
-      timestamp,
-      content,
-      cellType,
-    );
-    }
-    catch (error) {
+        await this.getUrl(),
+        timestamp,
+        content,
+        cellType,
+      );
+    } catch (error) {
       console.error('Error in saving cell content to the note', error);
     }
   }
 
   async getUrl() {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
     return tab.url;
   }
 }
