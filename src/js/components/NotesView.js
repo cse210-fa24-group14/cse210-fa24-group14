@@ -21,7 +21,6 @@ export class NotesView {
   }
 
   async render(note) {
-    this.note = note;
     // Ensure that the container is only cleared when necessary
     // Only clear if there are no cells to render or the note has changed
     if (!note || !note.cells || note.cells.length === 0) {
@@ -57,8 +56,6 @@ export class NotesView {
       }
     });
   }
-
-  async createDefaultCell() {}
 
   async addCellAfterCurrent(cellContainer, cell) {
     const newCellContainer = document.createElement('div');
@@ -123,10 +120,15 @@ export class NotesView {
     newCellContainer.appendChild(newCell);
     this.addNewCellButtons(newCellContainer);
 
-    // Insert the new cell before the next existing note
-    const parentElement = cellContainer.parentNode;
-    const nextSibling = cellContainer.nextSibling; // Get the next sibling node
-    parentElement.insertBefore(newCellContainer, nextSibling); // Insert the new cell before the next sibling
+    // Insert the new cell after the next existing notes while displaying
+    if (cellContainer == this.container) {
+      cellContainer.appendChild(newCellContainer);
+    } else {
+      //if called from "+ Markdown" or "+ Code" buttons, then insert before the next nodes or in between
+      const parentElement = cellContainer.parentNode;
+      const nextSibling = cellContainer.nextSibling; // Get the next sibling node
+      parentElement.insertBefore(newCellContainer, nextSibling); // Insert the new cell before the next sibling
+    }
   }
 
   addNewCellButtons(container) {

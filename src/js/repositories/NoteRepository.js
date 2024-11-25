@@ -36,7 +36,7 @@ export class NoteRepository {
   async addCellToNote(url, timestamp, content, cellType, targetTimestamp) {
     const notes = await this.getAllNotes();
     const noteToUpdate =
-      notes.find((note) => note.url === url) || this.addNote(url);
+      notes.find((note) => note.url === url) || (await this.addNote(url));
     const newCell = new NoteCell(timestamp, content, cellType);
     if (noteToUpdate) {
       if (targetTimestamp) {
@@ -47,7 +47,7 @@ export class NoteRepository {
 
         if (targetIndex !== -1) {
           // Insert the new cell after the target cell
-          noteToUpdate.cells.splice(targetIndex, 0, newCell);
+          noteToUpdate.cells.splice(targetIndex + 1, 0, newCell);
         }
       } else {
         // If no targetTimestamp is provided, add at the end of the cells array

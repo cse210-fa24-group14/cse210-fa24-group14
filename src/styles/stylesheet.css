@@ -5,13 +5,13 @@ html
 
 .cell {
     position: relative; /* Enables positioning of the icon and button inside the cell */
+    margin-bottom: 10px;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
     width: 100%; /* Ensure the cell takes full width of the container */
     box-sizing: border-box; /* Include padding and border in width/height calculations */
     background-color: #eee;
-    margin-bottom: 8px; /* Increased margin for better spacing */
   }
 
   .cell-content {
@@ -86,7 +86,7 @@ html
     border-width: 1px;
     padding: 2px 5px;
     color: #007BFF;
-  } 
+} 
 
 
 
