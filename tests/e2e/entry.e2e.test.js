@@ -1,7 +1,7 @@
 import { test, expect } from '../../playwright/fixtures';
 
 test.describe('Chrome Extension E2E Test', () => {
-  test('should save and display notes in the popup', async ({
+  test('should save display and delete notes in the popup', async ({
     context,
     extensionId,
   }) => {
@@ -11,6 +11,12 @@ test.describe('Chrome Extension E2E Test', () => {
     const page = await context.newPage();
     await page.goto(popupUrl);
 
+    // If there are no notes, should display no notes message
+    const noNotesMessage = await page.$eval('.empty-state', (el) =>
+      el.textContent.trim(),
+    );
+    expect(noNotesMessage).toBe('No notes yet. Add your first note!');
+
     // Input a new note
     const testNote = 'E2E Test Note';
     await page.fill('#noteInput', testNote);
@@ -19,10 +25,10 @@ test.describe('Chrome Extension E2E Test', () => {
     await page.click('#saveBtn');
 
     // Verify the note appears in the UI
-    const displayedNotes = await page.$$eval('#notesList li', (items) =>
+    const displayedNotes = await page.$$eval('.note-item span', (items) =>
       items.map((item) => item.textContent.trim()),
     );
-    expect(displayedNotes).toContain(testNote + 'Delete');
+    expect(displayedNotes).toContain(testNote);
 
     // Verify the note is saved in Chrome's storage
     const storedNotes = await page.evaluate(() => {
@@ -30,21 +36,24 @@ test.describe('Chrome Extension E2E Test', () => {
         chrome.storage.sync.get('notes', (data) => resolve(data.notes));
       });
     });
-    expect(storedNotes).toContain(testNote);
+    expect(storedNotes[0].content).toBe(testNote);
 
-    // Clean up (optional): Clear storage after the test
-    await page.evaluate(() => {
+    // Delete the note
+    await page.click('.note-item button');
+
+    // Verify the note is removed from UI
+    const updatedDisplayedNotes = await page.$$eval(
+      '.note-item span',
+      (items) => items.map((item) => item.textContent.trim()),
+    );
+    expect(updatedDisplayedNotes).not.toContain(testNote);
+
+    // Verify the note is removed from storage
+    const updatedStoredNotes = await page.evaluate(() => {
       return new Promise((resolve) => {
-        chrome.storage.sync.clear(() => resolve());
+        chrome.storage.sync.get('notes', (data) => resolve(data.notes));
       });
     });
-
-    // Verify the storage is cleared
-    const clearedNotes = await page.evaluate(() => {
-      return new Promise((resolve) => {
-        chrome.storage.sync.get('notes', (data) => resolve(data.notes || []));
-      });
-    });
-    expect(clearedNotes).toEqual([]);
+    expect(updatedStoredNotes).toHaveLength(0);
   });
 });

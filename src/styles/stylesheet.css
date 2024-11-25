@@ -1,81 +1,120 @@
-/* Light Mode (Default) */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  width: 300px;
-  height: 400px;
+html
+{
+    width: 500px;  /* max: 800px */
 }
 
-.container {
-  padding: 20px 20px 20px 17px;
-}
+.cell {
+    position: relative; /* Enables positioning of the icon and button inside the cell */
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%; /* Ensure the cell takes full width of the container */
+    box-sizing: border-box; /* Include padding and border in width/height calculations */
+    background-color: #eee;
+  }
 
-textarea {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 10px;
-  font-size: 14px;
-  background-color: #f8f8f8;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+  .cell-content {
+    margin-top: 30px; /* Leave space for the delete icon and button */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+  }
+  
+  textarea {
+    width: 100%; /* Take up the full width of the container */
+    height: 80px; /* Set a default height */
+    resize: vertical; /* Allow vertical resizing only */
+    box-sizing: border-box; /* Include padding/border in size */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 1rem;
+  }
+  
+  .delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px; /* Position at the top-right corner */
+    color: #000; /* Black color for the delete icon */
+    cursor: pointer;
+    background: none; /* No background for a clean icon look */
+    border: none; /* Remove button border for icon-like appearance */
+    font-size: 1rem;
+  }
+  
+  .delete-btn:hover {
+    color: #555; /* Slightly lighter black on hover */
+  }
+  
+  .toggle-btn {
+    position: absolute;
+    top: 10px;
+    right: 40px; /* Position near the delete icon */
+    cursor: pointer;
+    color: #000; /* Black color for the toggle button */
+    background: none; /* No background for a clean icon look */
+    border: none; /* Remove button border for icon-like appearance */
+    font-size: 1rem;
+  }
+  
+  .toggle-btn:hover {
+    color: #555; /* Slightly lighter black on hover */
+  }
 
-textarea:focus {
-  outline: none;
-  border-color: #007bff;
-}
+  .add-new-buttons {
+    position: relative;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    display: flex;
+    flex-flow: row;
+    height: 16px;
+    width: 100%;
+    gap: 10px; /* Space between buttons */
+    margin-top: -15px;
+  }
+  
+  .new-cell-buttons {
+    display: flex;
+    opacity: 0;
+    transition: opacity .1s 0ms;
+    visibility: hidden;
+    z-index: 20;
+    background-color: #fff;
+    border-radius: 5px;
+    border-color: #ddd;
+    border-width: 1px;
+    padding: 2px 5px;
+    color: #007BFF;
+} 
 
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-}
 
-button:hover {
-  background-color: #0056b3;
-}
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
+  .add-new-buttons>hr {
+    border-color: #ccc;
+    border-style: solid;
+    border-top: none;
+    border-width: 1px;
+    left: 20px;
+    opacity: 0;
+    position: absolute;
+    right: 20px;
+    top: 0;
+    transition: visibility 0s .1s, opacity .1s;
+    visibility: hidden;
+  }
 
-ul li {
-  background-color: #f4f4f4;
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 5px;
-}
+  .add-new-buttons:hover 
+  .new-cell-buttons{ /* when the separator line is hovered, add buttons appear*/
+    visibility: visible;
+    opacity: 1;
+  }
 
-/* Dark Mode */
-body.dark-mode {
-  background-color: #1e1e1e;
-  color: #d4d4d4;
-}
+  .add-new-buttons:hover hr{ /* when the separator line is hovered, add buttons appear*/
+    visibility: visible;
+    opacity: 1;
+  }
 
-body.dark-mode textarea {
-  background-color: #252526;
-  color: #d4d4d4;
-  border: 1px solid #3c3c3c;
-}
-
-body.dark-mode button {
-  background-color: #0e639c;
-}
-
-body.dark-mode button:hover {
-  background-color: #007acc;
-}
-
-body.dark-mode ul li {
-  background-color: #2d2d2d;
-  border: 1px solid #3c3c3c;
-  color: #d4d4d4;
-}
+  button.new-cell-buttons:hover{
+    border-color: #007BFF;
+  } 
