@@ -49,21 +49,40 @@ export class DarkModeService {
     this.darkModeBtn.id = 'dark-mode-toggle'; // Use the ID for styling
     container.appendChild(this.darkModeBtn);
 
-    // Set initial button icon based on current theme
+    // Set the initial button icon based on the current theme
     const setButtonIcon = () => {
       this.darkModeBtn.innerHTML = this.body.classList.contains('dark-mode')
         ? '☀️' // Sun icon for light mode
         : '🌙'; // Moon icon for dark mode
     };
 
-    // Set initial icon
+    // Initial icon setup
     setButtonIcon();
 
-    // Add click event listener to toggle dark mode
+    // Add click event listener for manual theme toggle
     this.darkModeBtn.addEventListener('click', () => {
       const isDark = this.body.classList.toggle('dark-mode');
       setButtonIcon();
       console.log(`Manual theme change: ${isDark ? 'dark' : 'light'}`);
     });
+
+    // Listen for system theme changes and update icon
+    const systemThemeListener = (event) => {
+      const systemPrefersDark = event.matches;
+      if (!this.body.classList.contains('dark-mode') && systemPrefersDark) {
+        this.body.classList.add('dark-mode');
+      } else if (
+        this.body.classList.contains('dark-mode') &&
+        !systemPrefersDark
+      ) {
+        this.body.classList.remove('dark-mode');
+      }
+      setButtonIcon(); // Update the icon when the system theme changes
+    };
+
+    const systemDarkModeQuery = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    );
+    systemDarkModeQuery.addEventListener('change', systemThemeListener);
   }
 }
