@@ -104,10 +104,6 @@ html
     visibility: hidden;
   }
 
-  .add-new-buttons:hover .new-cell-buttons{ /* when the separator line is hovered, add buttons appear */
-    visibility: visible;
-    opacity: 1;
-  }
 
   .add-new-buttons:hover hr{ /* when the separator line is hovered, add buttons appear */
     visibility: visible;
@@ -125,6 +121,16 @@ body.dark-mode .cell {
   color: #ddd; /* Light text color */
 }
 
+body.dark-mode .new-cell-buttons {
+  background-color: #444; /* Dark background for new cell buttons */
+  border-color: #555; /* Darker border for buttons */
+  color: #ddd; /* Light text color for buttons */
+}
+
+.add-new-buttons:hover .new-cell-buttons{ 
+  visibility: visible;
+  opacity: 1;
+} 
 
 body.dark-mode .cell-content {
   color: #ddd; /* Ensure text is visible in dark mode */
