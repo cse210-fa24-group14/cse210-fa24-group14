@@ -19,8 +19,8 @@ describe('NoteListView', () => {
 
   test('should render list of notes', () => {
     const notes = [
-      { content: 'Test note 1', timestamp: 1 },
-      { content: 'Test note 2', timestamp: 2 },
+      { content: 'Test note 1', id: 1 },
+      { content: 'Test note 2', id: 2 },
     ];
 
     noteListView.render(notes);
@@ -39,12 +39,24 @@ describe('NoteListView', () => {
     const mockDeleteCallback = jest.fn();
     noteListView.setOnDeleteNote(mockDeleteCallback);
 
-    const notes = [{ content: 'Test note', timestamp: 123 }];
+    const notes = [{ content: 'Test note', id: 123 }];
     noteListView.render(notes);
 
     const deleteButton = container.querySelector('button');
     await deleteButton.click();
 
     expect(mockDeleteCallback).toHaveBeenCalledWith(123);
+  });
+
+  test('should show error toast when delete fails', () => {
+    const mockErrorToast = jest.fn();
+    noteListView.showErrorToast = mockErrorToast;
+    noteListView.onDeleteNote = () => {
+      throw new Error('Failed to delete note');
+    };
+    noteListView.handleDelete({ id: 123 });
+    expect(mockErrorToast).toHaveBeenCalledWith(
+      'Failed to delete note, please try again: Error: Failed to delete note',
+    );
   });
 });
