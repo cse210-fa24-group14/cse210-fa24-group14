@@ -1,9 +1,13 @@
 {
   "name": "dev-journal",
   "devDependencies": {
+    "acorn": "^8.14.0",
+    "@babel/preset-env": "^7.26.0",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@eslint/js": "^9.15.0",
     "@playwright/test": "^1.48.2",
-    "acorn": "^8.14.0",
+
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-html": "^8.1.2",
@@ -12,19 +16,29 @@
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.12.0",
     "htmlhint": "^1.1.4",
-    "husky": "^9.1.7",
+
     "jsdoc": "^4.0.4",
+    "husky": "^9.1.6",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.2.10",
     "playwright": "^1.48.2",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "stylelint": "^16.10.0",
+    "stylelint-config-standard": "^36.0.1",
+    "stylelint-config-standard-scss": "^13.1.0"
+
   },
   "lint-staged": {
     "*.{js,mjs}": "eslint --fix",
     "*.css": "stylelint --fix"
   },
   "scripts": {
-    "prepare": "husky", 
+
     "generate-docs": "node scripts/generateJsDoc.js", 
     "docs": "jsdoc -c jsdoc.json"
+    "prepare": "husky",
+    "test": "jest"
+
   }
 }
