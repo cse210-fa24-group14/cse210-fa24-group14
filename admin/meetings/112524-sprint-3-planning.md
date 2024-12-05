@@ -11,11 +11,11 @@ This meeting serves to plan issues and other logistics for the upcoming sprint #
   
 ## Future Planning
 - Demo video recording
-Status - Rashi
-Product Demo - Kenny
-Pipeline - Judy
-Health - Shyam
-Challenges - Shouhardik
-Next sprint - Phil (code implementation, markdown enhancement, pending tasks from the previous sprint, and happy Thanksgiving, based on the feedback from the retro; we want to take it slower in the next sprint)
-Code Walkthrough - Mitch
-Project Highlights - Jet
+- Status - Rashi
+- Product Demo - Kenny
+- Pipeline - Judy
+- Health - Shyam
+- Challenges - Shouhardik
+- Next sprint - Phil (code implementation, markdown enhancement, pending tasks from the previous sprint, and happy Thanksgiving, based on the feedback from the retro; we want to take it slower in the next sprint)
+- Code Walkthrough - Mitch
+- Project Highlights - Jet
