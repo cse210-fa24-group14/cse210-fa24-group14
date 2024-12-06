@@ -1,45 +1,251 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    width: 300px;
-    height: 400px;
+html
+{
+    width: 500px;  /* max: 800px */
+}
+
+.cell {
+    position: relative; /* Enables positioning of the icon and button inside the cell */
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%; /* Ensure the cell takes full width of the container */
+    box-sizing: border-box; /* Include padding and border in width/height calculations */
+    background-color: #eee;
   }
-  
-  .container {
-    padding: 20px 20px 20px 17px; /* top, right, bottom, left*/
+
+  .cell-content {
+    margin-top: 30px; /* Leave space for the delete icon and button */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
   }
   
   textarea {
-    width: 100%;
-    height: 100px;
-    margin-bottom: 10px;
-    font-size: 14px;
+    width: 100%; /* Take up the full width of the container */
+    height: 80px; /* Set a default height */
+    resize: vertical; /* Allow vertical resizing only */
+    box-sizing: border-box; /* Include padding/border in size */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 1rem;
   }
   
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+  .delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px; /* Position at the top-right corner */
+    color: #000; /* Black color for the delete icon */
     cursor: pointer;
+    background: none; /* No background for a clean icon look */
+    border: none; /* Remove button border for icon-like appearance */
+    font-size: 1rem;
   }
   
-  button:hover {
-    background-color: #0056b3;
+  .delete-btn:hover {
+    color: #555; /* Slightly lighter black on hover */
   }
   
-  ul {
-    list-style-type: none;
-    padding: 0;
+  .toggle-btn {
+    position: absolute;
+    top: 10px;
+    right: 40px; /* Position near the delete icon */
+    cursor: pointer;
+    color: #000; /* Black color for the toggle button */
+    background: none; /* No background for a clean icon look */
+    border: none; /* Remove button border for icon-like appearance */
+    font-size: 1rem;
   }
   
-  ul li {
-    background-color: #f4f4f4;
-    margin: 5px 0;
-    padding: 10px;
+  .toggle-btn:hover {
+    color: #555; /* Slightly lighter black on hover */
+  }
+
+  .markdown-btn {
+    position: absolute;
+    top: 8px;
+    right: 100px; /* Position near the delete icon */
+    cursor: pointer;
+    color: #000; /* Black color for the toggle button */
+    background: none; /* No background for a clean look */
+    border: 2px solid #000; /* Black border for emphasis */
+    border-radius: 4px; /* Slight rounding of corners */
+    padding: 2px 4px; /* Space inside the button */
+    font-size: 1rem;
+    font-weight: bold; /* Emphasize the text */
+    transition: background-color 0.2s, color 0.2s; /* Smooth hover effects */
+  }
+  
+  .markdown-btn:hover {
+    background-color: #3ca8eb; /* Slightly darker gray on hover */
+  }
+
+  .add-new-buttons {
+    position: relative;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    display: flex;
+    flex-flow: row;
+    height: 16px;
+    width: 100%;
+    gap: 10px; /* Space between buttons */
+    margin-top: -15px;
+  }
+  
+  .new-cell-buttons {
+    display: flex;
+    opacity: 0;
+    transition: opacity .1s 0ms;
+    visibility: hidden;
+    z-index: 20;
+    background-color: #fff;
     border-radius: 5px;
+    border-color: #ddd;
+    border-width: 1px;
+    padding: 2px 5px;
+    color: #007BFF;
+} 
+
+
+
+  .add-new-buttons>hr {
+    border-color: #ccc;
+    border-style: solid;
+    border-top: none;
+    border-width: 1px;
+    left: 20px;
+    opacity: 0;
+    position: absolute;
+    right: 20px;
+    top: 0;
+    transition: visibility 0s .1s, opacity .1s;
+    visibility: hidden;
   }
-  
+
+
+  .add-new-buttons:hover hr{ /* when the separator line is hovered, add buttons appear */
+    visibility: visible;
+    opacity: 1;
+  }
+
+  button.new-cell-buttons:hover{
+    border-color: #007BFF;
+  } 
+
+/* Dark Mode Styles */
+body.dark-mode .cell {
+  border: 1px solid #555; /* Dark border */
+  background-color: #333; /* Cell background color */
+  color: #ddd; /* Light text color */
+}
+
+body.dark-mode .new-cell-buttons {
+  background-color: #444; /* Dark background for new cell buttons */
+  border-color: #555; /* Darker border for buttons */
+  color: #ddd; /* Light text color for buttons */
+}
+
+.add-new-buttons:hover .new-cell-buttons{ 
+  visibility: visible;
+  opacity: 1;
+} 
+
+body.dark-mode .cell-content {
+  color: #ddd; /* Ensure text is visible in dark mode */
+}
+
+body.dark-mode textarea {
+  background-color: #444; /* Dark background for text areas */
+  color: #ddd; /* Light text color for readability */
+  border: 1px solid #555; /* Dark border for text areas */
+}
+
+body.dark-mode .delete-btn {
+  color: #ccc; /* Light icon color for delete button */
+}
+
+body.dark-mode .delete-btn:hover {
+  color: #fff; /* Bright icon color on hover */
+}
+
+body.dark-mode .toggle-btn {
+  color: #ccc; /* Light icon color for toggle button */
+}
+
+body.dark-mode .toggle-btn:hover {
+  color: #fff; /* Bright icon color on hover */
+}
+
+body.dark-mode .markdown-btn {
+  color: #ccc;
+  border: 2px solid #ccc; /* Black border for emphasis */
+}
+
+body.dark-mode .markdown-btn:hover {
+  color: #fff;
+}
+
+body.dark-mode .add-new-buttons {
+  background-color: #333; /* Dark background for button container */
+}
+
+body.dark-mode .new-cell-buttons:hover {
+  border-color: #007BFF; /* Highlighted border on hover */
+}
+
+body.dark-mode .add-new-buttons > hr {
+  border-color: #555; /* Dark separator line */
+}
+
+body.dark-mode {
+  background-color: #222; /* Dark background for the entire extension */
+  color: #ddd; /* Light text color for the overall content */
+}
+
+body.dark-mode html {
+  background-color: #222; /* Ensure no white strip in the root element */
+}
+
+body.dark-mode .container {
+  background-color: #222; /* Ensure the container blends into the dark theme */
+  color: #ddd; /* Light text color for container elements */
+}
+
+/* Style the dark mode toggle button */
+#dark-mode-toggle {
+  position: absolute; /* Relative to the container */
+  top: 13px; /* Align at the top */
+  left: 13px; /* Align at the left */
+  width: 30px; /* Circular button with fixed size */
+  height: 30px;
+  background-color: #007BFF; /* Modern blue color */
+  color: white; /* Icon color */
+  border: none; /* No border for a clean look */
+  border-radius: 50%; /* Make it circular */
+  font-size: 1.5rem; /* Icon size */
+  cursor: pointer; /* Pointer cursor for interactivity */
+  z-index: 1000; /* Ensure it stays above other elements */
+  display: flex; /* Center the icon */
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 20%); /* Subtle shadow for depth */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth effects */
+}
+
+/* Hover effect for the toggle button */
+#dark-mode-toggle:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Adjust dark mode toggle button styling in dark mode */
+body.dark-mode #dark-mode-toggle {
+  background-color: #444; /* Darker background for dark mode */
+  color: #ddd; /* Light icon color for contrast */
+}
+
+body.dark-mode #dark-mode-toggle:hover {
+  background-color: #222; /* Even darker on hover */
+  transform: scale(1.1); /* Hover effect */
+}
