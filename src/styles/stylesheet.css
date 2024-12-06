@@ -249,3 +249,9 @@ body.dark-mode #dark-mode-toggle:hover {
   background-color: #222; /* Even darker on hover */
   transform: scale(1.1); /* Hover effect */
 }
+
+button:disabled {
+  background-color: #ccc; /* 灰色背景 */
+  cursor: not-allowed;    /* 禁止图标 */
+  opacity: 0.6;           /* 半透明 */
+}

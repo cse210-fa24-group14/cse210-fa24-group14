@@ -112,6 +112,9 @@ export class NotesView {
       this.markdownCellType(event),
     );
 
+    toggleBtn.disabled = cell.cellType === 'markdownFormat'; // Disable if markdownFormat
+    markdownBtn.disabled = cell.cellType === 'code'; // Disable if code
+
     // Create cell content
     const cellContent = document.createElement('div');
     cellContent.classList.add('cell-content');
@@ -211,6 +214,7 @@ export class NotesView {
     if (!toggleBtn) return;
 
     const cell = toggleBtn.closest('.cell-container');
+    const markdownBtn = cell.querySelector('.markdown-btn');
     const cellContent = cell.querySelector('.cell-content textarea');
     const icon = toggleBtn.querySelector('i');
 
@@ -224,6 +228,8 @@ export class NotesView {
       cellContent.placeholder = 'Write your text here...';
     }
     console.log(cell.dataset.timestamp);
+    markdownBtn.disabled = icon.classList.contains('fa-toggle-on');
+
     if (this.onUpdateCell) {
       await this.onUpdateCell(
         cell.dataset.timestamp,
@@ -242,6 +248,7 @@ export class NotesView {
     if (!markdownBtn) return;
 
     const cell = markdownBtn.closest('.cell-container');
+    const toggleBtn = cell.querySelector('.toggle-btn');
     const cellContent = cell.querySelector('.cell-content');
     const textarea = cellContent.querySelector('textarea');
     let renderedContent = cellContent.querySelector('.rendered-content');
@@ -259,6 +266,7 @@ export class NotesView {
       icon.classList.add('fa-markdown-off');
       textarea.style.display = 'block';
       renderedContent.style.display = 'none';
+      toggleBtn.disabled = false;
       if (this.onUpdateCell) {
         // Ensure callback passes the correct type
         await this.onUpdateCell(
@@ -280,6 +288,7 @@ export class NotesView {
       textarea.style.display = 'none';
       renderedContent.style.display = 'block';
       renderedContent.innerHTML = parseMarkdown(textarea.value);
+      toggleBtn.disabled = true;
       if (this.onUpdateCell) {
         // Ensure callback passes the correct type
         await this.onUpdateCell(
