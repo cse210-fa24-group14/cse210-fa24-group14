@@ -12,6 +12,7 @@ export function parseMarkdown(markdownText) {
     { regex: /~~(.*?)~~/g, replacement: '<del>$1</del>' },
     { regex: /`(.*?)`/g, replacement: '<code>$1</code>' },
     { regex: /\n-{3,}\n/g, replacement: '<hr />' },
+    { regex: /__(.*?)__/g, replacement: '<u>$1</u>' }, // Underline rule
     {
       regex: /\b(https?:\/\/[^\s]+)\b/g,
       replacement:
