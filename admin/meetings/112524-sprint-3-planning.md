@@ -1,4 +1,4 @@
-# 11/22/24 Progress Check-in
+# 11/25/24 Sprint Planning 4
 Attended by: Rashi Bhansali, Shyam Sriram, Mitch, Shouhardik, Kenny Liu, Philemon Putra, Zihan, Jet Zhao
 
 ## Introduction
