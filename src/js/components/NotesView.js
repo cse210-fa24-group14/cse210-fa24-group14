@@ -150,9 +150,15 @@ export class NotesView {
     });
 
     cellContent.appendChild(textarea);
+    // tool bar could only created after the textarea being appended
     const toolbar = new MarkdownToolBar(cell, cellContent, this.onUpdateCell);
     const toolbarElement = toolbar.render();
     newCell.appendChild(toolbarElement);
+    // disable the toolbar if the cellType is code.
+    const toolbarButtons = newCell.querySelectorAll('.markdown-toolbar-button');
+    toolbarButtons.forEach((button) => {
+      button.disabled = cell.cellType === 'code'; // disable if code mode.
+    });
 
     if (renderedContent) {
       cellContent.appendChild(renderedContent);
