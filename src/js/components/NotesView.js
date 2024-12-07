@@ -1,3 +1,5 @@
+import { parseMarkdown } from '../utils.js';
+
 import { newapplySyntaxHighlighting, applySyntaxHighlightingWithErrors } from "./SyntaxHighlighter.js";
 // This is the main component for the notes list view
 export class NotesView {
@@ -54,12 +56,12 @@ export class NotesView {
     note.cells.forEach((cell) => {
       if (!renderedTimestamps.includes(cell.timestamp.toString())) {
         console.log('Rendering new cell', cell);
-        this.addCellAfterCurrent(this.container, cell);
+        this.addCellAfterCurrent(this.container, cell, note);
       }
     });
   }
 
-  async addCellAfterCurrent(cellContainer, cell) {
+  async addCellAfterCurrent(cellContainer, cell, note) {
     const newCellContainer = document.createElement('div');
     newCellContainer.classList.add('cell-container');
     newCellContainer.dataset.timestamp = cell.timestamp; // Add timestamp for tracking
@@ -88,11 +90,32 @@ export class NotesView {
     const toggleIcon = document.createElement('i');
     toggleIcon.classList.add(
       'fa-solid',
-      cell.cellType === 'markdown' ? 'fa-toggle-off' : 'fa-toggle-on',
+      cell.cellType === 'code' ? 'fa-toggle-on' : 'fa-toggle-off',
     );
     toggleBtn.appendChild(toggleIcon);
 
-    toggleBtn.addEventListener('click', (event) => this.toggleCellType(event));
+    toggleBtn.addEventListener('click', (event) =>
+      this.toggleCellType(event, note),
+    );
+
+    // Markdown button
+    const markdownBtn = document.createElement('button');
+    markdownBtn.classList.add('markdown-btn');
+    const markdownText = document.createElement('span');
+    markdownText.innerHTML = 'M';
+    markdownBtn.appendChild(markdownText);
+    const markdownIcon = document.createElement('i');
+    markdownIcon.classList.add(
+      'fa-solid',
+      cell.cellType === 'markdownFormat' ? 'fa-markdown-on' : 'fa-markdown-off',
+    );
+    markdownBtn.appendChild(markdownIcon);
+    markdownBtn.addEventListener('click', (event) =>
+      this.markdownCellType(event),
+    );
+
+    toggleBtn.disabled = cell.cellType === 'markdownFormat'; // Disable if markdownFormat
+    markdownBtn.disabled = cell.cellType === 'code'; // Disable if code
 
     // Create cell content
     const cellContent = document.createElement('div');
@@ -478,10 +501,44 @@ export class NotesView {
   
       cellContent.appendChild(textarea);
     }
+    const textarea = document.createElement('textarea');
+    textarea.value = cell.content || '';
+    textarea.placeholder = `Write your ${cell.cellType === 'markdown' ? 'text' : 'code'} here...`;
+
+    let renderedContent;
+
+    // If the cell type is markdownFormat, render it
+    if (cell.cellType === 'markdownFormat') {
+      renderedContent = document.createElement('div');
+      renderedContent.classList.add('rendered-content');
+      renderedContent.style.display = 'block';
+      renderedContent.innerHTML = parseMarkdown(cell.content); // Render Markdown content
+
+      textarea.style.display = 'none'; // Hide the textarea
+      toggleBtn.disabled = true; // Disable toggle
+      markdownIcon.classList.add('fa-markdown-on'); // Ensure correct icon
+    } else {
+      textarea.style.display = 'block'; // Show the textarea
+    }
+
+    // Add listener to save changes to the database
+    let saveTimeout;
+    textarea.addEventListener('input', () => {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        this.onUpdateCell(cell.timestamp, textarea.value, cell.cellType);
+      }, 500);
+    });
+
+    cellContent.appendChild(textarea);
+    if (renderedContent) {
+      cellContent.appendChild(renderedContent);
+    }
 
     // Add the delete button, toggle button, and content to the new cell
     newCell.appendChild(deleteBtn);
     newCell.appendChild(toggleBtn);
+    newCell.appendChild(markdownBtn);
     newCell.appendChild(cellContent);
 
     // Add the new cell to the container
@@ -492,7 +549,6 @@ export class NotesView {
     if (cellContainer == this.container) {
       cellContainer.appendChild(newCellContainer);
     } else {
-      //if called from "+ Markdown" or "+ Code" buttons, then insert before the next nodes or in between
       const parentElement = cellContainer.parentNode;
       const nextSibling = cellContainer.nextSibling; // Get the next sibling node
       parentElement.insertBefore(newCellContainer, nextSibling); // Insert the new cell before the next sibling
@@ -601,6 +657,7 @@ export class NotesView {
     if (!toggleBtn) return;
 
     const cell = toggleBtn.closest('.cell-container');
+    const markdownBtn = cell.querySelector('.markdown-btn');
     const cellContent = cell.querySelector('.cell-content textarea');
     const icon = toggleBtn.querySelector('i');
 
@@ -614,12 +671,79 @@ export class NotesView {
       cellContent.placeholder = 'Write your text here...';
     }
     console.log(cell.dataset.timestamp);
+    markdownBtn.disabled = icon.classList.contains('fa-toggle-on');
+
     if (this.onUpdateCell) {
       await this.onUpdateCell(
         cell.dataset.timestamp,
         cellContent.value,
-        icon.classList.contains('fa-toggle-off') ? 'markdown' : 'code'
+        icon.classList.contains('fa-markdown-on')
+          ? 'markdownFormat'
+          : icon.classList.contains('fa-toggle-on')
+            ? 'code'
+            : 'markdown',
       );
+    }
+  }
+
+  async markdownCellType(event) {
+    const markdownBtn = event.target.closest('.markdown-btn');
+    if (!markdownBtn) return;
+
+    const cell = markdownBtn.closest('.cell-container');
+    const toggleBtn = cell.querySelector('.toggle-btn');
+    const cellContent = cell.querySelector('.cell-content');
+    const textarea = cellContent.querySelector('textarea');
+    let renderedContent = cellContent.querySelector('.rendered-content');
+    const icon = markdownBtn.querySelector('i');
+
+    if (!renderedContent) {
+      renderedContent = document.createElement('div');
+      renderedContent.classList.add('rendered-content');
+      cellContent.appendChild(renderedContent);
+    }
+
+    // Turn off markdown
+    if (icon.classList.contains('fa-markdown-on')) {
+      icon.classList.remove('fa-markdown-on');
+      icon.classList.add('fa-markdown-off');
+      textarea.style.display = 'block';
+      renderedContent.style.display = 'none';
+      toggleBtn.disabled = false;
+      if (this.onUpdateCell) {
+        // Ensure callback passes the correct type
+        await this.onUpdateCell(
+          cell.dataset.timestamp,
+          textarea.value,
+          icon.classList.contains('fa-markdown-off')
+            ? icon.classList.contains('fa-toggle-on')
+              ? 'code'
+              : 'markdown'
+            : 'markdownFormat',
+        );
+      }
+    }
+
+    // Turn on markdown
+    else {
+      icon.classList.remove('fa-markdown-off');
+      icon.classList.add('fa-markdown-on');
+      textarea.style.display = 'none';
+      renderedContent.style.display = 'block';
+      renderedContent.innerHTML = parseMarkdown(textarea.value);
+      toggleBtn.disabled = true;
+      if (this.onUpdateCell) {
+        // Ensure callback passes the correct type
+        await this.onUpdateCell(
+          cell.dataset.timestamp,
+          textarea.value,
+          icon.classList.contains('fa-markdown-off')
+            ? icon.classList.contains('fa-toggle-on')
+              ? 'code'
+              : 'markdown'
+            : 'markdownFormat',
+        );
+      }
     }
   }
 
