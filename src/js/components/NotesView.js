@@ -96,20 +96,46 @@ export class NotesView {
     const cellContent = document.createElement('div');
     cellContent.classList.add('cell-content');
 
-    const textarea = document.createElement('textarea');
-    textarea.value = cell.content || '';
-    textarea.placeholder = `Write your ${cell.cellType === 'markdown' ? 'text' : 'code'} here...`;
-    // Add listener to save changes to the database
-    let saveTimeout;
-    textarea.addEventListener('input', () => {
-      clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(
-        () => this.onUpdateCell(cell.timestamp, textarea.value, cell.cellType),
-        500,
-      );
-    });
-
-    cellContent.appendChild(textarea);
+    if (cell.cellType === 'code') {
+      // Create a code-specific textarea for Python
+      const codeTextarea = document.createElement('textarea');
+      codeTextarea.classList.add('code-editor');
+      codeTextarea.placeholder = 'Write your code here...';
+      codeTextarea.value = cell.content || '';
+      
+      // Add syntax highlighting
+      codeTextarea.addEventListener('input', (e) => {
+        this.highlightPythonSyntax(codeTextarea);
+      });
+  
+      // Save changes with debounce
+      let saveTimeout;
+      codeTextarea.addEventListener('input', () => {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(
+          () => this.onUpdateCell(cell.timestamp, codeTextarea.value, 'code'),
+          500
+        );
+      });
+  
+      cellContent.appendChild(codeTextarea);
+    } else {
+      // Keep existing markdown textarea logic
+      const textarea = document.createElement('textarea');
+      textarea.value = cell.content || '';
+      textarea.placeholder = 'Write your text here...';
+      
+      let saveTimeout;
+      textarea.addEventListener('input', () => {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(
+          () => this.onUpdateCell(cell.timestamp, textarea.value, 'markdown'),
+          500
+        );
+      });
+  
+      cellContent.appendChild(textarea);
+    }
 
     // Add the delete button, toggle button, and content to the new cell
     newCell.appendChild(deleteBtn);
@@ -130,6 +156,49 @@ export class NotesView {
       parentElement.insertBefore(newCellContainer, nextSibling); // Insert the new cell before the next sibling
     }
   }
+
+  // Add a method for basic Python syntax highlighting
+highlightPythonSyntax(textarea) {
+  // Simple, basic syntax highlighting
+  const keywords = [
+    'def', 'class', 'import', 'from', 'as', 'in', 'is', 'and', 'or', 'not', 
+    'if', 'else', 'elif', 'for', 'while', 'return', 'yield', 'break', 
+    'continue', 'pass', 'try', 'except', 'finally', 'with', 'lambda'
+  ];
+
+  let value = textarea.value;
+  
+  // Basic keyword highlighting
+  keywords.forEach(keyword => {
+    const regex = new RegExp(`\\b(${keyword})\\b`, 'g');
+    value = value.replace(regex, `<span style="color: blue;">${keyword}</span>`);
+  });
+
+  // Basic string highlighting
+  value = value.replace(
+    /(".*?"|'.*?')/g, 
+    '<span style="color: green;">$1</span>'
+  );
+
+  // Basic comment highlighting
+  value = value.replace(
+    /(#.*)/g, 
+    '<span style="color: gray;">$1</span>'
+  );
+
+  // Create a pre element to show highlighted code
+  const highlightedCode = document.createElement('pre');
+  highlightedCode.innerHTML = value;
+  highlightedCode.style.fontFamily = 'monospace';
+  highlightedCode.style.backgroundColor = '#f4f4f4';
+  highlightedCode.style.padding = '10px';
+  highlightedCode.style.overflowX = 'auto';
+
+  // Replace textarea with highlighted code (optional)
+  // In a more advanced implementation, you might want to keep the textarea 
+  // and overlay the highlighting
+  textarea.parentNode.replaceChild(highlightedCode, textarea);
+}
 
   addNewCellButtons(container) {
     const addNewButtons = document.createElement('div');
