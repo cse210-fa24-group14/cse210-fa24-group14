@@ -1,4 +1,5 @@
 import { parseMarkdown } from '../utils.js';
+import { MarkdownToolBar } from './MarkdownToolBar.js';
 
 // This is the main component for the notes list view
 export class NotesView {
@@ -149,6 +150,10 @@ export class NotesView {
     });
 
     cellContent.appendChild(textarea);
+    const toolbar = new MarkdownToolBar(cell, cellContent, this.onUpdateCell);
+    const toolbarElement = toolbar.render();
+    newCell.appendChild(toolbarElement);
+
     if (renderedContent) {
       cellContent.appendChild(renderedContent);
     }
@@ -235,12 +240,21 @@ export class NotesView {
     const markdownBtn = cell.querySelector('.markdown-btn');
     const cellContent = cell.querySelector('.cell-content textarea');
     const icon = toggleBtn.querySelector('i');
+    const toolbarButtons = cell.querySelectorAll('.markdown-toolbar-button');
 
     if (icon.classList.contains('fa-toggle-off')) {
+      // Disable toolbar buttons
+      toolbarButtons.forEach((button) => {
+        button.disabled = true;
+      });
       icon.classList.remove('fa-toggle-off');
       icon.classList.add('fa-toggle-on');
       cellContent.placeholder = 'Write your code here...';
     } else {
+      // Enable toolbar buttons
+      toolbarButtons.forEach((button) => {
+        button.disabled = false;
+      });
       icon.classList.remove('fa-toggle-on');
       icon.classList.add('fa-toggle-off');
       cellContent.placeholder = 'Write your text here...';
@@ -278,6 +292,7 @@ export class NotesView {
       cellContent.appendChild(renderedContent);
     }
 
+    const toolbarButtons = cell.querySelectorAll('.markdown-toolbar-button');
     // Turn off markdown
     if (icon.classList.contains('fa-markdown-on')) {
       icon.classList.remove('fa-markdown-on');
@@ -285,6 +300,10 @@ export class NotesView {
       textarea.style.display = 'block';
       renderedContent.style.display = 'none';
       toggleBtn.disabled = false;
+      // Enable toolbar buttons
+      toolbarButtons.forEach((button) => {
+        button.disabled = false;
+      });
       if (this.onUpdateCell) {
         // Ensure callback passes the correct type
         await this.onUpdateCell(
@@ -307,6 +326,10 @@ export class NotesView {
       renderedContent.style.display = 'block';
       renderedContent.innerHTML = parseMarkdown(textarea.value);
       toggleBtn.disabled = true;
+      // Enable toolbar buttons
+      toolbarButtons.forEach((button) => {
+        button.disabled = true;
+      });
       if (this.onUpdateCell) {
         // Ensure callback passes the correct type
         await this.onUpdateCell(
