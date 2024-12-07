@@ -61,6 +61,25 @@ html
     color: #555; /* Slightly lighter black on hover */
   }
 
+  .markdown-btn {
+    position: absolute;
+    top: 8px;
+    right: 100px; /* Position near the delete icon */
+    cursor: pointer;
+    color: #000; /* Black color for the toggle button */
+    background: none; /* No background for a clean look */
+    border: 2px solid #000; /* Black border for emphasis */
+    border-radius: 4px; /* Slight rounding of corners */
+    padding: 2px 4px; /* Space inside the button */
+    font-size: 1rem;
+    font-weight: bold; /* Emphasize the text */
+    transition: background-color 0.2s, color 0.2s; /* Smooth hover effects */
+  }
+  
+  .markdown-btn:hover {
+    background-color: #3ca8eb; /* Slightly darker gray on hover */
+  }
+
   .add-new-buttons {
     position: relative;
     align-items: center;
@@ -158,6 +177,15 @@ body.dark-mode .toggle-btn:hover {
   color: #fff; /* Bright icon color on hover */
 }
 
+body.dark-mode .markdown-btn {
+  color: #ccc;
+  border: 2px solid #ccc; /* Black border for emphasis */
+}
+
+body.dark-mode .markdown-btn:hover {
+  color: #fff;
+}
+
 body.dark-mode .add-new-buttons {
   background-color: #333; /* Dark background for button container */
 }
@@ -220,4 +248,10 @@ body.dark-mode #dark-mode-toggle {
 body.dark-mode #dark-mode-toggle:hover {
   background-color: #222; /* Even darker on hover */
   transform: scale(1.1); /* Hover effect */
+}
+
+button:disabled {
+    background-color: #ccc; /* 灰色背景 */
+    cursor: not-allowed;    /* 禁止图标 */
+    opacity: 0.6;           /* 半透明 */
 }
