@@ -519,31 +519,21 @@ export class NotesView {
       toggleBtn.disabled = true; // Disable toggle
       markdownIcon.classList.add('fa-markdown-on'); // Ensure correct icon
     } else {
-      textarea.style.display = 'block'; // Show the textarea
-    }
-
-    // Add listener to save changes to the database
-    let saveTimeout;
-    textarea.addEventListener('input', () => {
-      clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(() => {
-        this.onUpdateCell(cell.timestamp, textarea.value, cell.cellType);
-      }, 500);
-    });
-
-    cellContent.appendChild(textarea);
-    // tool bar could only created after the textarea being appended
-    const toolbar = new MarkdownToolBar(cell, cellContent, this.onUpdateCell);
-    const toolbarElement = toolbar.render();
-    newCell.appendChild(toolbarElement);
-    // disable the toolbar if the cellType is code.
-    const toolbarButtons = newCell.querySelectorAll('.markdown-toolbar-button');
-    toolbarButtons.forEach((button) => {
-      button.disabled = cell.cellType === 'code'; // disable if code mode.
-    });
-
-    if (renderedContent) {
-      cellContent.appendChild(renderedContent);
+      // Keep existing markdown textarea logic
+      const textarea = document.createElement('textarea');
+      textarea.value = cell.content || '';
+      textarea.placeholder = 'Write your text here...';
+      
+      let saveTimeout;
+      textarea.addEventListener('input', () => {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(
+          () => this.onUpdateCell(cell.timestamp, textarea.value, 'markdown'),
+          500
+        );
+      });
+  
+      cellContent.appendChild(textarea);
     }
 
     // Add the delete button, toggle button, and content to the new cell
