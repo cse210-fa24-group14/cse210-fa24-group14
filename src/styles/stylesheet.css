@@ -251,7 +251,7 @@ body.dark-mode #dark-mode-toggle:hover {
 }
 
 button:disabled {
-  background-color: #ccc; /* 灰色背景 */
-  cursor: not-allowed;    /* 禁止图标 */
-  opacity: 0.6;           /* 半透明 */
+    background-color: #ccc; /* 灰色背景 */
+    cursor: not-allowed;    /* 禁止图标 */
+    opacity: 0.6;           /* 半透明 */
 }

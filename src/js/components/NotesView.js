@@ -88,7 +88,7 @@ export class NotesView {
     const toggleIcon = document.createElement('i');
     toggleIcon.classList.add(
       'fa-solid',
-      cell.cellType === 'markdown' ? 'fa-toggle-off' : 'fa-toggle-on',
+      cell.cellType === 'code' ? 'fa-toggle-on' : 'fa-toggle-off',
     );
     toggleBtn.appendChild(toggleIcon);
 
@@ -123,6 +123,22 @@ export class NotesView {
     textarea.value = cell.content || '';
     textarea.placeholder = `Write your ${cell.cellType === 'markdown' ? 'text' : 'code'} here...`;
 
+    let renderedContent;
+
+    // If the cell type is markdownFormat, render it
+    if (cell.cellType === 'markdownFormat') {
+      renderedContent = document.createElement('div');
+      renderedContent.classList.add('rendered-content');
+      renderedContent.style.display = 'block';
+      renderedContent.innerHTML = parseMarkdown(cell.content); // Render Markdown content
+
+      textarea.style.display = 'none'; // Hide the textarea
+      toggleBtn.disabled = true; // Disable toggle
+      markdownIcon.classList.add('fa-markdown-on'); // Ensure correct icon
+    } else {
+      textarea.style.display = 'block'; // Show the textarea
+    }
+
     // Add listener to save changes to the database
     let saveTimeout;
     textarea.addEventListener('input', () => {
@@ -133,6 +149,9 @@ export class NotesView {
     });
 
     cellContent.appendChild(textarea);
+    if (renderedContent) {
+      cellContent.appendChild(renderedContent);
+    }
 
     // Add the delete button, toggle button, and content to the new cell
     newCell.appendChild(deleteBtn);
@@ -148,7 +167,6 @@ export class NotesView {
     if (cellContainer == this.container) {
       cellContainer.appendChild(newCellContainer);
     } else {
-      //if called from "+ Markdown" or "+ Code" buttons, then insert before the next nodes or in between
       const parentElement = cellContainer.parentNode;
       const nextSibling = cellContainer.nextSibling; // Get the next sibling node
       parentElement.insertBefore(newCellContainer, nextSibling); // Insert the new cell before the next sibling
@@ -236,9 +254,9 @@ export class NotesView {
         cellContent.value,
         icon.classList.contains('fa-markdown-on')
           ? 'markdownFormat'
-          : icon.classList.contains('fa-toggle-off')
-            ? 'markdown'
-            : 'code',
+          : icon.classList.contains('fa-toggle-on')
+            ? 'code'
+            : 'markdown',
       );
     }
   }
@@ -273,9 +291,9 @@ export class NotesView {
           cell.dataset.timestamp,
           textarea.value,
           icon.classList.contains('fa-markdown-off')
-            ? icon.classList.contains('fa-toggle-off')
-              ? 'markdown'
-              : 'code'
+            ? icon.classList.contains('fa-toggle-on')
+              ? 'code'
+              : 'markdown'
             : 'markdownFormat',
         );
       }
@@ -295,9 +313,9 @@ export class NotesView {
           cell.dataset.timestamp,
           textarea.value,
           icon.classList.contains('fa-markdown-off')
-            ? icon.classList.contains('fa-toggle-off')
-              ? 'markdown'
-              : 'code'
+            ? icon.classList.contains('fa-toggle-on')
+              ? 'code'
+              : 'markdown'
             : 'markdownFormat',
         );
       }
