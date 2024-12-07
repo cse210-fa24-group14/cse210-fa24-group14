@@ -30,6 +30,7 @@ jobs:
           - name: code-quality
           - name: unit
           - name: e2e
+          - name: performance
 
     steps:
       - name: Checkout sources

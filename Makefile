@@ -18,3 +18,9 @@ test-unit:
 test-e2e:
 	@echo "🧪 e2e tests"
 	@npx playwright test --project=e2e
+
+
+.PHONY: test-performance
+test-performance:
+	@echo "🏊‍♂️ performance tests"
+	@npx playwright test --project=performance
