@@ -1,3 +1,4 @@
+//import { SyntaxHighlighter } from "./SyntaxHighlighter";
 import { parseMarkdown } from '../markdownRules.js';
 import { MarkdownToolBar } from './MarkdownToolBar.js';
 
@@ -323,55 +324,7 @@ export class NotesView {
       
     // } 
     if (cell.cellType === 'code') {
-      // Create wrapper for the code editor components
-      const codeEditorWrapper = document.createElement('div');
-      codeEditorWrapper.classList.add('code-editor-wrapper');
-      
-      // Create language selector
-      const selectWrapper = document.createElement('div');
-      selectWrapper.classList.add('select-wrapper');
-      
-      const label = document.createElement('label');
-      label.setAttribute('for', 'languages');
-      label.textContent = 'Select Language: ';
-      
-      const select = document.createElement('select');
-      select.id = 'languages';
-      const languages = ['python', 'c', 'cpp', 'java', 'html', 'css', 'js'];
-      languages.forEach(language => {
-        const option = document.createElement('option');
-        option.value = language;
-        option.textContent = language.charAt(0).toUpperCase() + language.slice(1);
-        select.appendChild(option);
-      });
-      
-      selectWrapper.appendChild(label);
-      selectWrapper.appendChild(select);
-      codeEditorWrapper.appendChild(selectWrapper);
-    
-      // Create container for editor and highlighting
-      const editorContainer = document.createElement('div');
-      editorContainer.classList.add('editor-container');
-      editorContainer.style.position = 'relative';
-    
-      // Create syntax highlighting overlay
-      const syntaxOverlay = document.createElement('div');
-      syntaxOverlay.classList.add('syntax-overlay');
-      syntaxOverlay.style.position = 'absolute';
-      syntaxOverlay.style.top = '0';
-      syntaxOverlay.style.left = '0';
-      syntaxOverlay.style.width = '100%';
-      syntaxOverlay.style.height = '100%';
-      syntaxOverlay.style.pointerEvents = 'none';
-      syntaxOverlay.style.overflow = 'auto';
-      syntaxOverlay.style.borderRadius = '4px';
-      syntaxOverlay.style.fontFamily = 'monospace';
-      syntaxOverlay.style.fontSize = '1rem';
-      syntaxOverlay.style.lineHeight = '1.5';
-      syntaxOverlay.style.padding = '10px';
-      syntaxOverlay.style.whiteSpace = 'pre-wrap';
-    
-      // Create textarea
+      // Create a code-specific textarea for Python
       const codeTextarea = document.createElement('textarea');
       codeTextarea.classList.add('code-editor');
       codeTextarea.style.position = 'absolute';
