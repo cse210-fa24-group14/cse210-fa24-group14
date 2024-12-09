@@ -255,15 +255,16 @@ button:disabled {
     cursor: not-allowed;    /* 禁止图标 */
     opacity: 0.6;           /* 半透明 */
 }
+
 /* General toolbar styles */
 .markdown-toolbar {
   display: flex;
   gap: 9px; /* Spacing between buttons */
   margin-left: 40px;
   padding: 5px;
-  border: 2px solid rgb(75, 75, 75);
+  border: 2px solid rgb(75 75 75);
   border-radius: 5px;
-  margin-right: 190px;
+  margin-right: 13em;
 }
 
 /* Base style for all buttons in light mode */
@@ -275,7 +276,7 @@ button:disabled {
   align-items: center;
   padding: 5px; /* Padding inside the button */
   font-size: 10px; /* Adjust font size for icons/text */
-  border: 1px solid rgb(108, 196, 250); /* Keep the existing border color */
+  border: 1px solid rgb(108 196 250); /* Keep the existing border color */
   background-color: #d3d3d3; /* Light gray background for light mode */
   color: black; /* Black text for better contrast */
   border-radius: 4px; /* Rounded corners */
@@ -289,6 +290,47 @@ button:disabled {
 .markdown-toolbar-button:active {
   background-color: #a9a9a9; /* Even darker gray for active state */
 }
+
+/* heading dropdown styles */ 
+.markdown-toolbar-dropdown {
+  position: relative;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  visibility: hidden;  /* Hidden by default */
+  position: absolute;
+  top: 100%; /* Display directly below the button */
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
+  z-index: 100;
+  white-space: nowrap;
+  list-style: none;
+  padding: 5px 10px;
+  margin: 0;
+  display: flex; /* Stack items horizontally */
+  gap: 5px; /* Space between items */
+}
+
+/* Dropdown menu items */
+.dropdown-menu button {
+  padding: 5px 8px;
+  background: none;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+  background-color: #ddd;
+}
+
+/* Show dropdown menu on hover */
+.markdown-toolbar-dropdown:hover .dropdown-menu {
+  visibility: visible;
+}
+
 
 
 /* Specific styles for each button based on id */
@@ -310,6 +352,14 @@ button:disabled {
   text-decoration: line-through;
 }
 
+/* numbered list */
+.numbered-list {
+  display: block;
+}
+
+.numbered-list div {
+  margin: 4px 0;
+}
 
 /* Dark mode styles */
 body.dark-mode .markdown-toolbar-button {
@@ -350,15 +400,19 @@ body.dark-mode #underline-btn {
 body.dark-mode #strikethrough-btn {
   color: #91f8eb;
 }
+
 body.dark-mode #unordered-list-btn {
   color: #ddf891;
 }
+
 body.dark-mode #heading1-btn {
   color: #f9af83;
 }
+
 body.dark-mode #heading2-btn {
   color: #f8a6ed;
 }
+
 body.dark-mode #code-btn {
   color: #aec8f6;
 }

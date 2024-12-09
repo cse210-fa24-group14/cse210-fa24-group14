@@ -1,4 +1,4 @@
-import { parseMarkdown } from '../utils.js';
+import { parseMarkdown } from '../markdownRules.js';
 import { MarkdownToolBar } from './MarkdownToolBar.js';
 
 // This is the main component for the notes list view
