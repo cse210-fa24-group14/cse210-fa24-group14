@@ -1,4 +1,4 @@
-//import { SyntaxHighlighter } from "./SyntaxHighlighter";
+import { newapplySyntaxHighlighting, applySyntaxHighlightingWithErrors } from "./SyntaxHighlighter.js";
 // This is the main component for the notes list view
 export class NotesView {
   constructor(containerElement) {
@@ -99,102 +99,6 @@ export class NotesView {
     cellContent.classList.add('cell-content');
 
     if (cell.cellType === 'code') {
-      const syntaxRules = {
-        python: {
-          keywords: ['def', 'return', 'if', 'else', 'elif', 'for', 'while', 'break', 'continue', 'class', 'try', 'except', 'finally', 'import', 'from', 'as', 'pass', 'raise', 'with', 'lambda', 'not', 'or', 'and', 'is', 'in', 'None', 'True', 'False'],
-          patterns: {
-            comment: /#.*$/gm,
-            string: /(["'])(?:(?=(\\?))\2.)*?\1/g,
-            keyword: null, // Will be generated dynamically
-            number: /\b\d+(\.\d+)?\b/g,
-            function: /\b\w+(?=\()/g,
-          },
-        },
-        c: {
-          keywords: ['int', 'float', 'double', 'char', 'if', 'else', 'while', 'do', 'for', 'return', 'void', 'struct', 'typedef', 'include', 'define'],
-          patterns: {
-            comment: /\/\/.*$|\/\*[\s\S]*?\*\//gm,
-            string: /(["'])(?:(?=(\\?))\2.)*?\1/g,
-            keyword: null,
-            number: /\b\d+(\.\d+)?\b/g,
-            function: /\b\w+(?=\()/g,
-          },
-        },
-        cpp: {
-            keywords: [
-                'int', 'float', 'double', 'char', 'bool', 'void', 'if', 'else', 'while',
-                'do', 'for', 'return', 'switch', 'case', 'default', 'break', 'continue',
-                'class', 'struct', 'public', 'private', 'protected', 'virtual', 'override',
-                'template', 'typename', 'namespace', 'using', 'try', 'catch', 'throw', 'new', 'delete',
-                'const', 'static', 'inline', 'friend', 'operator', 'sizeof',
-              ],
-              patterns: {
-                comment: /\/\/.*$|\/\*[\s\S]*?\*\//gm,
-                string: /(["'])(?:(?=(\\?))\2.)*?\1/g,
-                keyword: null, // Generated dynamically
-                number: /\b\d+(\.\d+)?\b/g,
-                function: /\b\w+(?=\()/g,
-              },
-        },
-        java: {
-            keywords: [
-                'class', 'interface', 'enum', 'public', 'private', 'protected', 'void',
-                'static', 'final', 'abstract', 'extends', 'implements', 'new', 'return',
-                'if', 'else', 'while', 'do', 'for', 'switch', 'case', 'default', 'try',
-                'catch', 'finally', 'throw', 'throws', 'import', 'package', 'this', 'super',
-                'instanceof', 'synchronized', 'volatile', 'transient', 'native', 'strictfp',
-                'assert', 'boolean', 'byte', 'char', 'short', 'int', 'long', 'float', 'double',
-                'true', 'false', 'null',
-            ],
-            patterns: {
-                comment: /\/\/.*$|\/\*[\s\S]*?\*\//gm,
-                string: /(["'])(?:(?=(\\?))\2.)*?\1/g,
-                keyword: null, // Generated dynamically
-                number: /\b\d+(\.\d+)?\b/g,
-                function: /\b\w+(?=\()/g,
-            },
-        },
-        html: {
-            keywords: [],
-            patterns: {
-                tag: /<\/?[\w-]+(\s*[\w-]+(?:=".*?")?)*\s*\/?>/g, // Matches HTML tags
-                attribute: /(\w+)=(["']).*?\2/g,                  // Matches attributes within tags
-                string: /(["'])(?:(?=(\\?))\2.)*?\1/g,            // Matches quoted strings
-                comment: /<!--[\s\S]*?-->/gm,                     // Matches HTML comments
-            },
-        },
-        css: {
-            keywords: [],
-            patterns: {
-                selector: /^[^\{\}]+(?=\{)/gm,                     // Matches selectors
-                property: /([\w-]+)(?=\s*:)/g,                    // Matches CSS properties
-                value: /:(.+?);/g,                                // Matches CSS values
-                comment: /\/\*[\s\S]*?\*\//gm,                    // Matches CSS comments
-            },
-        },
-        js: {
-            keywords: [
-                'var', 'let', 'const', 'function', 'return', 'if', 'else', 'while', 'do',
-                'for', 'switch', 'case', 'default', 'break', 'continue', 'try', 'catch',
-                'finally', 'throw', 'new', 'class', 'extends', 'import', 'export', 'from',
-                'this', 'super', 'typeof', 'instanceof', 'delete', 'in', 'of', 'true', 'false', 'null', 'undefined',
-              ],
-              patterns: {
-                comment: /\/\/.*$|\/\*[\s\S]*?\*\//gm,
-                string: /(["'`])(?:(?=(\\?))\2.)*?\1/g, // Supports ", ', and ` for template literals
-                keyword: null, // Generated dynamically
-                number: /\b\d+(\.\d+)?\b/g,
-                function: /\b\w+(?=\()/g,
-              },
-        }
-        // Add similar rules for other languages...
-      };
-      
-      // Dynamically generate keyword regex
-      for (const lang in syntaxRules) {
-        const keywords = syntaxRules[lang].keywords.join('|');
-        syntaxRules[lang].patterns.keyword = new RegExp(`\\b(${keywords})\\b`, 'g');
-      }
       // Create wrapper for the code editor components
       const codeEditorWrapper = document.createElement('div');
       codeEditorWrapper.classList.add('code-editor-wrapper');
@@ -222,68 +126,157 @@ export class NotesView {
       codeEditorWrapper.appendChild(selectWrapper);
 
       const selectedLanguage = select.value;
-
-      const highlightedCode = document.createElement('div');
-      highlightedCode.classList.add('highlighted-code');
-      codeEditorWrapper.appendChild(highlightedCode);
-
       // Create a code-specific textarea for Python
       const codeTextarea = document.createElement('textarea');
       codeTextarea.classList.add('code-editor');
       codeTextarea.placeholder = 'Write your code here...';
       codeTextarea.value = cell.content || '';
+      
+      // codeTextarea.addEventListener('input', (e) => {
 
-      //codeTextarea.setAttribute('rows', '100');  // Set a default number of rows
+      //   const code = codeTextarea.value;
+
+      
+   
+      // let newHighlight = newapplySyntaxHighlighting(code, selectedLanguage)
+      // console.log(newHighlight)
+
+      //  codeTextarea.innerHTML = newHighlight
+
+      //   });
+      // codeTextarea.addEventListener('input', (e) => {
+      //   const code = codeTextarea.value;
+
+        
+      //   // Apply syntax highlighting
+      //   const newHighlight = newapplySyntaxHighlighting(code, selectedLanguage);
+        
+      //   // Remove the existing highlighted code
+      //   const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
+      //   if (existingHighlighted) {
+      //     codeEditorWrapper.removeChild(existingHighlighted);
+      //   }
+        
+      //   // Create a new div for displaying the highlighted code
+      //   const highlightedCode = document.createElement('pre');
+      //   highlightedCode.classList.add('highlighted-code');
+      //   highlightedCode.innerHTML = newHighlight;
+      //   //codeEditorWrapper.appendChild(highlightedCode);
+      //   codeTextarea.appendChild(highlightedCode)
+        
+      //   // Update the code textarea with the highlighted content
+      //   //codeTextarea.value = code;
+      // });
 
       codeTextarea.addEventListener('input', (e) => {
         const code = codeTextarea.value;
-        highlightedCode.innerHTML = applySyntaxHighlighting(code, selectedLanguage);
-        });
+      
+        // Apply syntax highlighting
+        const newHighlight = newapplySyntaxHighlighting(code, selectedLanguage);
+      
+        // Remove the existing highlighted code
+        const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
+        if (existingHighlighted) {
+          codeEditorWrapper.removeChild(existingHighlighted);
+        }
+      
+        // Create a new div for displaying the highlighted code
+        const highlightedCode = document.createElement('pre');
+        highlightedCode.classList.add('highlighted-code');
+        highlightedCode.innerHTML = newHighlight;
+        codeTextarea.parentNode.insertBefore(highlightedCode, codeTextarea);
+      
+        // Update the code textarea with the highlighted content
+        codeTextarea.value = code;
+      });
 
-        select.addEventListener('change', (event) => {
-          selectedLanguage = event.target.value;
+      // codeTextarea.addEventListener('input', (e) => {
+      //   const code = codeTextarea.value;
+      
+      //   // Apply syntax highlighting
+      //   const newHighlight = newapplySyntaxHighlighting(code, selectedLanguage);
+      
+      //   // Remove the existing highlighted code
+      //   const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
+      //   if (existingHighlighted) {
+      //     codeEditorWrapper.removeChild(existingHighlighted);
+      //   }
+      
+      //   // Create a new div for displaying the highlighted code
+      //   const highlightedCode = document.createElement('pre');
+      //   highlightedCode.classList.add('highlighted-code');
+      //   highlightedCode.style.position = 'absolute';
+      //   highlightedCode.style.top = '0';
+      //   highlightedCode.style.left = '0';
+      //   highlightedCode.style.width = '100%';
+      //   highlightedCode.style.zIndex = '1';
+      //   highlightedCode.style.pointerEvents = 'none';
+      //   highlightedCode.innerHTML = newHighlight;
+      //   codeEditorWrapper.appendChild(highlightedCode);
+      
+      //   // Preserve the cursor position
+      //   const cursorPos = codeTextarea.selectionStart;
+      //   codeTextarea.value = code;
+      //   codeTextarea.setSelectionRange(cursorPos, cursorPos);
+      // });
+
+      select.addEventListener('change', (event) => {
+          //selectedLanguage = event.target.value;
           const code = codeTextarea.value;
           highlightedCode.innerHTML = this.applySyntaxHighlightingWithErrors(code, selectedLanguage);
       });
     
       codeTextarea.addEventListener('scroll', () => {
-        highlightedCode.scrollTop = codeInput.scrollTop;
-        highlightedCode.scrollLeft = codeInput.scrollLeft;
+        codeTextarea.scrollTop = codeTextarea.scrollTop;
+        codeTextarea.scrollLeft = codeTextarea.scrollLeft;
       });
-      // // Prevent any potential focus or input blocking
-      // codeTextarea.addEventListener('focus', (e) => {
-      //   e.target.select();  // Select all text when focused
-      // });
 
-      // // Additional event listeners to ensure editability
-      // codeTextarea.addEventListener('click', () => {
-      //   codeTextarea.focus();
-      // });
-
-      // Add syntax highlighting
-      // codeTextarea.addEventListener('input', (e) => {
-      //   this.applySyntaxHighlighting(codeTextarea, selectedLanguage);
-      // });
-      // select.addEventListener('change', (event) => {
-      //   selectedLanguage = event.target.value;
-      //   const code = codeTextarea.value;
-      //   // Reapply syntax highlighting and error checking
-      //   highlightedCode.innerHTML = applySyntaxHighlightingWithErrors(code, selectedLanguage);
-      // });
-      // Save changes with debounce
+      codeTextarea.addEventListener('scroll', () => {
+        const highlightedCode = codeEditorWrapper.querySelector('.highlighted-code');
+        if (highlightedCode) {
+            highlightedCode.scrollTop = codeTextarea.scrollTop;
+            highlightedCode.scrollLeft = codeTextarea.scrollLeft;
+        }
+        });
+    
+     
       let debounceTimeout;
+      // codeTextarea.addEventListener('keydown', () => {
+      //   clearTimeout(debounceTimeout);
+
+      //   debounceTimeout = setTimeout(() => {
+      //       const code = codeTextarea.value;
+
+      //       // Apply syntax highlighting with errors
+      //       const highlighted = applySyntaxHighlightingWithErrors(code, selectedLanguage);
+      //       codeTextarea.innerHTML = highlighted;
+      //       console.log(codeTextarea.innerHTML);
+      //   }, 1000); // Wait 1s after typing stops
+      // })
+
       codeTextarea.addEventListener('keydown', () => {
         clearTimeout(debounceTimeout);
-
+      
         debounceTimeout = setTimeout(() => {
-            const code = codeTextarea.value;
-
-            // Apply syntax highlighting with errors
-            const highlighted = applySyntaxHighlightingWithErrors(code, selectedLanguage);
-            highlightedCode.innerHTML = highlighted;
-            console.log(highlightedCode.innerHTML);
+          const code = codeTextarea.value;
+      
+          // Create a separate div for displaying highlighted code
+          const highlightedCode = document.createElement('pre');
+          highlightedCode.classList.add('highlighted-code');
+      
+          // Apply syntax highlighting with errors
+          const highlighted = applySyntaxHighlightingWithErrors(code, selectedLanguage);
+          highlightedCode.innerHTML = highlighted;
+      
+          // Replace the previous highlighted code or append if not exists
+          const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
+          if (existingHighlighted) {
+            existingHighlighted.remove();
+          }
+          codeEditorWrapper.appendChild(highlightedCode);
         }, 1000); // Wait 1s after typing stops
-      })
+      });
+      
 
       codeTextarea.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
@@ -314,6 +307,7 @@ export class NotesView {
             event.preventDefault(); // Prevent default Enter key behavior
         }
     });
+
   
       
       let saveTimeout;
@@ -321,7 +315,7 @@ export class NotesView {
         clearTimeout(saveTimeout);
         saveTimeout = setTimeout(
           () => this.onUpdateCell(cell.timestamp, codeTextarea.value, 'code'),
-          1000
+          500
         );
       });
       codeEditorWrapper.appendChild(codeTextarea)
@@ -363,304 +357,6 @@ export class NotesView {
       const nextSibling = cellContainer.nextSibling; // Get the next sibling node
       parentElement.insertBefore(newCellContainer, nextSibling); // Insert the new cell before the next sibling
     }
-  }
-
-  applySyntaxHighlighting(code, language) {
-    const rules = syntaxRules[language].patterns;
-  
-    return code
-      .replace(rules.comment, '<span class="token comment">$&</span>')
-      .replace(rules.string, '<span class="token string">$&</span>')
-      .replace(rules.keyword, '<span class="token keyword">$&</span>')
-      .replace(rules.number, '<span class="token number">$&</span>')
-      .replace(rules.function, '<span class="token function">$&</span>');
-  }
-
-  applySyntaxHighlightingWithErrors(code, language) {
-    const syntaxHighlightedCode = applySyntaxHighlighting(code, language);
-    const errors = checkSyntax(code, language);
-    const highlightedWithErrors = highlightErrors(syntaxHighlightedCode, errors);
-  
-    return highlightedWithErrors;
-  }
-
-  checkSyntax(code, language) {
-    // Validate language support
-    if (!syntaxRules[language]) {
-      throw new Error(`Unsupported language: ${language}`);
-    }
-  
-    const errors = [];
-    const rules = syntaxRules[language];
-  
-    // Dynamically generate keyword regex if not already created
-    if (!rules.patterns.keyword) {
-      rules.patterns.keyword = new RegExp(`\\b(${rules.keywords.join('|')})\\b`, 'g');
-    }
-  
-    // Language-specific preprocessing and checks
-    switch (language) {
-      case 'python':
-        errors.push(...checkPythonSyntax(code, rules));
-        break;
-      case 'c':
-      case 'cpp':
-      case 'java':
-      case 'js':
-        errors.push(...checkCStyleSyntax(code, rules));
-        break;
-      case 'html':
-        errors.push(...checkHTMLSyntax(code, rules));
-        break;
-      case 'css':
-        errors.push(...checkCSSSyntax(code, rules));
-        break;
-    }
-  
-    // Common syntax checks across all languages
-    errors.push(...commonSyntaxChecks(code, rules));
-  
-    return errors;
-  }
-  
-  // Python-specific syntax checks
-  checkPythonSyntax(code, rules) {
-    const errors = [];
-    const lines = code.split('\n');
-    
-    lines.forEach((line, index) => {
-      const trimmedLine = line.trim();
-      
-      // Indentation check
-      const indentationLevel = line.length - line.trimLeft().length;
-      if (trimmedLine && indentationLevel % 4 !== 0) {
-        errors.push({
-          message: 'Inconsistent indentation (should be multiples of 4 spaces)',
-          line: index + 1,
-          column: 0
-        });
-      }
-  
-      // Colon check for control structures
-      const colonRequiredKeywords = ['def', 'class', 'if', 'else', 'elif', 'for', 'while'];
-      const needsColon = colonRequiredKeywords.some(keyword => 
-        trimmedLine.startsWith(keyword)
-      );
-      if (needsColon && !trimmedLine.endsWith(':')) {
-        errors.push({
-          message: 'Missing colon after control structure or definition',
-          line: index + 1,
-          column: line.length
-        });
-      }
-    });
-  
-    return errors;
-  }
-  
-  // C-style languages syntax checks (C, C++, Java, JavaScript)
-  checkCStyleSyntax(code, rules) {
-    const errors = [];
-    const lines = code.split('\n');
-    
-    lines.forEach((line, index) => {
-      const trimmedLine = line.trim();
-      
-      // Semicolon check
-      if (trimmedLine && 
-          !trimmedLine.endsWith(';') && 
-          !trimmedLine.endsWith('{') && 
-          !trimmedLine.endsWith('}') &&
-          !trimmedLine.startsWith('//') &&
-          !trimmedLine.startsWith('/*') &&
-          !trimmedLine.startsWith('*')) {
-        errors.push({
-          message: 'Missing semicolon',
-          line: index + 1,
-          column: line.length
-        });
-      }
-    });
-  
-    return errors;
-  }
-  
-  // HTML syntax checks
-  checkHTMLSyntax(code, rules) {
-    const errors = [];
-    const lines = code.split('\n');
-    const tagStack = [];
-  
-    lines.forEach((line, index) => {
-      const tagMatches = line.match(rules.patterns.tag) || [];
-      
-      tagMatches.forEach(tag => {
-        // Remove angle brackets and whitespace
-        const cleanTag = tag.replace(/[<>]/g, '').trim().split(' ')[0];
-        
-        // Self-closing and void tags
-        if (tag.endsWith('/>') || 
-            ['br', 'img', 'input', 'hr', 'meta', 'link'].includes(cleanTag)) {
-          return;
-        }
-        
-        // Closing tag
-        if (tag.startsWith('</')) {
-          if (tagStack.length === 0 || tagStack[tagStack.length - 1] !== cleanTag) {
-            errors.push({
-              message: `Unexpected or mismatched closing tag: ${cleanTag}`,
-              line: index + 1,
-              column: line.indexOf(tag)
-            });
-          } else {
-            tagStack.pop();
-          }
-        }
-        // Opening tag
-        else if (!tag.startsWith('</')) {
-          tagStack.push(cleanTag);
-        }
-      });
-    });
-  
-    // Check for unclosed tags at the end
-    if (tagStack.length > 0) {
-      errors.push({
-        message: `Unclosed HTML tags: ${tagStack.join(', ')}`,
-        line: lines.length,
-        column: lines[lines.length - 1].length
-      });
-    }
-  
-    return errors;
-  }
-  
-  // CSS syntax checks
-  checkCSSSyntax(code, rules) {
-    const errors = [];
-    const lines = code.split('\n');
-    let inBlock = false;
-  
-    lines.forEach((line, index) => {
-      const trimmedLine = line.trim();
-      
-      // Check for mismatched braces
-      const openBraceCount = (line.match(/\{/g) || []).length;
-      const closeBraceCount = (line.match(/\}/g) || []).length;
-      
-      if (openBraceCount > 0) {
-        if (inBlock) {
-          errors.push({
-            message: 'Unexpected opening brace',
-            line: index + 1,
-            column: line.indexOf('{')
-          });
-        }
-        inBlock = true;
-      }
-      
-      if (closeBraceCount > 0) {
-        if (!inBlock) {
-          errors.push({
-            message: 'Unexpected closing brace',
-            line: index + 1,
-            column: line.indexOf('}')
-          });
-        }
-        inBlock = false;
-      }
-      
-      // Check for missing semicolons in property declarations
-      if (inBlock && 
-          trimmedLine.includes(':') && 
-          !trimmedLine.endsWith(';') && 
-          !trimmedLine.endsWith('{') && 
-          !trimmedLine.endsWith('}')) {
-        errors.push({
-          message: 'Missing semicolon in CSS property',
-          line: index + 1,
-          column: line.length
-        });
-      }
-    });
-  
-    return errors;
-  }
-  
-  // Common syntax checks across all languages
-  commonSyntaxChecks(code, rules) {
-    const errors = [];
-  
-    // Remove comments from the code
-    const cleanCode = code.replace(rules.patterns.comment, '');
-  
-    // Check for unbalanced brackets, parentheses, and braces
-    const bracketPairs = {
-      '(': ')',
-      '[': ']',
-      '{': '}'
-    };
-  
-    const brackets = {
-      '(': 0,
-      '[': 0,
-      '{': 0
-    };
-  
-    for (const char of cleanCode) {
-      if (char in brackets) {
-        brackets[char]++;
-      }
-      if (Object.values(bracketPairs).includes(char)) {
-        const openBracket = Object.keys(bracketPairs).find(key => bracketPairs[key] === char);
-        if (brackets[openBracket] > 0) {
-          brackets[openBracket]--;
-        } else {
-          errors.push({
-            message: `Unbalanced ${char} bracket`,
-            line: 0,
-            column: 0
-          });
-        }
-      }
-    }
-  
-    // Check for unbalanced brackets at the end
-    Object.entries(brackets).forEach(([bracket, count]) => {
-      if (count > 0) {
-        errors.push({
-          message: `Unclosed ${bracket} bracket`,
-          line: 0,
-          column: 0
-        });
-      }
-    });
-  
-    return errors;
-  }
-
-  highlightErrors(code, errors) {
-    const lines = code.split('\n');
-    errors.forEach((error) => {
-      const lineIndex = error.line;
-      const line = lines[lineIndex];
-  
-      // Highlight the error on the line
-      lines[lineIndex] = line.replace(
-        line.trim(),
-        `<span class="error" data-tooltip="${error.message}">${line.trim()}</span>`
-      );
-    });
-  
-    return lines.join('\n');
-  }
-
-  applySyntaxHighlightingWithErrors(code, language) {
-    const syntaxHighlightedCode = applySyntaxHighlighting(code, language);
-    const errors = checkSyntax(code, language);
-    const highlightedWithErrors = highlightErrors(syntaxHighlightedCode, errors);
-  
-    return highlightedWithErrors;
   }
 
   // Add a method for basic Python syntax highlighting
@@ -782,7 +478,7 @@ export class NotesView {
       await this.onUpdateCell(
         cell.dataset.timestamp,
         cellContent.value,
-        icon.classList.contains('fa-toggle-off') ? 'markdown' : 'code',
+        icon.classList.contains('fa-toggle-off') ? 'markdown' : 'code'
       );
     }
   }
