@@ -1,4 +1,4 @@
-//import { SyntaxHighlighter } from "./SyntaxHighlighter";
+import { newapplySyntaxHighlighting, applySyntaxHighlightingWithErrors } from "./SyntaxHighlighter.js";
 import { parseMarkdown } from '../markdownRules.js';
 import { MarkdownToolBar } from './MarkdownToolBar.js';
 

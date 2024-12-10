@@ -30,6 +30,24 @@ html
     padding: 5px;
     font-size: 1rem;
   }
+
+  .code-editor{
+    width: '100%';
+    height:'250px'; 
+    background-color: '#f4f4f4';
+    border: '1px solid #ddd';
+    padding: '10px';
+    resize: 'vertical';
+  }
+  .highlighted-code {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    white-space: pre-wrap;
+    padding: inherit;
+    overflow: hidden;
+  }
     /* Code Editor Wrapper Styles */
 .code-editor-wrapper {
   position: relative;
@@ -111,6 +129,9 @@ html
   color: #dcdcaa; /* Light yellow for function names */
 }
 
+  .code-editor-wrapper {
+      position: relative;
+  }
 .token.operator {
   color: #d4d4d4; /* Light gray for operators */
 }
@@ -125,25 +146,41 @@ html
   cursor: help;
 }
 
-.error:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: 0;
-    top: 100%;
-    z-index: 10;
-    background-color: #ff4444;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    white-space: nowrap;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    font-size: 0.8em;
-}
+  .code-editor {
+      z-index: 1;
+  }
 
-/* Optional: Add some subtle styling to make errors more noticeable */
-.code-editor .error {
-    background-color: rgba(255, 0, 0, 0.05);
-}
+  .token.keyword { color: #81a1c1; font-weight: bold; }
+  .token.string { color: #a3be8c; }
+  .token.comment { color: #616e88; font-style: italic; }
+  .token.number { color: #b48ead; }
+  .token.function { color: #88c0d0; font-weight: bold; }
+  
+  .error {
+    position: relative;
+    text-decoration: underline wavy red;
+    cursor: help;
+  }
+
+  .error:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 0;
+      top: 100%;
+      z-index: 10;
+      background-color: #ff4444;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      font-size: 0.8em;
+  }
+
+  /* Optional: Add some subtle styling to make errors more noticeable */
+  .code-editor .error {
+      background-color: rgba(255, 0, 0, 0.05);
+  }
   
   .delete-btn {
     position: absolute;
