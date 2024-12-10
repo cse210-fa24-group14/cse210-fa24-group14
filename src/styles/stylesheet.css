@@ -251,7 +251,169 @@ body.dark-mode #dark-mode-toggle:hover {
 }
 
 button:disabled {
-    background-color: #ccc; /* 灰色背景 */
+    /* background-color: #ccc; 灰色背景 */
     cursor: not-allowed;    /* 禁止图标 */
     opacity: 0.6;           /* 半透明 */
 }
+
+/* General toolbar styles */
+.markdown-toolbar {
+  display: flex;
+  gap: 9px; /* Spacing between buttons */
+  margin-left: 40px;
+  padding: 5px;
+  border: 2px solid rgb(75 75 75);
+  border-radius: 5px;
+  margin-right: 13em;
+}
+
+/* Base style for all buttons in light mode */
+.markdown-toolbar-button {
+  width: 20px; /* Fixed width for all buttons */
+  height: 20px; /* Fixed height for all buttons */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px; /* Padding inside the button */
+  font-size: 10px; /* Adjust font size for icons/text */
+  border: 1px solid rgb(108 196 250); /* Keep the existing border color */
+  background-color: #d3d3d3; /* Light gray background for light mode */
+  color: black; /* Black text for better contrast */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+}
+
+.markdown-toolbar-button:hover {
+  background-color: #c0c0c0; /* Slightly darker gray for hover effect */
+}
+
+.markdown-toolbar-button:active {
+  background-color: #a9a9a9; /* Even darker gray for active state */
+}
+
+/* heading dropdown styles */ 
+.markdown-toolbar-dropdown {
+  position: relative;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  visibility: hidden;  /* Hidden by default */
+  position: absolute;
+  top: 100%; /* Display directly below the button */
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
+  z-index: 100;
+  white-space: nowrap;
+  list-style: none;
+  padding: 5px 10px;
+  margin: 0;
+  display: flex; /* Stack items horizontally */
+  gap: 5px; /* Space between items */
+}
+
+/* Dropdown menu items */
+.dropdown-menu button {
+  padding: 5px 8px;
+  background: none;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+  background-color: #ddd;
+}
+
+/* Show dropdown menu on hover */
+.markdown-toolbar-dropdown:hover .dropdown-menu {
+  visibility: visible;
+}
+
+
+
+/* Specific styles for each button based on id */
+#bold-btn {
+  font-weight: bold; /* Make text bold */
+}
+
+#italic-btn {
+  font-style: italic; /* Make text italicized */
+  font-family: Georgia, "Times New Roman", serif;
+  ;
+}
+
+#underline-btn {
+  text-decoration: underline; /* Underline style for the button */
+}
+
+#strikethrough-btn {
+  text-decoration: line-through;
+}
+
+/* numbered list */
+.numbered-list {
+  display: block;
+}
+
+.numbered-list div {
+  margin: 4px 0;
+}
+
+/* Dark mode styles */
+body.dark-mode .markdown-toolbar-button {
+  background-color: #444; /* Dark gray background for dark mode */
+  color: #ddd; /* Light text for better contrast */
+  border: 1px solid #555; /* Slightly lighter border for distinction */
+}
+
+body.dark-mode .markdown-toolbar-button:hover {
+  background-color: #555; /* Slightly lighter dark gray for hover effect */
+}
+
+body.dark-mode .markdown-toolbar-button:active {
+  background-color: #222; /* Darker gray for active state */
+}
+
+
+
+/* Bold button */
+body.dark-mode #bold-btn {
+  font-weight: bold; /* Make text bold */
+  color: #f0e68c; /* Goldenrod color for better visibility in dark mode */
+}
+
+/* Italic button */
+body.dark-mode #italic-btn {
+  font-style: italic; /* Italicized */
+  font-family: Georgia, "Times New Roman", serif;
+  color: #add8e6; /* Light blue for dark mode */
+}
+
+/* Underline button */
+body.dark-mode #underline-btn {
+  text-decoration: underline;
+  color: #90ee90; /* Light green for dark mode */
+}
+
+body.dark-mode #strikethrough-btn {
+  color: #91f8eb;
+}
+
+body.dark-mode #unordered-list-btn {
+  color: #ddf891;
+}
+
+body.dark-mode #heading1-btn {
+  color: #f9af83;
+}
+
+body.dark-mode #heading2-btn {
+  color: #f8a6ed;
+}
+
+body.dark-mode #code-btn {
+  color: #aec8f6;
+}
+

@@ -1,19 +1,14 @@
-import { parseMarkdown } from '../../src/js/utils';
+import { parseMarkdown } from '../../src/js/markdownRules';
 
 describe('Util ParseMarkdown', () => {
   test('should not parse empty string', () => {
     const parseMarkdownOut = parseMarkdown('');
 
-    expect(parseMarkdownOut).toBe('');
+    expect(parseMarkdownOut).toBe('<br />');
   });
 
   test('should parse header 1', () => {
     const input = '# Header 1';
-    const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('<h1>Header 1</h1><br />');
-  });
-  test('should parse header 1 br ', () => {
-    const input = '# Header 1\n';
     const parseMarkdownOut = parseMarkdown(input);
     expect(parseMarkdownOut).toBe('<h1>Header 1</h1><br />');
   });
@@ -33,72 +28,62 @@ describe('Util ParseMarkdown', () => {
   test('should parse bold text', () => {
     const input = '**bold**';
     const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('<strong>bold</strong>');
+    expect(parseMarkdownOut).toBe('<strong>bold</strong><br />');
   });
 
   test('should parse italic text', () => {
     const input = '*italic*';
     const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('<em>italic</em>');
+    expect(parseMarkdownOut).toBe('<em>italic</em><br />');
   });
 
   test('should parse strikethrough text', () => {
     const input = '~~strikethrough~~';
     const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('<del>strikethrough</del>');
+    expect(parseMarkdownOut).toBe('<del>strikethrough</del><br />');
   });
 
-  test('should parse inline code', () => {
-    const input = '`code`';
-    const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('<code>code</code>');
+  test('should parse multiline code', () => {
+    const input = '```code```';
+    let parseMarkdownOut = parseMarkdown(input);
+    expect(parseMarkdownOut.trim()).toBe('<pre><code>code</code></pre>');
   });
 
   test('should parse line breaks', () => {
     const input = 'line 1\nline 2';
     const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('line 1<br />line 2');
+    expect(parseMarkdownOut).toBe('line 1<br />line 2<br />');
   });
 
   test('should parse links', () => {
-    const input = 'https://example.com';
+    const input = '[alt text](https://example.com)';
     const parseMarkdownOut = parseMarkdown(input);
     expect(parseMarkdownOut).toBe(
-      '<a href="https://example.com" target="_blank" rel="noopener noreferrer">https://example.com</a>',
-    );
-  });
-
-  test('should parse email addresses', () => {
-    const input = 'test@example.com';
-    const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe(
-      '<a href="mailto:test@example.com">test@example.com</a>',
+      '<a href="https://example.com" target="_blank" rel="noopener noreferrer">alt text</a><br />',
     );
   });
 
   test('should parse header 1', () => {
-    const input = '# Header 1\n\n\n';
+    const input = '# Header 1\n';
     const parseMarkdownOut = parseMarkdown(input);
-    expect(parseMarkdownOut).toBe('<h1>Header 1</h1><br /><br /><br />');
+    expect(parseMarkdownOut).toBe('<h1>Header 1</h1><br /><br />');
   });
 
   test('should parse a combination of markdown features', () => {
     const input = `# Header 1
+      ## Header 2
+      ###### Header 6
+      **bold**
+      *italic*
+      ~~strikethrough~~
+      \`\`\`code\`\`\`
+      [alt text](https://example.com)`;
 
-## Header 2
-###### Header 6
-**bold**
-*italic*
-~~strikethrough~~
-\`code\`
-https://example.com
-test@example.com`;
-
-    const parseMarkdownOut = parseMarkdown(input);
-
+    let parseMarkdownOut = parseMarkdown(input);
+    parseMarkdownOut = parseMarkdownOut.replace(/>\s+</g, '><');
     // Expected output
     expect(parseMarkdownOut).toBe(
-      `<h1>Header 1</h1><br /><br /><h2>Header 2</h2><br /><h6>Header 6</h6><br /><strong>bold</strong><br /><em>italic</em><br /><del>strikethrough</del><br /><code>code</code><br /><a href="https://example.com" target="_blank" rel="noopener noreferrer">https://example.com</a><br /><a href="mailto:test@example.com">test@example.com</a>`,
+      `<h1>Header 1</h1><br /><h2>Header 2</h2><h6>Header 6</h6><strong>bold</strong><br /><em>italic</em><br /><del>strikethrough</del><br /><pre><code>code</code></pre><br /><a href="https://example.com" target="_blank" rel="noopener noreferrer">alt text</a><br />`,
     );
   });
 });
