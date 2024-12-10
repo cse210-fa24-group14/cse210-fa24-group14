@@ -98,12 +98,212 @@ export class NotesView {
     const cellContent = document.createElement('div');
     cellContent.classList.add('cell-content');
 
+    // if (cell.cellType === 'code') {
+    //   // Create wrapper for the code editor components
+    //   const codeEditorWrapper = document.createElement('div');
+    //   codeEditorWrapper.classList.add('code-editor-wrapper');
+      
+    //   // Add language selector inside the code box
+    //   const selectWrapper = document.createElement('div');
+    //   selectWrapper.classList.add('select-wrapper');
+      
+    //   const label = document.createElement('label');
+    //   label.setAttribute('for', 'languages');
+    //   label.textContent = 'Select Language: ';
+      
+    //   const select = document.createElement('select');
+    //   select.id = 'languages';
+    //   const languages = ['python', 'c', 'cpp', 'java', 'html', 'css', 'js'];
+    //   languages.forEach(language => {
+    //       const option = document.createElement('option');
+    //       option.value = language;
+    //       option.textContent = language.charAt(0).toUpperCase() + language.slice(1);
+    //       select.appendChild(option);
+    //   });
+      
+    //   selectWrapper.appendChild(label);
+    //   selectWrapper.appendChild(select);
+    //   codeEditorWrapper.appendChild(selectWrapper);
+
+    //   const selectedLanguage = select.value;
+    //   // Create a code-specific textarea for Python
+    //   const codeTextarea = document.createElement('textarea');
+    //   //const highlightedCodeDiv = document.createElement('div');
+    //   //highlightedCodeDiv.contentEditable = true
+    //   codeTextarea.classList.add('code-editor');
+    //   codeTextarea.placeholder = 'Write your code here...';
+    //   codeTextarea.value = cell.content || '';
+      
+    //   codeTextarea.addEventListener('input', (e) => {
+
+    //     const code = codeTextarea.value;
+
+      
+   
+    //   let newHighlight = newapplySyntaxHighlighting(code, selectedLanguage)
+    //   console.log(newHighlight)
+    //   //highlightedCodeDiv.innerHTML = newHighlight
+
+    //    codeTextarea.innerHTML = newHighlight
+       
+    //    //codeTextarea.insertBefore(highlightedCodeDiv, codeTextarea)
+
+    //     });
+    //   // codeTextarea.addEventListener('input', (e) => {
+    //   //   const code = codeTextarea.value;
+
+        
+    //   //   // Apply syntax highlighting
+    //   //   const newHighlight = newapplySyntaxHighlighting(code, selectedLanguage);
+        
+    //   //   // Remove the existing highlighted code
+    //   //   const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
+    //   //   if (existingHighlighted) {
+    //   //     codeEditorWrapper.removeChild(existingHighlighted);
+    //   //   }
+        
+    //   //   // Create a new div for displaying the highlighted code
+    //   //   const highlightedCode = document.createElement('pre');
+    //   //   highlightedCode.classList.add('highlighted-code');
+    //   //   highlightedCode.innerHTML = newHighlight;
+    //   //   //codeEditorWrapper.appendChild(highlightedCode);
+    //   //   codeTextarea.appendChild(highlightedCode)
+        
+    //   //   // Update the code textarea with the highlighted content
+    //   //   //codeTextarea.value = code;
+    //   // });
+
+    //   // codeTextarea.addEventListener('input', (e) => {
+    //   //   const code = codeTextarea.value;
+      
+    //   //   // Apply syntax highlighting
+    //   //   const newHighlight = newapplySyntaxHighlighting(code, selectedLanguage);
+      
+    //   //   // Remove the existing highlighted code
+    //   //   const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
+    //   //   if (existingHighlighted) {
+    //   //     codeEditorWrapper.removeChild(existingHighlighted);
+    //   //   }
+      
+    //   //   // Create a new div for displaying the highlighted code
+    //   //   const highlightedCode = document.createElement('pre');
+    //   //   highlightedCode.classList.add('highlighted-code');
+    //   //   highlightedCode.innerHTML = newHighlight;
+    //   //   codeTextarea.parentNode.insertBefore(highlightedCode, codeTextarea);
+      
+    //   //   // Update the code textarea with the highlighted content
+    //   //   codeTextarea.value = code;
+    //   // });
+
+    
+    //   select.addEventListener('change', (event) => {
+    //       //selectedLanguage = event.target.value;
+    //       const code = codeTextarea.value;
+    //       highlightedCode.innerHTML = this.applySyntaxHighlightingWithErrors(code, selectedLanguage);
+    //   });
+    
+    //   codeTextarea.addEventListener('scroll', () => {
+    //     codeTextarea.scrollTop = codeTextarea.scrollTop;
+    //     codeTextarea.scrollLeft = codeTextarea.scrollLeft;
+    //   });
+
+    //   codeTextarea.addEventListener('scroll', () => {
+    //     const highlightedCode = codeEditorWrapper.querySelector('.highlighted-code');
+    //     if (highlightedCode) {
+    //         highlightedCode.scrollTop = codeTextarea.scrollTop;
+    //         highlightedCode.scrollLeft = codeTextarea.scrollLeft;
+    //     }
+    //     });
+    
+     
+    //   let debounceTimeout;
+    //   // codeTextarea.addEventListener('keydown', () => {
+    //   //   clearTimeout(debounceTimeout);
+
+    //   //   debounceTimeout = setTimeout(() => {
+    //   //       const code = codeTextarea.value;
+
+    //   //       // Apply syntax highlighting with errors
+    //   //       const highlighted = applySyntaxHighlightingWithErrors(code, selectedLanguage);
+    //   //       codeTextarea.innerHTML = highlighted;
+    //   //       console.log(codeTextarea.innerHTML);
+    //   //   }, 1000); // Wait 1s after typing stops
+    //   // })
+
+    //   codeTextarea.addEventListener('keydown', () => {
+    //     clearTimeout(debounceTimeout);
+      
+    //     debounceTimeout = setTimeout(() => {
+    //       const code = codeTextarea.value;
+      
+    //       // Create a separate div for displaying highlighted code
+    //       const highlightedCode = document.createElement('pre');
+    //       highlightedCode.classList.add('highlighted-code');
+      
+    //       // Apply syntax highlighting with errors
+    //       const highlighted = applySyntaxHighlightingWithErrors(code, selectedLanguage);
+    //       highlightedCode.innerHTML = highlighted;
+      
+    //       // Replace the previous highlighted code or append if not exists
+    //       const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
+    //       if (existingHighlighted) {
+    //         existingHighlighted.remove();
+    //       }
+    //       codeEditorWrapper.appendChild(highlightedCode);
+    //     }, 1000); // Wait 1s after typing stops
+    //   });
+      
+
+    //   codeTextarea.addEventListener('keydown', (event) => {
+    //     if (event.key === 'Enter') {
+    //         const cursorPos = codeTextarea.selectionStart;
+    //         const currentLine = codeTextarea.value.substring(0, cursorPos).split('\n').pop();
+        
+    //         // Match leading spaces or tabs on the current line
+    //         const indentMatch = currentLine.match(/^\s+/);
+    //         let indent = indentMatch ? indentMatch[0] : '';
+        
+    //         // Add extra indentation if the line ends with a block-starting character
+    //         if (currentLine.trim().endsWith(':') || currentLine.trim().endsWith('{')) {
+    //             indent += '    '; // Add four spaces for block-level indent
+    //         }
+            
+    //         // Insert the new line with the calculated indentation
+    //         const newValue = 
+    //             codeTextarea.value.substring(0, cursorPos) +
+    //             '\n' +
+    //             indent +
+    //             codeTextarea.value.substring(cursorPos);
+                
+    //         codeTextarea.value = newValue;
+        
+    //         // Move the cursor to the end of the indentation
+    //         codeTextarea.selectionStart = codeTextarea.selectionEnd = cursorPos + indent.length + 1;
+        
+    //         event.preventDefault(); // Prevent default Enter key behavior
+    //     }
+    // });
+
+  
+      
+    //   let saveTimeout;
+    //   codeTextarea.addEventListener('input', () => {
+    //     clearTimeout(saveTimeout);
+    //     saveTimeout = setTimeout(
+    //       () => this.onUpdateCell(cell.timestamp, codeTextarea.value, 'code'),
+    //       500
+    //     );
+    //   });
+    //   codeEditorWrapper.appendChild(codeTextarea)
+    //   cellContent.appendChild(codeEditorWrapper);
+      
+    // } 
     if (cell.cellType === 'code') {
       // Create wrapper for the code editor components
       const codeEditorWrapper = document.createElement('div');
       codeEditorWrapper.classList.add('code-editor-wrapper');
       
-      // Add language selector inside the code box
+      // Create language selector
       const selectWrapper = document.createElement('div');
       selectWrapper.classList.add('select-wrapper');
       
@@ -115,213 +315,153 @@ export class NotesView {
       select.id = 'languages';
       const languages = ['python', 'c', 'cpp', 'java', 'html', 'css', 'js'];
       languages.forEach(language => {
-          const option = document.createElement('option');
-          option.value = language;
-          option.textContent = language.charAt(0).toUpperCase() + language.slice(1);
-          select.appendChild(option);
+        const option = document.createElement('option');
+        option.value = language;
+        option.textContent = language.charAt(0).toUpperCase() + language.slice(1);
+        select.appendChild(option);
       });
       
       selectWrapper.appendChild(label);
       selectWrapper.appendChild(select);
       codeEditorWrapper.appendChild(selectWrapper);
-
-      const selectedLanguage = select.value;
-      // Create a code-specific textarea for Python
+    
+      // Create container for editor and highlighting
+      const editorContainer = document.createElement('div');
+      editorContainer.classList.add('editor-container');
+      editorContainer.style.position = 'relative';
+    
+      // Create syntax highlighting overlay
+      const syntaxOverlay = document.createElement('div');
+      syntaxOverlay.classList.add('syntax-overlay');
+      syntaxOverlay.style.position = 'absolute';
+      syntaxOverlay.style.top = '0';
+      syntaxOverlay.style.left = '0';
+      syntaxOverlay.style.width = '100%';
+      syntaxOverlay.style.height = '100%';
+      syntaxOverlay.style.pointerEvents = 'none';
+      syntaxOverlay.style.overflow = 'auto';
+      syntaxOverlay.style.borderRadius = '4px';
+      syntaxOverlay.style.fontFamily = 'monospace';
+      syntaxOverlay.style.fontSize = '1rem';
+      syntaxOverlay.style.lineHeight = '1.5';
+      syntaxOverlay.style.padding = '10px';
+      syntaxOverlay.style.whiteSpace = 'pre-wrap';
+    
+      // Create textarea
       const codeTextarea = document.createElement('textarea');
       codeTextarea.classList.add('code-editor');
+      codeTextarea.style.position = 'absolute';
+      codeTextarea.style.top = '0';
+      codeTextarea.style.left = '0';
+      codeTextarea.style.width = '100%';
+      codeTextarea.style.height = '100%';
+      codeTextarea.style.backgroundColor = 'transparent';
+      codeTextarea.style.color = 'transparent';
+      codeTextarea.style.caretColor = 'black';
+      codeTextarea.style.resize = 'none';
+      codeTextarea.style.border = '1px solid #ccc';
+      codeTextarea.style.borderRadius = '4px';
+      codeTextarea.style.fontFamily = 'monospace';
+      codeTextarea.style.fontSize = '1rem';
+      codeTextarea.style.lineHeight = '1.5';
+      codeTextarea.style.padding = '10px';
+      codeTextarea.style.outline = 'none';
+      codeTextarea.style.overflow = 'auto';
+    
       codeTextarea.placeholder = 'Write your code here...';
       codeTextarea.value = cell.content || '';
-      
-      // codeTextarea.addEventListener('input', (e) => {
-
-      //   const code = codeTextarea.value;
-
-      
-   
-      // let newHighlight = newapplySyntaxHighlighting(code, selectedLanguage)
-      // console.log(newHighlight)
-
-      //  codeTextarea.innerHTML = newHighlight
-
-      //   });
-      // codeTextarea.addEventListener('input', (e) => {
-      //   const code = codeTextarea.value;
-
-        
-      //   // Apply syntax highlighting
-      //   const newHighlight = newapplySyntaxHighlighting(code, selectedLanguage);
-        
-      //   // Remove the existing highlighted code
-      //   const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
-      //   if (existingHighlighted) {
-      //     codeEditorWrapper.removeChild(existingHighlighted);
-      //   }
-        
-      //   // Create a new div for displaying the highlighted code
-      //   const highlightedCode = document.createElement('pre');
-      //   highlightedCode.classList.add('highlighted-code');
-      //   highlightedCode.innerHTML = newHighlight;
-      //   //codeEditorWrapper.appendChild(highlightedCode);
-      //   codeTextarea.appendChild(highlightedCode)
-        
-      //   // Update the code textarea with the highlighted content
-      //   //codeTextarea.value = code;
-      // });
-
-      codeTextarea.addEventListener('input', (e) => {
+    
+      // Function to update syntax highlighting
+      const updateSyntaxHighlighting = () => {
         const code = codeTextarea.value;
-      
+        const selectedLanguage = select.value;
+    
         // Apply syntax highlighting
-        const newHighlight = newapplySyntaxHighlighting(code, selectedLanguage);
-      
-        // Remove the existing highlighted code
-        const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
-        if (existingHighlighted) {
-          codeEditorWrapper.removeChild(existingHighlighted);
-        }
-      
-        // Create a new div for displaying the highlighted code
-        const highlightedCode = document.createElement('pre');
-        highlightedCode.classList.add('highlighted-code');
-        highlightedCode.innerHTML = newHighlight;
-        codeTextarea.parentNode.insertBefore(highlightedCode, codeTextarea);
-      
-        // Update the code textarea with the highlighted content
-        codeTextarea.value = code;
-      });
-
-      // codeTextarea.addEventListener('input', (e) => {
-      //   const code = codeTextarea.value;
-      
-      //   // Apply syntax highlighting
-      //   const newHighlight = newapplySyntaxHighlighting(code, selectedLanguage);
-      
-      //   // Remove the existing highlighted code
-      //   const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
-      //   if (existingHighlighted) {
-      //     codeEditorWrapper.removeChild(existingHighlighted);
-      //   }
-      
-      //   // Create a new div for displaying the highlighted code
-      //   const highlightedCode = document.createElement('pre');
-      //   highlightedCode.classList.add('highlighted-code');
-      //   highlightedCode.style.position = 'absolute';
-      //   highlightedCode.style.top = '0';
-      //   highlightedCode.style.left = '0';
-      //   highlightedCode.style.width = '100%';
-      //   highlightedCode.style.zIndex = '1';
-      //   highlightedCode.style.pointerEvents = 'none';
-      //   highlightedCode.innerHTML = newHighlight;
-      //   codeEditorWrapper.appendChild(highlightedCode);
-      
-      //   // Preserve the cursor position
-      //   const cursorPos = codeTextarea.selectionStart;
-      //   codeTextarea.value = code;
-      //   codeTextarea.setSelectionRange(cursorPos, cursorPos);
-      // });
-
-      select.addEventListener('change', (event) => {
-          //selectedLanguage = event.target.value;
-          const code = codeTextarea.value;
-          highlightedCode.innerHTML = this.applySyntaxHighlightingWithErrors(code, selectedLanguage);
-      });
+        const highlightedCode = newapplySyntaxHighlighting(code, selectedLanguage);
+        syntaxOverlay.innerHTML = highlightedCode;
     
-      codeTextarea.addEventListener('scroll', () => {
-        codeTextarea.scrollTop = codeTextarea.scrollTop;
-        codeTextarea.scrollLeft = codeTextarea.scrollLeft;
-      });
-
-      codeTextarea.addEventListener('scroll', () => {
-        const highlightedCode = codeEditorWrapper.querySelector('.highlighted-code');
-        if (highlightedCode) {
-            highlightedCode.scrollTop = codeTextarea.scrollTop;
-            highlightedCode.scrollLeft = codeTextarea.scrollLeft;
-        }
-        });
+        // Sync scroll
+        syntaxOverlay.scrollTop = codeTextarea.scrollTop;
+        syntaxOverlay.scrollLeft = codeTextarea.scrollLeft;
+      };
     
-     
+      // Debounce for syntax highlighting
       let debounceTimeout;
-      // codeTextarea.addEventListener('keydown', () => {
-      //   clearTimeout(debounceTimeout);
-
-      //   debounceTimeout = setTimeout(() => {
-      //       const code = codeTextarea.value;
-
-      //       // Apply syntax highlighting with errors
-      //       const highlighted = applySyntaxHighlightingWithErrors(code, selectedLanguage);
-      //       codeTextarea.innerHTML = highlighted;
-      //       console.log(codeTextarea.innerHTML);
-      //   }, 1000); // Wait 1s after typing stops
-      // })
-
-      codeTextarea.addEventListener('keydown', () => {
+      const debouncedHighlighting = () => {
         clearTimeout(debounceTimeout);
-      
-        debounceTimeout = setTimeout(() => {
-          const code = codeTextarea.value;
-      
-          // Create a separate div for displaying highlighted code
-          const highlightedCode = document.createElement('pre');
-          highlightedCode.classList.add('highlighted-code');
-      
-          // Apply syntax highlighting with errors
-          const highlighted = applySyntaxHighlightingWithErrors(code, selectedLanguage);
-          highlightedCode.innerHTML = highlighted;
-      
-          // Replace the previous highlighted code or append if not exists
-          const existingHighlighted = codeEditorWrapper.querySelector('.highlighted-code');
-          if (existingHighlighted) {
-            existingHighlighted.remove();
-          }
-          codeEditorWrapper.appendChild(highlightedCode);
-        }, 1000); // Wait 1s after typing stops
-      });
-      
-
-      codeTextarea.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            const cursorPos = codeTextarea.selectionStart;
-            const currentLine = codeTextarea.value.substring(0, cursorPos).split('\n').pop();
-        
-            // Match leading spaces or tabs on the current line
-            const indentMatch = currentLine.match(/^\s+/);
-            let indent = indentMatch ? indentMatch[0] : '';
-        
-            // Add extra indentation if the line ends with a block-starting character
-            if (currentLine.trim().endsWith(':') || currentLine.trim().endsWith('{')) {
-                indent += '    '; // Add four spaces for block-level indent
-            }
-            
-            // Insert the new line with the calculated indentation
-            const newValue = 
-                codeTextarea.value.substring(0, cursorPos) +
-                '\n' +
-                indent +
-                codeTextarea.value.substring(cursorPos);
-                
-            codeTextarea.value = newValue;
-        
-            // Move the cursor to the end of the indentation
-            codeTextarea.selectionStart = codeTextarea.selectionEnd = cursorPos + indent.length + 1;
-        
-            event.preventDefault(); // Prevent default Enter key behavior
-        }
-    });
-
-  
-      
-      let saveTimeout;
+        debounceTimeout = setTimeout(updateSyntaxHighlighting, 300);
+      };
+    
+      // Event listeners
+      let saveTimeout
       codeTextarea.addEventListener('input', () => {
+        debouncedHighlighting();
+        
+        // Save functionality
         clearTimeout(saveTimeout);
         saveTimeout = setTimeout(
           () => this.onUpdateCell(cell.timestamp, codeTextarea.value, 'code'),
-          500
+          200
         );
       });
-      codeEditorWrapper.appendChild(codeTextarea)
-      cellContent.appendChild(codeEditorWrapper);
+    
+      // Scroll synchronization
+      codeTextarea.addEventListener('scroll', () => {
+        syntaxOverlay.scrollTop = codeTextarea.scrollTop;
+        syntaxOverlay.scrollLeft = codeTextarea.scrollLeft;
+      });
+    
+      // Language change listener
+      select.addEventListener('change', () => {
+        updateSyntaxHighlighting();
+      });
+    
+      // Smart indentation on Enter key
+      codeTextarea.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          const cursorPos = codeTextarea.selectionStart;
+          const currentLine = codeTextarea.value.substring(0, cursorPos).split('\n').pop();
       
-    } else {
+          // Match leading spaces or tabs on the current line
+          const indentMatch = currentLine.match(/^\s+/);
+          let indent = indentMatch ? indentMatch[0] : '';
+      
+          // Add extra indentation if the line ends with a block-starting character
+          if (currentLine.trim().endsWith(':') || currentLine.trim().endsWith('{')) {
+            indent += '    '; // Add four spaces for block-level indent
+          }
+          
+          // Insert the new line with the calculated indentation
+          const newValue = 
+            codeTextarea.value.substring(0, cursorPos) +
+            '\n' +
+            indent +
+            codeTextarea.value.substring(cursorPos);
+              
+          codeTextarea.value = newValue;
+      
+          // Move the cursor to the end of the indentation
+          codeTextarea.selectionStart = codeTextarea.selectionEnd = cursorPos + indent.length + 1;
+      
+          event.preventDefault(); // Prevent default Enter key behavior
+          
+          // Update syntax highlighting
+          updateSyntaxHighlighting();
+        }
+      });
+    
+      // Initial syntax highlighting
+      updateSyntaxHighlighting();
+    
+      // Compose the editor container
+      editorContainer.appendChild(syntaxOverlay);
+      editorContainer.appendChild(codeTextarea);
+      
+      // Append to the wrapper
+      codeEditorWrapper.appendChild(editorContainer);
+      cellContent.appendChild(codeEditorWrapper);
+    }
+    else {
       // Keep existing markdown textarea logic
       const textarea = document.createElement('textarea');
       textarea.value = cell.content || '';

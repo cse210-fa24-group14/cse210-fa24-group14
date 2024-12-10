@@ -5,7 +5,7 @@ const syntaxRules = {
         comment: /#.*$/gm,
         string: /(["'])(?:(?=(\\?))\2.)*?\1/g,
         keyword: null, // Will be generated dynamically
-        number: /\b\d+(\.\d+)?\b/g,
+        number: /\b(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?\b/,
         function: /\b\w+(?=\()/g,
       },
     },
@@ -97,41 +97,255 @@ const syntaxRules = {
     return syntaxRules;
   }
   
-  export const newapplySyntaxHighlighting =(code, language) => {
-    //const code = codeTextarea.value;
-    if (!syntaxRules[language].patterns.keyword) {
-        initializeSyntaxRules();
-      }
-    const rules = syntaxRules[language].patterns;
+//   export const newapplySyntaxHighlighting =(code, language) => {
+//     //const code = codeTextarea.value;
+//     if (!syntaxRules[language].patterns.keyword) {
+//         initializeSyntaxRules();
+//       }
+//     const rules = syntaxRules[language].patterns;
   
-    return code.replace(
-        new RegExp(
-          rules.comment.source +
-            '|' +
-            rules.string.source +
-            '|' +
-            rules.keyword.source +
-            '|' +
-            rules.number.source +
-            '|' +
-            rules.function.source,
-          'g'
-        ),
-        (match) => {
-          if (rules.comment.test(match)) {
-            return `<span class="token comment">${match}</span>`;
-          } else if (rules.string.test(match)) {
-            return `<span class="token string">${match}</span>`;
-          } else if (rules.keyword.test(match)) {
-            return `<span class="token keyword">${match}</span>`;
-          } else if (rules.number.test(match)) {
-            return `<span class="token number">${match}</span>`;
-          } else if (rules.function.test(match)) {
-            return `<span class="token function">${match}</span>`;
-          }
-          return match;
-        }
-      );
+//     return code.replace(
+//         new RegExp(
+//           rules.comment.source +
+//             '|' +
+//             rules.string.source +
+//             '|' +
+//             rules.keyword.source +
+//             '|' +
+//             rules.number.source +
+//             '|' +
+//             rules.function.source,
+//             '|\\bprint\\b', // Explicitly add print statement highlighting
+//           'g'
+//         ),
+//         (match) => {
+//           if (rules.comment.test(match)) {
+//             return `<span class="token comment">${match}</span>`;
+//           } else if (rules.string.test(match)) {
+//             return `<span class="token string">${match}</span>`;
+//           } else if (rules.keyword.test(match)) {
+//             return `<span class="token keyword">${match}</span>`;
+//           } else if (rules.number.test(match)) {
+//             return `<span class="token number">${match}</span>`;
+//           } else if (rules.function.test(match)) {
+//             return `<span class="token function">${match}</span>`;
+//           }
+//           return match;
+//         }
+//       );
+//     };
+
+    // export const newapplySyntaxHighlighting = (code, language) => {
+    //     // Ensure syntax rules are initialized
+    //     if (!syntaxRules[language]?.patterns?.keyword) {
+    //         initializeSyntaxRules();
+    //     }
+    //     const rules = syntaxRules[language].patterns;
+    
+    //     // Create an array of regex sources to join
+    //     const regexSources = [
+    //         rules.comment.source,
+    //         rules.string.source,
+    //         rules.keyword.source,
+    //         rules.number.source,
+    //         rules.function.source,
+    //         '\\bprint\\b'  // Add print as a separate source
+    //     ];
+    
+    //     // Construct the regex by joining sources with '|'
+    //     const combinedRegex = new RegExp(regexSources.join('|'), 'g');
+    
+    //     return code.replace(
+    //         combinedRegex,
+    //         (match) => {
+    //             if (rules.comment.test(match)) {
+    //                 return `<span class="token comment">${match}</span>`;
+    //             } else if (rules.string.test(match)) {
+    //                 return `<span class="token string">${match}</span>`;
+    //             } else if (rules.keyword.test(match)) {
+    //                 return `<span class="token keyword">${match}</span>`;
+    //             } else if (rules.number.test(match)) {
+    //                 return `<span class="token number">${match}</span>`;
+    //             } else if (rules.function.test(match)) {
+    //                 return `<span class="token function">${match}</span>`;
+    //             } else if (/\bprint\b/.test(match)) {
+    //                 return `<span class="token keyword">${match}</span>`;
+    //             }
+    //             return match;
+    //         }
+    //     );
+    // };
+    // export const newapplySyntaxHighlighting = (code, language) => {
+    //     // Comprehensive syntax rules for Python
+    //     const syntaxRules = {
+    //         python: {
+    //             patterns: {
+    //                 comment: /\s*#.*/,
+    //                 string: {
+    //                     single: /('(?:\\.|[^'\\])*')/,
+    //                     double: /("(?:\\.|[^"\\])*")/,
+    //                     multiline: /'''[\s\S]*?'''|"""[\s\S]*?"""/
+    //                 },
+    //                 keyword: /\b(and|as|assert|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)\b/,
+    //                 builtinFunction: /\b(print|len|range|type|int|str|float|list|dict|set|tuple|sum|min|max|abs|round|input)\b/,
+    //                 number: {
+    //                     decimal: /\b\d+\b/,
+    //                     float: /\b\d+\.\d+\b/,
+    //                     scientific: /\b\d+(\.\d+)?[eE][-+]?\d+\b/,
+    //                     binary: /\b0b[01]+\b/,
+    //                     hex: /\b0x[0-9a-fA-F]+\b/,
+    //                     octal: /\b0o[0-7]+\b/
+    //                 },
+    //                 operator: /(\+|\-|\*|\/|%|\*\*|==|!=|<=|>=|<|>|=|\+=|\-=|\*=|\/=|%=|\*\*=|&|\||\^|~|<<|>>)/,
+    //                 function: /\b[a-zA-Z_]\w*(?=\s*\()/,
+    //                 decorator: /@\w+/
+    //             }
+    //         }
+    //     };
+    
+    //     // Helper function to escape HTML
+    //     const escapeHTML = (str) => {
+    //         return str.replace(/[&<>"']/g, (match) => {
+    //             const escapeMap = {
+    //                 '&': '&amp;',
+    //                 '<': '&lt;',
+    //                 '>': '&gt;',
+    //                 '"': '&quot;',
+    //                 "'": '&#39;'
+    //             };
+    //             return escapeMap[match];
+    //         });
+    //     };
+    
+    //     // Combine all regex patterns
+    //     const createCombinedRegex = () => {
+    //         const rules = syntaxRules.python.patterns;
+    //         return new RegExp(
+    //             [
+    //                 rules.comment.source,
+    //                 rules.string.single.source,
+    //                 rules.string.double.source,
+    //                 rules.string.multiline.source,
+    //                 rules.keyword.source,
+    //                 rules.builtinFunction.source,
+    //                 rules.number.decimal.source,
+    //                 rules.number.float.source,
+    //                 rules.number.scientific.source,
+    //                 rules.number.binary.source,
+    //                 rules.number.hex.source,
+    //                 rules.number.octal.source,
+    //                 rules.operator.source,
+    //                 rules.function.source,
+    //                 rules.decorator.source
+    //             ].join('|'),
+    //             'g'
+    //         );
+    //     };
+    
+    //     // Apply syntax highlighting
+    //     const highlightedCode = escapeHTML(code).replace(
+    //         createCombinedRegex(),
+    //         (match) => {
+    //             const rules = syntaxRules.python.patterns;
+    
+    //             // Check and apply highlighting for different token types
+    //             if (rules.comment.test(match)) {
+    //                 return `<span class="token comment">${match}</span>`;
+    //             } else if (
+    //                 rules.string.single.test(match) || 
+    //                 rules.string.double.test(match) || 
+    //                 rules.string.multiline.test(match)
+    //             ) {
+    //                 return `<span class="token string">${match}</span>`;
+    //             } else if (rules.keyword.test(match)) {
+    //                 return `<span class="token keyword">${match}</span>`;
+    //             } else if (rules.builtinFunction.test(match)) {
+    //                 return `<span class="token builtin">${match}</span>`;
+    //             } else if (
+    //                 rules.number.decimal.test(match) ||
+    //                 rules.number.float.test(match) ||
+    //                 rules.number.scientific.test(match) ||
+    //                 rules.number.binary.test(match) ||
+    //                 rules.number.hex.test(match) ||
+    //                 rules.number.octal.test(match)
+    //             ) {
+    //                 return `<span class="token number">${match}</span>`;
+    //             } else if (rules.operator.test(match)) {
+    //                 return `<span class="token operator">${match}</span>`;
+    //             } else if (rules.function.test(match)) {
+    //                 return `<span class="token function">${match}</span>`;
+    //             } else if (rules.decorator.test(match)) {
+    //                 return `<span class="token decorator">${match}</span>`;
+    //             }
+    
+    //             return match;
+    //         }
+    //     );
+    
+    //     return highlightedCode;
+    // };
+
+    export const newapplySyntaxHighlighting = (code, language) => {
+        // Comprehensive syntax rules for Python
+        const syntaxRules = {
+            python: {
+                patterns: {
+                    comment: /\s*#.*/,
+                    string: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/,
+                    keyword: /\b(and|as|assert|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)\b/,
+                    builtinFunction: /\b(print|len|range|type|int|str|float|list|dict|set|tuple|sum|min|max|abs|round|input)\b/,
+                    number: /\b(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?\b/,
+                    function: /\b[a-zA-Z_]\w*(?=\s*\()/,
+                    operator: /(\+|\-|\*|\/|%|\*\*|==|!=|<=|>=|<|>|=|\+=|\-=|\*=|\/=|%=|\*\*=)/
+                }
+            }
+        };
+    
+        // Combine all regex patterns
+        const createCombinedRegex = () => {
+            const rules = syntaxRules.python.patterns;
+            return new RegExp(
+                [
+                    rules.comment.source,
+                    rules.string.source,
+                    rules.keyword.source,
+                    rules.builtinFunction.source,
+                    rules.number.source,
+                    rules.function.source,
+                    rules.operator.source
+                ].join('|'),
+                'g'
+            );
+        };
+    
+        // Apply syntax highlighting
+        const highlightedCode = code.replace(
+            createCombinedRegex(),
+            (match) => {
+                const rules = syntaxRules.python.patterns;
+    
+                // Check and apply highlighting for different token types
+                if (rules.comment.test(match)) {
+                    return `<span class="token comment">${match}</span>`;
+                } else if (rules.string.test(match)) {
+                    return `<span class="token string">${match}</span>`;
+                } else if (rules.keyword.test(match)) {
+                    return `<span class="token keyword">${match}</span>`;
+                } else if (rules.builtinFunction.test(match)) {
+                    return `<span class="token builtin">${match}</span>`;
+                } else if (rules.number.test(match)) {
+                    return `<span class="token number">${match}</span>`;
+                } else if (rules.function.test(match)) {
+                    return `<span class="token function">${match}</span>`;
+                } else if (rules.operator.test(match)) {
+                    return `<span class="token operator">${match}</span>`;
+                }
+    
+                return match;
+            }
+        );
+    
+        return highlightedCode;
     };
 
   export const applySyntaxHighlightingWithErrors = (code, language) => {
