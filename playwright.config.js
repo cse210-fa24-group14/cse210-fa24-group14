@@ -19,7 +19,7 @@ module.exports = {
       testDir: './tests/performance', // Points to the performance folder
       use: {
         browserName: 'chromium',
-        headless: true, // We need a visible browser for E2E tests
+        headless: false, // We need a visible browser for E2E tests
         args: [
           `--disable-extensions-except=${path.resolve(__dirname)}`,
           `--load-extension=${path.resolve(__dirname)}`,
