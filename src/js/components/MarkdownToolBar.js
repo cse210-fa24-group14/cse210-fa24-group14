@@ -1,13 +1,50 @@
+/**
+ * Class representing a toolbar for editing Markdown content.
+ */
 export class MarkdownToolBar {
+  /**
+   * Constructs a MarkdownToolBar instance.
+   * 
+   * @param {Object} cell - The note cell object.
+   * @param {HTMLElement} cellContainer - The container element of the cell.
+   * @param {Function} onUpdateCell - Callback to handle updates to the cell content.
+   */
   constructor(cell, cellContainer, onUpdateCell) {
+    /**
+     * The container element of the cell.
+     * @type {HTMLElement}
+     */
     this.cellContainer = cellContainer;
+
+    /**
+     * The textarea element within the cell container for content editing.
+     * @type {HTMLTextAreaElement|null}
+     */
     this.textArea = cellContainer.querySelector('textarea');
+
+    /**
+     * Callback to handle cell updates.
+     * @type {Function}
+     */
     this.onUpdateCell = onUpdateCell;
+
+    /**
+     * The toolbar element for Markdown controls.
+     * @type {HTMLDivElement}
+     */
     this.toolbar = document.createElement('div');
     this.toolbar.classList.add('markdown-toolbar'); // Style using CSS
+
+    /**
+     * The note cell object.
+     * @type {Object}
+     */
     this.cell = cell;
 
-    // Predefined button configurations
+    /**
+     * Predefined configurations for toolbar buttons and dropdowns.
+     * @type {Array<Object>}
+     */
     this.buttons = [
       {
         id: 'heading-dropdown',
@@ -81,6 +118,11 @@ export class MarkdownToolBar {
     ];
   }
 
+  /**
+   * Renders the Markdown toolbar.
+   * 
+   * @returns {HTMLDivElement} The rendered toolbar element.
+   */
   render() {
     this.buttons.forEach((buttonConfig) => {
       if (buttonConfig.dropdown) {
@@ -95,6 +137,17 @@ export class MarkdownToolBar {
     return this.toolbar;
   }
 
+  /**
+   * Creates a button for the toolbar.
+   * 
+   * @param {Object} config - Configuration for the button.
+   * @param {string} config.id - Button ID.
+   * @param {string} config.prefix - Markdown prefix to insert.
+   * @param {string} config.suffix - Markdown suffix to insert.
+   * @param {string} config.tooltip - Tooltip text.
+   * @param {string} config.icon - Font Awesome icon class.
+   * @returns {HTMLButtonElement} The created button element.
+   */
   createButton({ id, prefix, suffix, tooltip, icon }) {
     const button = document.createElement('button');
     button.type = 'button';
@@ -112,6 +165,16 @@ export class MarkdownToolBar {
     return button;
   }
 
+  /**
+   * Creates a dropdown menu for the toolbar.
+   * 
+   * @param {Object} config - Configuration for the dropdown.
+   * @param {string} config.id - Dropdown ID.
+   * @param {string} config.tooltip - Tooltip text.
+   * @param {Array<Object>} config.dropdown - Dropdown items.
+   * @param {string} config.icon - Font Awesome icon class.
+   * @returns {HTMLDivElement} The created dropdown element.
+   */
   createDropdown({ id, tooltip, dropdown, icon }) {
     const container = document.createElement('div');
     container.id = id;
@@ -144,6 +207,12 @@ export class MarkdownToolBar {
     return container;
   }
 
+  /**
+   * Inserts Markdown syntax into the textarea.
+   * 
+   * @param {string} prefix - The Markdown prefix.
+   * @param {string} suffix - The Markdown suffix.
+   */
   insertMarkdown(prefix, suffix) {
     if (!this.textArea) {
       console.error('Textarea not found in the cell container.');

@@ -2,15 +2,28 @@
 
 export class DarkModeComponent {
   constructor() {
+    /**
+     * Reference to the document body for applying themes.
+     * @type {HTMLElement}
+     */
     this.body = document.body;
+
+    /**
+     * Reference to the dark mode toggle button.
+     * @type {HTMLButtonElement|null}
+     */
     this.darkModeBtn = null;
   }
 
   /**
    * Automatically syncs the theme with the system's preference.
+   * Adds an event listener to respond to system theme changes.
    */
   initializeSystemTheme() {
     const applySystemTheme = () => {
+      /**
+       * Applies the current system theme to the body.
+       */
       const systemPrefersDark = window.matchMedia(
         '(prefers-color-scheme: dark)',
       ).matches;
@@ -30,8 +43,10 @@ export class DarkModeComponent {
   }
 
   /**
-   * Adds a manual toggle button for dark mode.
+   * Adds a manual toggle button for dark mode within a specified container.
    * Ensures the button is created only once.
+   *
+   * @param {HTMLElement} container - The container element where the toggle button will be appended.
    */
   initializeManualThemeToggle(container) {
     if (this.darkModeBtn) {
@@ -49,7 +64,9 @@ export class DarkModeComponent {
     this.darkModeBtn.id = 'dark-mode-toggle'; // Use the ID for styling
     container.appendChild(this.darkModeBtn);
 
-    // Set the initial button icon based on the current theme
+    /**
+     * Updates the button icon based on the current theme.
+     */
     const setButtonIcon = () => {
       this.darkModeBtn.innerHTML = this.body.classList.contains('dark-mode')
         ? '☀️' // Sun icon for light mode
@@ -66,7 +83,11 @@ export class DarkModeComponent {
       console.log(`Manual theme change: ${isDark ? 'dark' : 'light'}`);
     });
 
-    // Listen for system theme changes and update icon
+    /**
+     * Updates the body and button icon when the system theme changes.
+     *
+     * @param {MediaQueryListEvent} event - The event fired when the system theme changes.
+     */
     const systemThemeListener = (event) => {
       const systemPrefersDark = event.matches;
       if (!this.body.classList.contains('dark-mode') && systemPrefersDark) {

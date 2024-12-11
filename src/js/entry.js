@@ -2,7 +2,9 @@ import { NoteRepository } from './repositories/NoteRepository.js';
 import { NotesView } from './components/NotesView.js';
 import { DarkModeComponent } from './components/DarkModeComponent.js';
 
-// This is the main app/entry point
+/**
+ * Main application class for managing notes.
+ */
 class NotesApp {
   constructor() {
     // This is the where the notes are stored (communication with backend)
@@ -15,6 +17,11 @@ class NotesApp {
     this.initialize();
   }
 
+   /**
+   * Initializes the application by setting up event listeners,
+   * loading notes, and configuring the dark mode.
+   * @returns {Promise<void>}
+   */
   async initialize() {
     this.setupEventListeners();
     await this.loadNotes();
@@ -25,6 +32,10 @@ class NotesApp {
     );
   }
 
+  /**
+   * Loads notes for the current URL and renders them in the view.
+   * @returns {Promise<void>}
+   */
   async loadNotes() {
     try {
       const url = await this.getUrl();
@@ -38,6 +49,9 @@ class NotesApp {
     }
   }
 
+  /**
+   * Sets up event listeners for adding, deleting, and updating cells.
+   */
   setupEventListeners() {
     this.notesView.setOnDeleteCell(
       async (timestamp) => await this.handleDeleteCell(timestamp),
@@ -52,6 +66,15 @@ class NotesApp {
     );
   }
 
+  /**
+   * Handles adding a new cell to a note.
+   *
+   * @param {string} timestamp - The timestamp of the cell.
+   * @param {string} content - The content of the cell.
+   * @param {string} cellType - The type of the cell (e.g., "text", "code").
+   * @param {string} targetTimestamp - The timestamp of the target cell for positioning.
+   * @returns {Promise<void>}
+   */
   async handleAddCell(timestamp, content, cellType, targetTimestamp) {
     try {
       await this.noteRepository.addCellToNote(
@@ -65,7 +88,12 @@ class NotesApp {
       console.error('Error in adding new cell to the note', error);
     }
   }
-
+/**
+   * Handles deleting a cell from a note.
+   *
+   * @param {string} timestamp - The timestamp of the cell to delete.
+   * @returns {Promise<void>}
+   */
   async handleDeleteCell(timestamp) {
     try {
       await this.noteRepository.deleteCellFromNote(
@@ -77,6 +105,14 @@ class NotesApp {
     }
   }
 
+  /**
+   * Handles updating the content of a cell in a note.
+   *
+   * @param {string} timestamp - The timestamp of the cell to update.
+   * @param {string} content - The updated content of the cell.
+   * @param {string} cellType - The type of the cell (e.g., "text", "code").
+   * @returns {Promise<void>}
+   */
   async handleUpdateCell(timestamp, content, cellType) {
     try {
       await this.noteRepository.updateCellContent(
@@ -89,7 +125,11 @@ class NotesApp {
       console.error('Error in saving cell content to the note', error);
     }
   }
-
+  /**
+   * Retrieves the URL of the active browser tab.
+   * 
+   * @returns {Promise<string>} The URL of the active tab.
+   */
   async getUrl() {
     const [tab] = await chrome.tabs.query({
       active: true,
