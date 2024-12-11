@@ -1,11 +1,11 @@
-import { StorageService } from '../services/StorageService.js';
+import { IndexedDBService } from '../services/IndexDBService.js';
 import { Note, NoteCell } from '../models/Note.js';
 
 // This is layer between our app's business logic and the data storage layer
 export class NoteRepository {
   static STORAGE_KEY = 'notes';
   constructor() {
-    this.storageService = new StorageService();
+    this.indexDBService = new IndexedDBService();
   }
 
   removeAllQueryParams(url) {
@@ -15,24 +15,23 @@ export class NoteRepository {
   }
 
   async getAllNotes() {
-    const notes = await this.storageService.get(NoteRepository.STORAGE_KEY, []);
+    const notes = await this.indexDBService.get(NoteRepository.STORAGE_KEY, []);
     return notes;
   }
 
   async getNoteByUrl(url) {
     const newUrl = this.removeAllQueryParams(url);
-    console.log(newUrl)
+    console.log(newUrl);
     const notes = await this.getAllNotes();
     return notes.find((note) => note.url === newUrl);
   }
 
-
   async addNote(url) {
     try {
-      const newUrl = this.removeAllQueryParams(url)
+      const newUrl = this.removeAllQueryParams(url);
       const notes = await this.getAllNotes();
       const newNote = new Note(newUrl);
-      await this.storageService.set(NoteRepository.STORAGE_KEY, [
+      await this.indexDBService.set(NoteRepository.STORAGE_KEY, [
         ...notes,
         newNote,
       ]);
@@ -45,9 +44,9 @@ export class NoteRepository {
 
   async addCellToNote(url, timestamp, content, cellType, targetTimestamp) {
     const notes = await this.getAllNotes();
-    const newUrl = this.removeAllQueryParams(url)
+    const newUrl = this.removeAllQueryParams(url);
     const noteToUpdate =
-    notes.find((note) => note.url === newUrl) || (await this.addNote(newUrl));
+      notes.find((note) => note.url === newUrl) || (await this.addNote(newUrl));
     const newCell = new NoteCell(timestamp, content, cellType);
     if (noteToUpdate) {
       if (targetTimestamp) {
@@ -64,13 +63,13 @@ export class NoteRepository {
         // If no targetTimestamp is provided, add at the end of the cells array
         noteToUpdate.cells.push(newCell);
       }
-      await this.storageService.set(NoteRepository.STORAGE_KEY, notes);
+      await this.indexDBService.set(NoteRepository.STORAGE_KEY, notes);
     }
   }
 
   async updateCellContent(url, timestamp, content, cellType) {
     const notes = await this.getAllNotes();
-    const newUrl = this.removeAllQueryParams(url)
+    const newUrl = this.removeAllQueryParams(url);
     const note = notes.find((note) => note.url === newUrl);
 
     if (!note || !note.cells) {
@@ -85,7 +84,7 @@ export class NoteRepository {
       cell.cellType = cellType;
 
       // Save the updated note to the database
-      await this.storageService.set(NoteRepository.STORAGE_KEY, notes);
+      await this.indexDBService.set(NoteRepository.STORAGE_KEY, notes);
       console.log('Updated cell content saved:', cell);
     } else {
       console.error('Cell not found for updating content.');
@@ -94,7 +93,7 @@ export class NoteRepository {
 
   async deleteCellFromNote(url, cellTimestamp) {
     try {
-      const newUrl = this.removeAllQueryParams(url)
+      const newUrl = this.removeAllQueryParams(url);
       const notes = await this.getAllNotes();
       const noteToUpdate =
         notes.find((note) => note.url === newUrl) || this.addNote(newUrl);
@@ -102,7 +101,7 @@ export class NoteRepository {
         noteToUpdate.cells = noteToUpdate.cells.filter(
           (cell) => cell.timestamp !== cellTimestamp,
         );
-        await this.storageService.set(NoteRepository.STORAGE_KEY, notes);
+        await this.indexDBService.set(NoteRepository.STORAGE_KEY, notes);
       }
     } catch (error) {
       console.error('Failed to delete note from storage:', error);
