@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 const syntaxRules = {
   python: {
     patterns: {
