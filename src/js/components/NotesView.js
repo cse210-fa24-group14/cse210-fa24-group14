@@ -123,7 +123,7 @@ export class NotesView {
       codeTextarea.style.position = 'absolute';
       codeTextarea.style.backgroundColor = 'transparent';
       codeTextarea.style.color = 'transparent';
-      codeTextarea.style.caretColor = 'black';
+      codeTextarea.style.caretColor = ' ';
       codeTextarea.style.lineHeight = '1.5';
       codeTextarea.style.outline = 'none';
       codeTextarea.style.overflow = 'auto';

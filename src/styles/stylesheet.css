@@ -264,6 +264,14 @@ body.dark-mode textarea {
   color: #ddd; /* Light text color for readability */
   border: 1px solid #555; /* Dark border for text areas */
 }
+/* In your main CSS or theme-specific stylesheet */
+textarea.code-editor {
+  caret-color: black; /* Default light mode caret */
+}
+
+body.dark-mode textarea.code-editor {
+  caret-color: white; /* Dark mode caret color */
+}
 
 body.dark-mode .syntax-overlay {
   background-color:  #444; /* Dark gray background for code editor */
