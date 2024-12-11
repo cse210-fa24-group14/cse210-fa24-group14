@@ -1,3 +1,4 @@
+import { newapplySyntaxHighlighting } from './SyntaxHighlighter.js';
 import { parseMarkdown } from '../markdownRules.js';
 import { MarkdownToolBar } from './MarkdownToolBar.js';
 
@@ -96,26 +97,6 @@ export class NotesView {
     toggleBtn.addEventListener('click', (event) =>
       this.toggleCellType(event, note),
     );
-
-    // Markdown button
-    const markdownBtn = document.createElement('button');
-    markdownBtn.classList.add('markdown-btn');
-    const markdownText = document.createElement('span');
-    markdownText.innerHTML = 'M';
-    markdownBtn.appendChild(markdownText);
-    const markdownIcon = document.createElement('i');
-    markdownIcon.classList.add(
-      'fa-solid',
-      cell.cellType === 'markdownFormat' ? 'fa-markdown-on' : 'fa-markdown-off',
-    );
-    markdownBtn.appendChild(markdownIcon);
-    markdownBtn.addEventListener('click', (event) =>
-      this.markdownCellType(event),
-    );
-
-    toggleBtn.disabled = cell.cellType === 'markdownFormat'; // Disable if markdownFormat
-    markdownBtn.disabled = cell.cellType === 'code'; // Disable if code
-
     // Create cell content
     const cellContent = document.createElement('div');
     cellContent.classList.add('cell-content');
@@ -124,50 +105,200 @@ export class NotesView {
     textarea.value = cell.content || '';
     textarea.placeholder = `Write your ${cell.cellType === 'markdown' ? 'text' : 'code'} here...`;
 
-    let renderedContent;
+    if (cell.cellType === 'code') {
+      // Create wrapper for the code editor components
+      const codeEditorWrapper = document.createElement('div');
+      codeEditorWrapper.classList.add('code-editor-wrapper');
+      // Create container for editor and highlighting
+      const editorContainer = document.createElement('div');
+      editorContainer.classList.add('editor-container');
+      editorContainer.style.position = 'relative';
+      // Create syntax highlighting overlay
+      const syntaxOverlay = document.createElement('div');
+      syntaxOverlay.classList.add('syntax-overlay');
+      // Create textarea
+      const codeTextarea = document.createElement('textarea');
+      codeTextarea.classList.add('code-editor');
+      codeTextarea.style.position = 'absolute';
+      codeTextarea.style.backgroundColor = 'transparent';
+      codeTextarea.style.color = 'transparent';
+      codeTextarea.style.caretColor = ' ';
+      codeTextarea.style.lineHeight = '1.5';
+      codeTextarea.style.outline = 'none';
+      codeTextarea.style.overflow = 'auto';
+      codeTextarea.placeholder = 'Write your code here...';
+      codeTextarea.value = cell.content || '';
+      // Function to update syntax highlighting
+      const updateSyntaxHighlighting = () => {
+        const code = codeTextarea.value;
+        //const selectedLanguage = select.value;
+        // Apply syntax highlighting
+        const highlightedCode = newapplySyntaxHighlighting(code);
+        syntaxOverlay.innerHTML = highlightedCode;
+        // Sync scroll
+        syntaxOverlay.scrollTop = codeTextarea.scrollTop;
+        syntaxOverlay.scrollLeft = codeTextarea.scrollLeft;
+      };
 
-    // If the cell type is markdownFormat, render it
-    if (cell.cellType === 'markdownFormat') {
-      renderedContent = document.createElement('div');
-      renderedContent.classList.add('rendered-content');
-      renderedContent.style.display = 'block';
-      renderedContent.innerHTML = parseMarkdown(cell.content); // Render Markdown content
+      // Debounce for syntax highlighting
+      let debounceTimeout;
+      const debouncedHighlighting = () => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(updateSyntaxHighlighting, 300);
+      };
 
-      textarea.style.display = 'none'; // Hide the textarea
-      toggleBtn.disabled = true; // Disable toggle
-      markdownIcon.classList.add('fa-markdown-on'); // Ensure correct icon
+      // Event listeners
+      let saveTimeout;
+      codeTextarea.addEventListener('input', () => {
+        debouncedHighlighting();
+
+        // Save functionality
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(
+          () => this.onUpdateCell(cell.timestamp, codeTextarea.value, 'code'),
+          200,
+        );
+      });
+
+      // Scroll synchronization
+      codeTextarea.addEventListener('scroll', () => {
+        syntaxOverlay.scrollTop = codeTextarea.scrollTop;
+        syntaxOverlay.scrollLeft = codeTextarea.scrollLeft;
+      });
+
+      codeTextarea.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          const cursorPos = codeTextarea.selectionStart;
+          const currentLine = codeTextarea.value
+            .substring(0, cursorPos)
+            .split('\n')
+            .pop();
+
+          // Match leading spaces or tabs on the current line
+          const indentMatch = currentLine.match(/^\s+/);
+          let indent = indentMatch ? indentMatch[0] : '';
+
+          // Add extra indentation if the line ends with a block-starting character
+          if (
+            currentLine.trim().endsWith(':') ||
+            currentLine.trim().endsWith('{')
+          ) {
+            indent += '    '; // Add four spaces for block-level indent
+          }
+
+          // Insert the new line with the calculated indentation
+          const newValue =
+            codeTextarea.value.substring(0, cursorPos) +
+            '\n' +
+            indent +
+            codeTextarea.value.substring(cursorPos);
+
+          codeTextarea.value = newValue;
+
+          // Move the cursor to the end of the indentation
+          codeTextarea.selectionStart = codeTextarea.selectionEnd =
+            cursorPos + indent.length + 1;
+
+          event.preventDefault(); // Prevent default Enter key behavior
+
+          // Update syntax highlighting
+          updateSyntaxHighlighting();
+        }
+      });
+
+      // Initial syntax highlighting
+      updateSyntaxHighlighting();
+
+      // Compose the editor container
+      editorContainer.appendChild(syntaxOverlay);
+      editorContainer.appendChild(codeTextarea);
+
+      // Append to the wrapper
+      codeEditorWrapper.appendChild(editorContainer);
+      cellContent.appendChild(codeEditorWrapper);
     } else {
-      textarea.style.display = 'block'; // Show the textarea
+      // Markdown button
+      const markdownBtn = document.createElement('button');
+      markdownBtn.classList.add('markdown-btn');
+      const markdownText = document.createElement('span');
+      markdownText.innerHTML = 'M';
+      markdownBtn.appendChild(markdownText);
+      const markdownIcon = document.createElement('i');
+      markdownIcon.classList.add(
+        'fa-solid',
+        cell.cellType === 'markdownFormat'
+          ? 'fa-markdown-on'
+          : 'fa-markdown-off',
+      );
+      markdownBtn.appendChild(markdownIcon);
+      markdownBtn.addEventListener('click', (event) =>
+        this.markdownCellType(event),
+      );
+
+      toggleBtn.disabled = cell.cellType === 'markdownFormat'; // Disable if markdownFormat
+
+      let saveTimeout;
+      textarea.addEventListener('input', () => {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(
+          () => this.onUpdateCell(cell.timestamp, textarea.value, 'markdown'),
+          500,
+        );
+      });
+
+      let renderedContent;
+
+      // If the cell type is markdownFormat, render it
+      if (cell.cellType === 'markdownFormat') {
+        renderedContent = document.createElement('div');
+        renderedContent.classList.add('rendered-content');
+        renderedContent.style.display = 'block';
+        renderedContent.innerHTML = parseMarkdown(cell.content); // Render Markdown content
+
+        textarea.style.display = 'none'; // Hide the textarea
+        toggleBtn.disabled = true; // Disable toggle
+        markdownIcon.classList.add('fa-markdown-on'); // Ensure correct icon
+      } else {
+        // Keep existing markdown textarea logic
+        const textarea = document.createElement('textarea');
+        textarea.value = cell.content || '';
+        textarea.placeholder = 'Write your text here...';
+
+        let saveTimeout;
+        textarea.addEventListener('input', () => {
+          clearTimeout(saveTimeout);
+          saveTimeout = setTimeout(
+            () => this.onUpdateCell(cell.timestamp, textarea.value, 'markdown'),
+            500,
+          );
+        });
+
+        cellContent.appendChild(textarea);
+        // tool bar could only created after the textarea being appended
+        const toolbar = new MarkdownToolBar(
+          cell,
+          cellContent,
+          this.onUpdateCell,
+        );
+        const toolbarElement = toolbar.render();
+        newCell.appendChild(toolbarElement);
+        // disable the toolbar if the cellType is code.
+        const toolbarButtons = newCell.querySelectorAll(
+          '.markdown-toolbar-button',
+        );
+        toolbarButtons.forEach((button) => {
+          button.disabled = cell.cellType === 'code'; // disable if code mode.
+        });
+
+        if (renderedContent) {
+          cellContent.appendChild(renderedContent);
+        }
+        newCell.appendChild(markdownBtn);
+      }
     }
-
-    // Add listener to save changes to the database
-    let saveTimeout;
-    textarea.addEventListener('input', () => {
-      clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(() => {
-        this.onUpdateCell(cell.timestamp, textarea.value, cell.cellType);
-      }, 500);
-    });
-
-    cellContent.appendChild(textarea);
-    // tool bar could only created after the textarea being appended
-    const toolbar = new MarkdownToolBar(cell, cellContent, this.onUpdateCell);
-    const toolbarElement = toolbar.render();
-    newCell.appendChild(toolbarElement);
-    // disable the toolbar if the cellType is code.
-    const toolbarButtons = newCell.querySelectorAll('.markdown-toolbar-button');
-    toolbarButtons.forEach((button) => {
-      button.disabled = cell.cellType === 'code'; // disable if code mode.
-    });
-
-    if (renderedContent) {
-      cellContent.appendChild(renderedContent);
-    }
-
     // Add the delete button, toggle button, and content to the new cell
     newCell.appendChild(deleteBtn);
     newCell.appendChild(toggleBtn);
-    newCell.appendChild(markdownBtn);
     newCell.appendChild(cellContent);
 
     // Add the new cell to the container
