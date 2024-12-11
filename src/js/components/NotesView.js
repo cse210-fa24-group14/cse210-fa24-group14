@@ -9,7 +9,6 @@ export class NotesView {
     this.onDeleteCell = null;
     this.onAddCell = null;
     this.onUpdateCell = null;
-    //this.syntaxHighlight = new SyntaxHighlighter()
   }
 
   // This is to set the callback for when a note is deleted in NoteListView
