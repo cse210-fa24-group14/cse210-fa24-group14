@@ -8,20 +8,30 @@ export class NoteRepository {
     this.storageService = new StorageService();
   }
 
+  removeAllQueryParams(url) {
+    const urlObject = new URL(url);
+    urlObject.search = '';
+    return urlObject.toString();
+  }
+
   async getAllNotes() {
     const notes = await this.storageService.get(NoteRepository.STORAGE_KEY, []);
     return notes;
   }
 
   async getNoteByUrl(url) {
+    const newUrl = this.removeAllQueryParams(url);
+    console.log(newUrl)
     const notes = await this.getAllNotes();
-    return notes.find((note) => note.url === url);
+    return notes.find((note) => note.url === newUrl);
   }
+
 
   async addNote(url) {
     try {
+      const newUrl = this.removeAllQueryParams(url)
       const notes = await this.getAllNotes();
-      const newNote = new Note(url);
+      const newNote = new Note(newUrl);
       await this.storageService.set(NoteRepository.STORAGE_KEY, [
         ...notes,
         newNote,
@@ -35,8 +45,9 @@ export class NoteRepository {
 
   async addCellToNote(url, timestamp, content, cellType, targetTimestamp) {
     const notes = await this.getAllNotes();
+    const newUrl = this.removeAllQueryParams(url)
     const noteToUpdate =
-      notes.find((note) => note.url === url) || (await this.addNote(url));
+    notes.find((note) => note.url === newUrl) || (await this.addNote(newUrl));
     const newCell = new NoteCell(timestamp, content, cellType);
     if (noteToUpdate) {
       if (targetTimestamp) {
@@ -59,7 +70,8 @@ export class NoteRepository {
 
   async updateCellContent(url, timestamp, content, cellType) {
     const notes = await this.getAllNotes();
-    const note = notes.find((note) => note.url === url);
+    const newUrl = this.removeAllQueryParams(url)
+    const note = notes.find((note) => note.url === newUrl);
 
     if (!note || !note.cells) {
       console.error('Note not found while updating content.');
@@ -82,9 +94,10 @@ export class NoteRepository {
 
   async deleteCellFromNote(url, cellTimestamp) {
     try {
+      const newUrl = this.removeAllQueryParams(url)
       const notes = await this.getAllNotes();
       const noteToUpdate =
-        notes.find((note) => note.url === url) || this.addNote(url);
+        notes.find((note) => note.url === newUrl) || this.addNote(newUrl);
       if (noteToUpdate) {
         noteToUpdate.cells = noteToUpdate.cells.filter(
           (cell) => cell.timestamp !== cellTimestamp,
