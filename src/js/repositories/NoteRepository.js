@@ -9,11 +9,9 @@ export class NoteRepository {
   }
 
   removeAllQueryParams(url) {
-    // If the URL doesn't start with a protocol, prepend a default one
-    const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
-      const urlObject = new URL(normalizedUrl);
-      urlObject.search = '';
-      return urlObject.toString();
+    // Ensure URL is a string and remove query parameters
+    const cleanUrl = (url || '').split('?')[0].replace(/\/$/, '');
+    return cleanUrl;
   }
 
   async getAllNotes() {
