@@ -9,9 +9,17 @@ export class NoteRepository {
   }
 
   removeAllQueryParams(url) {
-    const urlObject = new URL(url);
-    urlObject.search = '';
-    return urlObject.toString();
+    // If the URL doesn't start with a protocol, prepend a default one
+    const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
+    try {
+      const urlObject = new URL(normalizedUrl);
+      urlObject.search = '';
+      return urlObject.toString();
+    } catch (error) {
+      // If URL creation fails, return the original string with query params removed
+      const baseUrl = normalizedUrl.split('?')[0];
+      return baseUrl;
+    }
   }
 
   async getAllNotes() {
