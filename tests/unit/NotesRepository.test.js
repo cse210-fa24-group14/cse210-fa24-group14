@@ -1,9 +1,9 @@
 import { NoteRepository } from '../../src/js/repositories/NoteRepository.js';
-import { StorageService } from '../../src/js/services/StorageService.js';
+import { IndexedDBService } from '../../src/js/services/IndexDBService.js';
 import { NoteCell } from '../../src/js/models/Note.js';
 
-// Mock the StorageService
-jest.mock('../../src/js/services/StorageService.js');
+// Mock the IndexDBService
+jest.mock('../../src/js/services/IndexDBService.js');
 
 describe('NoteRepository Database Operations', () => {
   let noteRepository;
@@ -16,8 +16,8 @@ describe('NoteRepository Database Operations', () => {
 
     // Create a new instance for each test
     noteRepository = new NoteRepository();
-    // Get the first instance of StorageService
-    mockStorageService = StorageService.mock.instances[0];
+    // Get the first instance of IndexedDBService
+    mockStorageService = IndexedDBService.mock.instances[0];
     consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
