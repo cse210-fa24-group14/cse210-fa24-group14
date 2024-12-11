@@ -17,7 +17,7 @@ class NotesApp {
     this.initialize();
   }
 
-   /**
+  /**
    * Initializes the application by setting up event listeners,
    * loading notes, and configuring the dark mode.
    * @returns {Promise<void>}
@@ -88,7 +88,7 @@ class NotesApp {
       console.error('Error in adding new cell to the note', error);
     }
   }
-/**
+  /**
    * Handles deleting a cell from a note.
    *
    * @param {string} timestamp - The timestamp of the cell to delete.
@@ -127,7 +127,7 @@ class NotesApp {
   }
   /**
    * Retrieves the URL of the active browser tab.
-   * 
+   *
    * @returns {Promise<string>} The URL of the active tab.
    */
   async getUrl() {

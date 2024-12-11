@@ -4,7 +4,7 @@
 export class MarkdownToolBar {
   /**
    * Constructs a MarkdownToolBar instance.
-   * 
+   *
    * @param {Object} cell - The note cell object.
    * @param {HTMLElement} cellContainer - The container element of the cell.
    * @param {Function} onUpdateCell - Callback to handle updates to the cell content.
@@ -120,7 +120,7 @@ export class MarkdownToolBar {
 
   /**
    * Renders the Markdown toolbar.
-   * 
+   *
    * @returns {HTMLDivElement} The rendered toolbar element.
    */
   render() {
@@ -139,7 +139,7 @@ export class MarkdownToolBar {
 
   /**
    * Creates a button for the toolbar.
-   * 
+   *
    * @param {Object} config - Configuration for the button.
    * @param {string} config.id - Button ID.
    * @param {string} config.prefix - Markdown prefix to insert.
@@ -167,7 +167,7 @@ export class MarkdownToolBar {
 
   /**
    * Creates a dropdown menu for the toolbar.
-   * 
+   *
    * @param {Object} config - Configuration for the dropdown.
    * @param {string} config.id - Dropdown ID.
    * @param {string} config.tooltip - Tooltip text.
@@ -209,7 +209,7 @@ export class MarkdownToolBar {
 
   /**
    * Inserts Markdown syntax into the textarea.
-   * 
+   *
    * @param {string} prefix - The Markdown prefix.
    * @param {string} suffix - The Markdown suffix.
    */
