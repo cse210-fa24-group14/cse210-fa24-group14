@@ -56,12 +56,12 @@ export class NotesView {
     note.cells.forEach((cell) => {
       if (!renderedTimestamps.includes(cell.timestamp.toString())) {
         console.log('Rendering new cell', cell);
-        this.addCellAfterCurrent(this.container, cell, note);
+        this.addCellAfterCurrent(this.container, cell);
       }
     });
   }
 
-  async addCellAfterCurrent(cellContainer, cell, note) {
+  async addCellAfterCurrent(cellContainer, cell) {
     const newCellContainer = document.createElement('div');
     newCellContainer.classList.add('cell-container');
     newCellContainer.dataset.timestamp = cell.timestamp; // Add timestamp for tracking
@@ -81,22 +81,9 @@ export class NotesView {
     deleteBtn.addEventListener('click', (event) => this.deleteCell(event));
 
     // Create toggle button
-    const toggleBtn = document.createElement('button');
-    toggleBtn.classList.add('toggle-btn');
     const spanText = document.createElement('span');
     spanText.innerHTML = `&lt;/&gt  `;
-    toggleBtn.appendChild(spanText);
 
-    const toggleIcon = document.createElement('i');
-    toggleIcon.classList.add(
-      'fa-solid',
-      cell.cellType === 'code' ? 'fa-toggle-on' : 'fa-toggle-off',
-    );
-    toggleBtn.appendChild(toggleIcon);
-
-    toggleBtn.addEventListener('click', (event) =>
-      this.toggleCellType(event, note),
-    );
     // Create cell content
     const cellContent = document.createElement('div');
     cellContent.classList.add('cell-content');
@@ -144,7 +131,7 @@ export class NotesView {
       let debounceTimeout;
       const debouncedHighlighting = () => {
         clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(updateSyntaxHighlighting, 300);
+        debounceTimeout = setTimeout(updateSyntaxHighlighting, 0);
       };
 
       // Event listeners
@@ -235,8 +222,6 @@ export class NotesView {
         this.markdownCellType(event),
       );
 
-      toggleBtn.disabled = cell.cellType === 'markdownFormat'; // Disable if markdownFormat
-
       let saveTimeout;
       textarea.addEventListener('input', () => {
         clearTimeout(saveTimeout);
@@ -256,7 +241,6 @@ export class NotesView {
         renderedContent.innerHTML = parseMarkdown(cell.content); // Render Markdown content
 
         textarea.style.display = 'none'; // Hide the textarea
-        toggleBtn.disabled = true; // Disable toggle
         markdownIcon.classList.add('fa-markdown-on'); // Ensure correct icon
       } else {
         // Keep existing markdown textarea logic
@@ -296,9 +280,8 @@ export class NotesView {
         newCell.appendChild(markdownBtn);
       }
     }
-    // Add the delete button, toggle button, and content to the new cell
+    // Add the delete button and content to the new cell
     newCell.appendChild(deleteBtn);
-    newCell.appendChild(toggleBtn);
     newCell.appendChild(cellContent);
 
     // Add the new cell to the container
@@ -369,55 +352,11 @@ export class NotesView {
     container.appendChild(addNewButtons);
   }
 
-  async toggleCellType(event) {
-    const toggleBtn = event.target.closest('.toggle-btn');
-    if (!toggleBtn) return;
-
-    const cell = toggleBtn.closest('.cell-container');
-    const markdownBtn = cell.querySelector('.markdown-btn');
-    const cellContent = cell.querySelector('.cell-content textarea');
-    const icon = toggleBtn.querySelector('i');
-    const toolbarButtons = cell.querySelectorAll('.markdown-toolbar-button');
-
-    if (icon.classList.contains('fa-toggle-off')) {
-      // Disable toolbar buttons
-      toolbarButtons.forEach((button) => {
-        button.disabled = true;
-      });
-      icon.classList.remove('fa-toggle-off');
-      icon.classList.add('fa-toggle-on');
-      cellContent.placeholder = 'Write your code here...';
-    } else {
-      // Enable toolbar buttons
-      toolbarButtons.forEach((button) => {
-        button.disabled = false;
-      });
-      icon.classList.remove('fa-toggle-on');
-      icon.classList.add('fa-toggle-off');
-      cellContent.placeholder = 'Write your text here...';
-    }
-    console.log(cell.dataset.timestamp);
-    markdownBtn.disabled = icon.classList.contains('fa-toggle-on');
-
-    if (this.onUpdateCell) {
-      await this.onUpdateCell(
-        cell.dataset.timestamp,
-        cellContent.value,
-        icon.classList.contains('fa-markdown-on')
-          ? 'markdownFormat'
-          : icon.classList.contains('fa-toggle-on')
-            ? 'code'
-            : 'markdown',
-      );
-    }
-  }
-
   async markdownCellType(event) {
     const markdownBtn = event.target.closest('.markdown-btn');
     if (!markdownBtn) return;
 
     const cell = markdownBtn.closest('.cell-container');
-    const toggleBtn = cell.querySelector('.toggle-btn');
     const cellContent = cell.querySelector('.cell-content');
     const textarea = cellContent.querySelector('textarea');
     let renderedContent = cellContent.querySelector('.rendered-content');
@@ -436,7 +375,6 @@ export class NotesView {
       icon.classList.add('fa-markdown-off');
       textarea.style.display = 'block';
       renderedContent.style.display = 'none';
-      toggleBtn.disabled = false;
       // Enable toolbar buttons
       toolbarButtons.forEach((button) => {
         button.disabled = false;
@@ -462,7 +400,6 @@ export class NotesView {
       textarea.style.display = 'none';
       renderedContent.style.display = 'block';
       renderedContent.innerHTML = parseMarkdown(textarea.value);
-      toggleBtn.disabled = true;
       // Enable toolbar buttons
       toolbarButtons.forEach((button) => {
         button.disabled = true;
