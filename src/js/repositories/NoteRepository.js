@@ -28,6 +28,11 @@ export class NoteRepository {
    * @param {string} url - The URL to clean.
    * @returns {string} The cleaned URL.
    */
+
+    this.indexDBService = new IndexedDBService();
+  }
+
+
   removeAllQueryParams(url) {
     // Ensure URL is a string and remove query parameters
     const cleanUrl = (url || '').split('?')[0].replace(/\/$/, '');
