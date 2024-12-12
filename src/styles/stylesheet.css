@@ -634,3 +634,7 @@ body, header, main.content > button {
   visibility: visible;
   opacity: 1;
 }
+
+.hidden {
+  display: none !important;
+}
