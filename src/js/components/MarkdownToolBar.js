@@ -167,28 +167,6 @@ export class MarkdownToolBar {
     const text = this.textArea.value;
 
     const selectedText = text.slice(start, end);
-    if (prefix === '- ') {
-      const lines = selectedText.split('\n');
-      const allLinesAreBullets = lines.every((line) => line.startsWith('- '));
-      const newText = lines
-        .map((line) => (allLinesAreBullets ? line.slice(2) : `- ${line}`))
-        .join('\n');
-
-      this.textArea.value = text.slice(0, start) + newText + text.slice(end);
-
-      const cursorPosition = start + newText.length;
-      this.textArea.focus();
-      this.textArea.setSelectionRange(cursorPosition, cursorPosition);
-
-      this.textArea.scrollTop = scrollTop;
-
-      if (this.onUpdateCell) {
-        const timestamp = this.cell.timestamp;
-        this.onUpdateCell(timestamp, this.textArea.value, 'markdown');
-      }
-
-      return;
-    }
     const newText =
       text.slice(0, start) + prefix + selectedText + suffix + text.slice(end);
     this.textArea.value = newText;
