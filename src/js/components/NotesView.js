@@ -239,27 +239,15 @@ export class NotesView {
         renderedContent = document.createElement('div');
         renderedContent.classList.add('rendered-content');
         renderedContent.style.display = 'block';
-        renderedContent.innerHTML = parseMarkdown(cell.content); // Render Markdown content
+        renderedContent.innerHTML = parseMarkdown(cell.content);
 
-        textarea.style.display = 'none'; // Hide the textarea
+        textarea.style.display = 'none'; // Hide the original textarea
         markdownIcon.classList.add('fa-markdown-on'); // Ensure correct icon
-      } else {
-        // Keep existing markdown textarea logic
-        const textarea = document.createElement('textarea');
-        textarea.value = cell.content || '';
-        textarea.placeholder = 'Write your text here...';
 
-        let saveTimeout;
-        textarea.addEventListener('input', () => {
-          clearTimeout(saveTimeout);
-          saveTimeout = setTimeout(
-            () => this.onUpdateCell(cell.timestamp, textarea.value, 'markdown'),
-            500,
-          );
-        });
+        cellContent.appendChild(textarea); // Append the textarea once at the beginning
+        cellContent.appendChild(renderedContent);
 
-        cellContent.appendChild(textarea);
-        // tool bar could only created after the textarea being appended
+        // Initialize toolbar after textarea
         const toolbar = new MarkdownToolBar(
           cell,
           cellContent,
@@ -267,17 +255,38 @@ export class NotesView {
         );
         const toolbarElement = toolbar.render();
         newCell.appendChild(toolbarElement);
-        // disable the toolbar if the cellType is code.
+
+        // Disable toolbar buttons in markdownFormat mode
         const toolbarButtons = newCell.querySelectorAll(
           '.markdown-toolbar-button',
         );
         toolbarButtons.forEach((button) => {
-          button.disabled = cell.cellType === 'code'; // disable if code mode.
+          button.disabled = true;
         });
 
-        if (renderedContent) {
-          cellContent.appendChild(renderedContent);
-        }
+        newCell.appendChild(markdownBtn);
+      } else {
+        // This is a normal markdown cell
+        textarea.style.display = 'block'; // Ensure textarea is visible
+        cellContent.appendChild(textarea); // Append the textarea here if not already appended
+
+        // Initialize toolbar after textarea
+        const toolbar = new MarkdownToolBar(
+          cell,
+          cellContent,
+          this.onUpdateCell,
+        );
+        const toolbarElement = toolbar.render();
+        newCell.appendChild(toolbarElement);
+
+        // In normal markdown mode, toolbar buttons are enabled
+        const toolbarButtons = newCell.querySelectorAll(
+          '.markdown-toolbar-button',
+        );
+        toolbarButtons.forEach((button) => {
+          button.disabled = false;
+        });
+
         newCell.appendChild(markdownBtn);
       }
     }
@@ -372,19 +381,18 @@ export class NotesView {
       cellContent.appendChild(renderedContent);
     }
 
-    const toolbarButtons = cell.querySelectorAll('.markdown-toolbar-button');
+    const toolbar = cell.querySelector('.markdown-toolbar');
     // Turn off markdown
     if (icon.classList.contains('fa-markdown-on')) {
       icon.classList.remove('fa-markdown-on');
       icon.classList.add('fa-markdown-off');
       textarea.style.display = 'block';
       renderedContent.style.display = 'none';
-      // Enable toolbar buttons
-      toolbarButtons.forEach((button) => {
-        button.disabled = false;
-      });
+      // Show toolbar
+      if (toolbar) {
+        toolbar.style.display = 'flex';
+      }
       if (this.onUpdateCell) {
-        // Ensure callback passes the correct type
         await this.onUpdateCell(
           cell.dataset.timestamp,
           textarea.value,
@@ -404,12 +412,11 @@ export class NotesView {
       textarea.style.display = 'none';
       renderedContent.style.display = 'block';
       renderedContent.innerHTML = parseMarkdown(textarea.value);
-      // Enable toolbar buttons
-      toolbarButtons.forEach((button) => {
-        button.disabled = true;
-      });
+      // Hide toolbar
+      if (toolbar) {
+        toolbar.style.display = 'none';
+      }
       if (this.onUpdateCell) {
-        // Ensure callback passes the correct type
         await this.onUpdateCell(
           cell.dataset.timestamp,
           textarea.value,
