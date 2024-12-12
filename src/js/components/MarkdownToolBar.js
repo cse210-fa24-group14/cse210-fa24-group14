@@ -185,40 +185,31 @@ export class MarkdownToolBar {
 
   registerShortcuts() {
     document.addEventListener('keydown', (event) => {
-      // Check for Control (Windows/Linux) or Command (macOS)
       const isShortcutKey = event.ctrlKey || event.metaKey;
       if (!isShortcutKey || !this.textArea) return;
 
       const key = event.key.toLowerCase();
-      event.preventDefault();
 
-      switch (key) {
-        case 'b': // Bold
-          this.insertMarkdown('**', '**');
-          break;
-        case 'i': // Italic
-          this.insertMarkdown('*', '*');
-          break;
-        case 'u': // Underline
-          this.insertMarkdown('<u>', '</u>');
-          break;
-        case 's': // Strikethrough
-          if (event.shiftKey) this.insertMarkdown('~~', '~~');
-          break;
-        case 'l': // List
-          this.insertMarkdown('- ', '');
-          break;
-        case '`': // Code
-          this.insertMarkdown('```', '```');
-          break;
-        case 'h': // Horizontal Rule
-          this.insertMarkdown('', '\n---');
-          break;
-        case 'k': // Link
-          this.insertMarkdown('[', '](url)');
-          break;
-        default:
-          break;
+      // Define a map of recognized shortcuts
+      const shortcuts = {
+        b: { prefix: '**', suffix: '**' },
+        i: { prefix: '*', suffix: '*' },
+        u: { prefix: '<u>', suffix: '</u>' },
+        s: event.shiftKey ? { prefix: '~~', suffix: '~~' } : null,
+        l: { prefix: '- ', suffix: '' },
+        '`': { prefix: '```', suffix: '```' },
+        h: { prefix: '', suffix: '\n---' },
+        k: { prefix: '[', suffix: '](url)' },
+      };
+
+      const shortcut = shortcuts[key];
+
+      // Only prevent default if the shortcut is recognized
+      if (shortcut) {
+        event.preventDefault();
+        if (shortcut.prefix !== undefined && shortcut.suffix !== undefined) {
+          this.insertMarkdown(shortcut.prefix, shortcut.suffix);
+        }
       }
     });
   }
