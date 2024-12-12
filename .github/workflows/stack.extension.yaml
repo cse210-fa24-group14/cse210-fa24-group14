@@ -5,6 +5,12 @@ on:
   push:
     branches:
       - "main"
+  pull_request:
+    paths:
+      - ".github/workflow/**"
+      - "src/**"
+      - "tests/**"
+      - "Makefile"
 
 jobs:
   tests:
