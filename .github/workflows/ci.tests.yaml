@@ -8,6 +8,14 @@ on:
       - "src/**"
       - "tests/**"
       - "Makefile"
+  push:
+    branches:
+      - "main"
+    paths-ignore:
+      - "src/assets/**"
+      - "admin/**"
+      - "specs/**"
+      - "**/*.md"
 
 jobs:
   tests:
