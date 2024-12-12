@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Quick Notes",
+  "name": "DevInks",
   "version": "1.0",
-  "description": "A simple note-taking Chrome extension.",
+  "description": "Web-Linked Notes For Developers: Create and save notes and code snippets tied to specific websites for future reference.",
   "action": {
     "default_popup": "src/entry.html",
-    "default_icon": "src/assets/dev_diary.png"
+    "default_icon": "src/assets/DevInks.png"
   },
   "permissions": ["storage", "tabs"],
   "content_security_policy": {
