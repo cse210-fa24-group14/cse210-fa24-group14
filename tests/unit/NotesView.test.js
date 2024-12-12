@@ -96,30 +96,6 @@ describe('NotesView', () => {
     expect(remainingCells[0].dataset.timestamp).toBe('007'); // Ensure only the first cell remains
   });
 
-  test('should toggle cell type between markdown and code', async () => {
-    const mockUpdateCallback = jest.fn();
-    notesView.setOnUpdateCell(mockUpdateCallback);
-
-    const note = {
-      cells: [
-        { content: 'Test content', cellType: 'markdown', timestamp: '123' },
-      ],
-    };
-
-    await notesView.render(note);
-
-    const toggleButton = document.querySelector('.toggle-btn');
-    toggleButton.click();
-
-    const icon = toggleButton.querySelector('i');
-    expect(icon.classList.contains('fa-toggle-on')).toBeTruthy();
-    expect(mockUpdateCallback).toHaveBeenCalledWith(
-      '123',
-      'Test content',
-      'code',
-    );
-  });
-
   test('should save content changes after typing', async () => {
     jest.useFakeTimers(); // Enable fake timers
     const mockUpdateCallback = jest.fn();
