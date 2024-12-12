@@ -1,5 +1,3 @@
-// services/DarkModeService.js
-
 export class DarkModeComponent {
   constructor() {
     this.body = document.body;

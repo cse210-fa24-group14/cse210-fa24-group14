@@ -15,7 +15,7 @@ html
   }
 
   .cell-content {
-    margin-top: 30px; /* Leave space for the delete icon and button */
+    margin-top: 25px; /* Leave space for the delete icon and button */
     display: flex;
     flex-direction: column; /* Stack content vertically */
   }
@@ -70,6 +70,7 @@ html
 .syntax-overlay {
   max-height: 300px;
   background-color: white;
+
   /* background-color: #f4f4f4; */
   color: black;
   position: relative;
@@ -91,50 +92,61 @@ html
 .token.comment {
   color: #6a9955; /* Muted green for comments */
 }
+
 .token.string {
   color: #ce9178; /* Soft orange for strings */
 }
+
 .token.keyword {
   color: #569cd6; /* Blue for keywords */
 }
+
 .token.builtin {
   color: #4ec9b0; /* Teal for built-in functions */
 }
+
 .token.number {
   color: #b5cea8; /* Light green for numbers */
 }
+
 .token.function {
   color: #dcdcaa; /* Light yellow for function names */
 }
+
 .token.operator {
   color: #d4d4d4; /* Light gray for operators */
 }
+
 .token.decorator {
   color: #808080; /* Gray for decorators */
 }
+
 .error {
   position: relative;
   text-decoration: underline wavy red;
   cursor: help;
 }
+
 .error:hover::after {
     content: attr(data-tooltip);
     position: absolute;
     left: 0;
     top: 100%;
     z-index: 10;
-    background-color: #ff4444;
+    background-color: #f44;
     color: white;
     padding: 5px 10px;
     border-radius: 4px;
     white-space: nowrap;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgb(0 0 0 / 20%);
     font-size: 0.8em;
 }
+
 /* Optional: Add some subtle styling to make errors more noticeable */
 .code-editor .error {
-    background-color: rgba(255, 0, 0, 0.05);
+    background-color: rgb(255 0 0 / 5%);
 } 
+
   .delete-btn {
     position: absolute;
     top: 10px;
@@ -149,26 +161,11 @@ html
   .delete-btn:hover {
     color: #555; /* Slightly lighter black on hover */
   }
-  
-  .toggle-btn {
-    position: absolute;
-    top: 10px;
-    right: 40px; /* Position near the delete icon */
-    cursor: pointer;
-    color: #000; /* Black color for the toggle button */
-    background: none; /* No background for a clean icon look */
-    border: none; /* Remove button border for icon-like appearance */
-    font-size: 1rem;
-  }
-  
-  .toggle-btn:hover {
-    color: #555; /* Slightly lighter black on hover */
-  }
 
   .markdown-btn {
     position: absolute;
-    top: 8px;
-    right: 100px; /* Position near the delete icon */
+    top: 13.5px;
+    right: 135px; /* Position near the delete icon */
     cursor: pointer;
     color: #000; /* Black color for the toggle button */
     background: none; /* No background for a clean look */
@@ -264,7 +261,8 @@ body.dark-mode textarea {
   color: #ddd; /* Light text color for readability */
   border: 1px solid #555; /* Dark border for text areas */
 }
-/* In your main CSS or theme-specific stylesheet */
+
+/* Cursor for code mode */
 textarea.code-editor {
   caret-color: black; /* Default light mode caret */
 }
@@ -284,14 +282,6 @@ body.dark-mode .delete-btn {
 }
 
 body.dark-mode .delete-btn:hover {
-  color: #fff; /* Bright icon color on hover */
-}
-
-body.dark-mode .toggle-btn {
-  color: #ccc; /* Light icon color for toggle button */
-}
-
-body.dark-mode .toggle-btn:hover {
   color: #fff; /* Bright icon color on hover */
 }
 
@@ -369,9 +359,8 @@ body.dark-mode #dark-mode-toggle:hover {
 }
 
 button:disabled {
-    /* background-color: #ccc; 灰色背景 */
-    cursor: not-allowed;    /* 禁止图标 */
-    opacity: 0.6;           /* 半透明 */
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* General toolbar styles */
@@ -449,8 +438,6 @@ button:disabled {
   visibility: visible;
 }
 
-
-
 /* Specific styles for each button based on id */
 #bold-btn {
   font-weight: bold; /* Make text bold */
@@ -494,8 +481,6 @@ body.dark-mode .markdown-toolbar-button:active {
   background-color: #222; /* Darker gray for active state */
 }
 
-
-
 /* Bold button */
 body.dark-mode #bold-btn {
   font-weight: bold; /* Make text bold */
@@ -534,4 +519,3 @@ body.dark-mode #heading2-btn {
 body.dark-mode #code-btn {
   color: #aec8f6;
 }
-
