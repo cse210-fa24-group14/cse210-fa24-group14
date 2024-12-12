@@ -1,3 +1,9 @@
+/**
+ * Converts a markdown text string into an HTML string.
+ *
+ * @param {string} markdownText - The markdown-formatted text to parse and convert to HTML.
+ * @returns {string} The converted HTML string.
+ */
 export function parseMarkdown(markdownText) {
   const rules = [
     { regex: /###### (.*?)(\n|$)/g, replacement: '<h6>$1</h6>' },
@@ -42,7 +48,12 @@ export function parseMarkdown(markdownText) {
     },
   ];
 
-  // Handle nested lists specifically
+  /**
+   * Handles nested lists in the markdown and converts them to HTML.
+   *
+   * @param {string} markdown - The markdown-formatted string with lists.
+   * @returns {string} The HTML string with lists converted.
+   */
   function handleLists(markdown) {
     const lines = markdown.split('\n');
     let html = '';

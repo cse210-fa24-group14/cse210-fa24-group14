@@ -2,8 +2,14 @@ import { newapplySyntaxHighlighting } from './SyntaxHighlighter.js';
 import { parseMarkdown } from '../markdownRules.js';
 import { MarkdownToolBar } from './MarkdownToolBar.js';
 
-// This is the main component for the notes list view
+/**
+ * The main component for the notes list view.
+ */
 export class NotesView {
+  /**
+   * Creates an instance of NotesView.
+   * @param {HTMLElement} containerElement - The DOM element to render the notes.
+   */
   constructor(containerElement) {
     this.container = containerElement; // DOM element to render the notes
     this.onDeleteCell = null;
@@ -11,19 +17,35 @@ export class NotesView {
     this.onUpdateCell = null;
   }
 
-  // This is to set the callback for when a note is deleted in NoteListView
+  /**
+   * Sets the callback function for when a note is deleted.
+   * @param {function} callback - The callback to be invoked when a note is deleted.
+   */
   setOnDeleteCell(callback) {
     this.onDeleteCell = callback;
   }
 
+  /**
+   * Sets the callback function for when a new note is added.
+   * @param {function} callback - The callback to be invoked when a new note is added.
+   */
   setOnAddCell(callback) {
     this.onAddCell = callback;
   }
 
+  /**
+   * Sets the callback function for when a note is updated.
+   * @param {function} callback - The callback to be invoked when a note is updated.
+   */
   setOnUpdateCell(callback) {
     this.onUpdateCell = callback;
   }
 
+  /**
+   * Renders the note cells inside the container element.
+   * @param {Object} note - The note containing the cells to render.
+   * @returns {Promise<void>} - A promise that resolves when rendering is complete.
+   */
   async render(note) {
     // Ensure that the container is only cleared when necessary
     // Only clear if there are no cells to render or the note has changed
@@ -61,6 +83,13 @@ export class NotesView {
     });
   }
 
+  /**
+   * Adds a new cell to the container.
+   * @param {HTMLElement} cellContainer - The parent element to add the cell to.
+   * @param {Object} cell - The cell object containing data for the new cell.
+   * @param {Object} [note] - The note associated with the cell (optional).
+   * @returns {Promise<void>} - A promise that resolves when the cell is added.
+   */
   async addCellAfterCurrent(cellContainer, cell, note) {
     const newCellContainer = document.createElement('div');
     newCellContainer.classList.add('cell-container');
@@ -315,6 +344,10 @@ export class NotesView {
     }
   }
 
+  /**
+   * Adds buttons for creating new cells.
+   * @param {HTMLElement} container - The container to add the buttons to.
+   */
   addNewCellButtons(container) {
     const addNewButtons = document.createElement('div');
     addNewButtons.classList.add('add-new-buttons');
@@ -369,6 +402,11 @@ export class NotesView {
     container.appendChild(addNewButtons);
   }
 
+  /**
+   * Toggles the cell type between code and markdown.
+   * @param {Event} event - The click event triggered when toggling the cell type.
+   * @returns {Promise<void>} - A promise that resolves when the cell type is toggled.
+   */
   async toggleCellType(event) {
     const toggleBtn = event.target.closest('.toggle-btn');
     if (!toggleBtn) return;
@@ -412,6 +450,11 @@ export class NotesView {
     }
   }
 
+  /**
+   * Toggles the markdown cell type.
+   * @param {Event} event - The click event triggered when toggling the markdown cell type.
+   * @returns {Promise<void>} - A promise that resolves when the markdown cell type is toggled.
+   */
   async markdownCellType(event) {
     const markdownBtn = event.target.closest('.markdown-btn');
     if (!markdownBtn) return;
@@ -482,6 +525,11 @@ export class NotesView {
     }
   }
 
+  /**
+   * Deletes a cell.
+   * @param {Event} event - The click event triggered when deleting a cell.
+   * @returns {Promise<void>} - A promise that resolves when the cell is deleted.
+   */
   async deleteCell(event) {
     const deleteBtn = event.target.closest('.delete-btn');
     if (!deleteBtn) {

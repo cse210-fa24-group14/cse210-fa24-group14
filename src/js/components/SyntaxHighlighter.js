@@ -1,4 +1,13 @@
 /* eslint-disable no-useless-escape */
+/**
+ * @typedef {Object} SyntaxRules
+ * @property {Object} [lang] - Language-specific syntax rules.
+ * @property {Object} patterns - Regex patterns for token types like comments, strings, keywords, etc.
+ */
+
+/**
+ * @type {SyntaxRules}
+ */
 const syntaxRules = {
   python: {
     patterns: {
@@ -16,6 +25,11 @@ const syntaxRules = {
   },
 };
 
+/**
+ * Initialize syntax rules by creating the keyword regex.
+ *
+ * @returns {SyntaxRules} The initialized syntax rules.
+ */
 const initializeSyntaxRules = () => {
   for (const lang in syntaxRules) {
     const keywords = syntaxRules[lang].keywords.join('|');
@@ -24,6 +38,12 @@ const initializeSyntaxRules = () => {
   return syntaxRules;
 };
 
+/**
+ * Applies syntax highlighting to the given code.
+ *
+ * @param {string} code - The code to be highlighted.
+ * @returns {string} The syntax-highlighted code.
+ */
 export const newapplySyntaxHighlighting = (code) => {
   // Comprehensive syntax rules for Python
   const syntaxRules = {
@@ -87,6 +107,13 @@ export const newapplySyntaxHighlighting = (code) => {
   return highlightedCode;
 };
 
+/**
+ * Applies syntax highlighting and highlights errors in the given code.
+ *
+ * @param {string} code - The code to be highlighted.
+ * @param {string} language - The programming language for syntax rules.
+ * @returns {string} The syntax-highlighted code with errors highlighted.
+ */
 export const applySyntaxHighlightingWithErrors = (code, language) => {
   if (!syntaxRules[language].patterns.keyword) {
     initializeSyntaxRules();
@@ -98,6 +125,13 @@ export const applySyntaxHighlightingWithErrors = (code, language) => {
   return highlightedWithErrors;
 };
 
+/**
+ * Checks for syntax errors in the given code based on the language.
+ *
+ * @param {string} code - The code to be checked.
+ * @param {string} language - The programming language to check for.
+ * @returns {SyntaxError[]} A list of syntax errors found in the code.
+ */
 const checkSyntax = (code, language) => {
   // Validate language support
   if (!syntaxRules[language]) {
@@ -144,7 +178,12 @@ const checkSyntax = (code, language) => {
   return errors;
 };
 
-// Python-specific syntax checks
+/**
+ * Checks for syntax errors specific to Python.
+ *
+ * @param {string} code - The Python code to check.
+ * @returns {SyntaxError[]} A list of Python-specific syntax errors.
+ */
 const checkPythonSyntax = (code) => {
   const errors = [];
   const lines = code.split('\n');
@@ -187,7 +226,12 @@ const checkPythonSyntax = (code) => {
   return errors;
 };
 
-// C-style languages syntax checks (C, C++, Java, JavaScript)
+/**
+ * Checks for syntax errors in C-style languages (C, C++, Java, JavaScript).
+ *
+ * @param {string} code - The code to check.
+ * @returns {SyntaxError[]} A list of syntax errors for C-style languages.
+ */
 const checkCStyleSyntax = (code) => {
   const errors = [];
   const lines = code.split('\n');
@@ -216,7 +260,13 @@ const checkCStyleSyntax = (code) => {
   return errors;
 };
 
-// HTML syntax checks
+/**
+ * Checks for syntax errors in HTML code.
+ *
+ * @param {string} code - The HTML code to check.
+ * @param {Object} rules - The syntax rules for HTML.
+ * @returns {SyntaxError[]} A list of HTML-specific syntax errors.
+ */
 const checkHTMLSyntax = (code, rules) => {
   const errors = [];
   const lines = code.split('\n');
@@ -271,7 +321,12 @@ const checkHTMLSyntax = (code, rules) => {
   return errors;
 };
 
-// CSS syntax checks
+/**
+ * Checks for syntax errors in CSS code.
+ *
+ * @param {string} code - The CSS code to check.
+ * @returns {SyntaxError[]} A list of CSS-specific syntax errors.
+ */
 const checkCSSSyntax = (code) => {
   const errors = [];
   const lines = code.split('\n');
@@ -325,7 +380,13 @@ const checkCSSSyntax = (code) => {
   return errors;
 };
 
-// Common syntax checks across all languages
+/**
+ * Common syntax checks applied to all languages.
+ *
+ * @param {string} code - The code to check.
+ * @param {Object} rules - The syntax rules to apply.
+ * @returns {SyntaxError[]} A list of common syntax errors.
+ */
 const commonSyntaxChecks = (code, rules) => {
   const errors = [];
 
@@ -378,6 +439,14 @@ const commonSyntaxChecks = (code, rules) => {
 
   return errors;
 };
+
+/**
+ * Highlights the errors in the given code.
+ *
+ * @param {string} code - The code to highlight errors in.
+ * @param {SyntaxError[]} errors - The syntax errors to highlight.
+ * @returns {string} The code with highlighted errors.
+ */
 const highlightErrors = (code, errors) => {
   const lines = code.split('\n');
   errors.forEach((error) => {
