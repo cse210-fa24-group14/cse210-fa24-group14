@@ -1,9 +1,9 @@
-name: "CD: Deploy Extension To Chrome Web Store"
+name: "Stack: Dev Inks"
 
 on:
   pull_request:
     paths:
-      - ".github/workflow/cd.extension.yaml"
+      - ".github/workflow/**"
       - "src/**"
 
   push:
