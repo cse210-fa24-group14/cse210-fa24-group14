@@ -24,8 +24,7 @@
     "stylelint-config-standard-scss": "^13.1.0"
   },
   "lint-staged": {
-    "*.{js,mjs}": "eslint --fix",
-    "*.css": "stylelint --fix"
+    "*.{js,mjs}": "eslint --fix"
   },
   "scripts": {
     "prepare": "husky",

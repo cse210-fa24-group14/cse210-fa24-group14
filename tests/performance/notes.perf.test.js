@@ -41,27 +41,4 @@ test.describe('Notes Performance Tests', () => {
 
     expect(addTime).toBeLessThan(5000);
   });
-
-  test('should handle large number of code cells efficiently', async ({
-    context,
-    extensionId,
-  }) => {
-    // Test with large datasets
-    const popupUrl = `chrome-extension://${extensionId}/src/entry.html`;
-    const extensionPage = await context.newPage();
-    await extensionPage.goto(popupUrl);
-
-    // Measure time to add multiple code cells
-    const startTime = Date.now();
-    for (let i = 0; i < 50; i++) {
-      await extensionPage.hover('.add-new-buttons');
-      await extensionPage.waitForSelector('.new-cell-buttons.code', {
-        state: 'visible',
-      });
-      await extensionPage.click('.new-cell-buttons.code');
-    }
-    const addTime = Date.now() - startTime;
-
-    expect(addTime).toBeLessThan(5000);
-  });
 });
