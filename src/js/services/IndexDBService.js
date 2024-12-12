@@ -1,6 +1,5 @@
-// Using IndexDB to get more storage
 /**
- * Service class for interacting with IndexedDB
+ * Service class for interacting with IndexedDB. Using IndexDB to get more storage
  */
 export class IndexedDBService {
   /**
