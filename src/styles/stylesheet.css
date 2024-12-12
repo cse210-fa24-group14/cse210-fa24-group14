@@ -1,24 +1,403 @@
-html {
-  width: 500px;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+html
+{
+  width: 500px;  /* max: 800px */
 }
 
-.cell {
-  position: relative;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
+body {
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
   padding: 10px;
-  border-radius: 5px;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: #eee;
+  margin-bottom: 2px;
+}
+
+header {
+  display: flex;
+  padding: 1px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2px;
+  position: sticky;
+  border: none; /* Remove other borders */
+  border-bottom: 1px solid #ccc; /* Bottom-only border */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.logo-image {
+  margin-top: 0.5em;
+  max-height: 35px;
+  content: var(--logo-image);
+}
+
+
+main.content {
+
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content > * {
+margin: 1 5px;
+}
+
+.welcome-message {
+color: #323030;
+}
+
+.welcome-message .highlight {
+color: #60b3d6;
+}
+
+/* Cell Styles */
+.cell {
+position: relative; /* Enables positioning of the icon and button inside the cell */
+margin-bottom: 30px;
+margin-left: 4px;
+margin-right: 4px;
+border: 1px solid #ccc;
+padding: 10px;
+border-radius: 5px;
+box-sizing: border-box; /* Include padding and border in width/height calculations */
+background-color: #eee;
 }
 
 .cell-content {
-  margin-top: 25px;
-  display: flex;
-  flex-direction: column;
+margin-top: 20px; /* Leave space for the delete icon and button */
+display: flex;
+flex-direction: column; /* Stack content vertically */
 }
 
+textarea {
+width: 100%; /* Take up the full width of the container */
+height: 100px; /* Set a default height */
+resize: vertical; /* Allow vertical resizing only */
+box-sizing: border-box; /* Include padding/border in size */
+border: 1px solid #ccc;
+border-radius: 4px;
+padding: 5px;
+font-size: 1rem;
+}
+
+.last-cell {
+  margin-bottom: 10px;
+}
+
+.delete-btn {
+position: absolute;
+top: 10px;
+right: 10px; /* Position at the top-right corner */
+color: #000; /* Black color for the delete icon */
+cursor: pointer;
+background: none; /* No background for a clean icon look */
+border: none; /* Remove button border for icon-like appearance */
+font-size: 1rem;
+
+}
+
+.delete-btn:hover {
+color: #555; /* Slightly lighter black on hover */
+}
+
+.markdown-btn {
+position: absolute;
+top: 15px;
+right: 160px; /* Position near the delete icon */
+cursor: pointer;
+color: #60B3D6; /* Black color for the toggle button */
+background: none; /* No background for a clean look */
+border: 1px solid #999; /* Black border for emphasis */
+border-radius: 4px; /* Slight rounding of corners */
+padding: 2px 4px; /* Space inside the button */
+font-size: 1rem;
+font-weight: bold; /* Emphasize the text */
+transition: background-color 0.2s, color 0.2s; /* Smooth hover effects */
+}
+
+.markdown-btn:hover {
+background-color: #3ca8eb; /* Slightly darker gray on hover */
+}
+
+.add-new-buttons {
+  position: relative;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  display: flex;
+  flex-flow: row;
+  height: 16px;
+  width: 100%;
+  gap: 10px; /* Space between buttons */
+  margin-top: -25px;
+}
+
+.new-cell-buttons {
+  display: flex;
+  opacity: 0;
+  transition: opacity .1s 0ms;
+  visibility: hidden;
+  z-index: 20;
+  background-color: #fff;
+  border-radius: 5px;
+  border-color: #ddd;
+  border-width: 1px;
+  padding: 2px 5px;
+  color: #60B3D6;
+} 
+
+
+
+.add-new-buttons>hr {
+  border-color: #ccc;
+  border-style: solid;
+  border-top: none;
+  border-width: 1px;
+  left: 20px;
+  opacity: 0;
+  position: absolute;
+  right: 20px;
+  top: 0;
+  transition: visibility 0s .1s, opacity .1s;
+  visibility: hidden;
+}
+
+.add-new-buttons:hover hr {
+  visibility: visible;
+  opacity: 1;
+}
+
+  button.new-cell-buttons:hover{
+    border-color: #000;
+  }
+/* Dark Mode Styles */
+body.dark-mode .cell {
+  border: 1px solid #555;
+  background-color: #333;
+  color: #ddd;
+}
+
+body.dark-mode .new-cell-buttons {
+  background-color: #444;
+  border-color: #555;
+  color: #ddd;
+}
+
+.add-new-buttons:hover .new-cell-buttons {
+  visibility: visible;
+  opacity: 1;
+}
+
+body.dark-mode .cell-content {
+  color: #ddd;
+}
+
+body.dark-mode textarea {
+  background-color: #444;
+  color: #ddd;
+  border: 1px solid #555;
+}
+
+
+body.dark-mode textarea.code-editor {
+  caret-color: white;
+}
+
+body.dark-mode .syntax-overlay {
+  background-color: #444;
+  color: #dcdcdc;
+  border: 1px solid #555;
+}
+
+body.dark-mode .delete-btn {
+  color: #ccc;
+}
+
+body.dark-mode .delete-btn:hover {
+  color: #fff;
+}
+
+body.dark-mode .markdown-btn {
+  color: #ccc;
+  border: 2px solid #ccc;
+}
+
+body.dark-mode .markdown-btn:hover {
+  color: #fff;
+}
+
+body.dark-mode .add-new-buttons {
+  background-color: #333;
+}
+
+body.dark-mode .new-cell-buttons:hover {
+  border-color: #60B3D6; /* Highlighted border on hover */
+}
+
+body.dark-mode .add-new-buttons > hr {
+  border-color: #555;
+}
+
+body.dark-mode {
+  background-color: #222;
+  color: #ddd;
+}
+
+body.dark-mode html {
+  background-color: #222;
+}
+
+body.dark-mode .container {
+  background-color: #222;
+  color: #ddd;
+}
+
+#dark-mode-toggle {
+  position: absolute; /* Relative to the container */
+  top: 13px; /* Align at the top */
+  right: 13px; /* Align at the right */
+  width: 30px; /* Circular button with fixed size */
+  height: 30px;
+  background-color: #60B3D6; /* Modern blue color */
+  color: #ffffff; /* Icon color */
+  border: 1px solid #ddd ; /* No border for a clean look */
+  border-radius: 50%; /* Make it circular */
+  font-size: 1.5rem; /* Icon size */
+  cursor: pointer; /* Pointer cursor for interactivity */
+  z-index: 1000; /* Ensure it stays above other elements */
+  display: flex; /* Center the icon */
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#dark-mode-toggle:hover {
+  background-color: #fff; /* Darker blue on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+body.dark-mode #dark-mode-toggle {
+  background-color: #444;
+  color: #ddd;
+}
+
+body.dark-mode #dark-mode-toggle:hover {
+  background-color: #222;
+  transform: scale(1.1);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+/* Dropdown menu items */
+.dropdown-menu button {
+  padding: 5px 8px;
+  background: none;
+  color: #000;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+  background-color: #FFF;
+  color: #60B3D6;
+}
+
+/* General markdown toolbar styles */
+.markdown-toolbar {
+  display: flex;
+  gap: 5px; /* Spacing between buttons */
+  margin-left: 4px;
+  padding: 5px;
+  border: 1px solid #999; 
+  border-radius: 5px;
+  margin-right: 16.5em;
+  background-color: #f9f9f9;
+}
+
+/* Base style for all buttons in light mode */
+.markdown-toolbar button {
+  background: #fff;
+  color: #60B3D6;
+  border: 1px solid #999;
+  padding: 5px;
+  margin: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 20px; /* Fixed width for all buttons */
+  height: 20px; /* Fixed height for all buttons */
+  font-size: 12px; /* Adjust font size for icons/text */
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.markdown-toolbar button:hover {
+  background: #60B3D6;
+  color: #fff;
+}
+
+.markdown-toolbar-button:hover {
+  background-color: #c0c0c0;
+}
+
+.markdown-toolbar-button:active {
+  background-color: #a9a9a9;
+}
+
+.markdown-toolbar-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
+  z-index: 100;
+  white-space: nowrap;
+  list-style: none;
+  padding: 5px 10px;
+  margin: 0;
+  display: flex;
+  gap: 5px;
+}
+
+.markdown-toolbar-dropdown:hover .dropdown-menu {
+  visibility: visible;
+}
+
+#bold-btn {
+  font-weight: bold;
+}
+
+#italic-btn {
+  font-style: italic;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+#underline-btn {
+  text-decoration: underline;
+}
+
+#strikethrough-btn {
+  text-decoration: line-through;
+}
+
+/* Code Editor Wrapper Styles */
 textarea {
   width: 100%;
   height: 80px;
@@ -28,6 +407,10 @@ textarea {
   border-radius: 4px;
   padding: 5px;
   font-size: 1rem;
+}
+
+textarea.code-editor{
+  caret-color: #000;
 }
 
 .code-editor-wrapper {
@@ -64,6 +447,8 @@ textarea {
   color: #ddd;
 }
 
+
+
 .syntax-overlay {
   max-height: 300px;
   background-color: white;
@@ -77,7 +462,8 @@ textarea {
   border-radius: 4px;
   font-size: 1rem;
   line-height: 1.5;
-  padding: 10px;
+  margin-left: 2px;
+  padding: 4px;
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-y: auto;
@@ -140,308 +526,9 @@ textarea {
   background-color: rgb(255 0 0 / 5%);
 }
 
-.delete-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: #000;
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-size: 1rem;
-}
 
-.delete-btn:hover {
-  color: #555;
-}
 
-.markdown-btn {
-  position: absolute;
-  top: 13.5px;
-  right: 135px;
-  cursor: pointer;
-  color: #000;
-  background: none;
-  border: 2px solid #000;
-  border-radius: 4px;
-  padding: 2px 4px;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.markdown-btn:hover {
-  background-color: #3ca8eb;
-}
-
-.add-new-buttons {
-  position: relative;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  display: flex;
-  flex-flow: row;
-  height: 16px;
-  width: 100%;
-  gap: 10px;
-  margin-top: -15px;
-}
-
-.new-cell-buttons {
-  display: flex;
-  opacity: 0;
-  transition: opacity .1s 0ms;
-  visibility: hidden;
-  z-index: 20;
-  background-color: #fff;
-  border-radius: 5px;
-  border-color: #ddd;
-  border-width: 1px;
-  padding: 2px 5px;
-  color: #007BFF;
-}
-
-.add-new-buttons>hr {
-  border-color: #ccc;
-  border-style: solid;
-  border-top: none;
-  border-width: 1px;
-  left: 20px;
-  opacity: 0;
-  position: absolute;
-  right: 20px;
-  top: 0;
-  transition: visibility 0s .1s, opacity .1s;
-  visibility: hidden;
-}
-
-.add-new-buttons:hover hr {
-  visibility: visible;
-  opacity: 1;
-}
-
-button.new-cell-buttons:hover {
-  border-color: #007BFF;
-}
-
-body.dark-mode .cell {
-  border: 1px solid #555;
-  background-color: #333;
-  color: #ddd;
-}
-
-body.dark-mode .new-cell-buttons {
-  background-color: #444;
-  border-color: #555;
-  color: #ddd;
-}
-
-.add-new-buttons:hover .new-cell-buttons {
-  visibility: visible;
-  opacity: 1;
-}
-
-body.dark-mode .cell-content {
-  color: #ddd;
-}
-
-body.dark-mode textarea {
-  background-color: #444;
-  color: #ddd;
-  border: 1px solid #555;
-}
-
-textarea.code-editor {
-  caret-color: black;
-}
-
-body.dark-mode textarea.code-editor {
-  caret-color: white;
-}
-
-body.dark-mode .syntax-overlay {
-  background-color: #444;
-  color: #dcdcdc;
-  border: 1px solid #555;
-}
-
-body.dark-mode .delete-btn {
-  color: #ccc;
-}
-
-body.dark-mode .delete-btn:hover {
-  color: #fff;
-}
-
-body.dark-mode .markdown-btn {
-  color: #ccc;
-  border: 2px solid #ccc;
-}
-
-body.dark-mode .markdown-btn:hover {
-  color: #fff;
-}
-
-body.dark-mode .add-new-buttons {
-  background-color: #333;
-}
-
-body.dark-mode .new-cell-buttons:hover {
-  border-color: #007BFF;
-}
-
-body.dark-mode .add-new-buttons > hr {
-  border-color: #555;
-}
-
-body.dark-mode {
-  background-color: #222;
-  color: #ddd;
-}
-
-body.dark-mode html {
-  background-color: #222;
-}
-
-body.dark-mode .container {
-  background-color: #222;
-  color: #ddd;
-}
-
-#dark-mode-toggle {
-  position: absolute;
-  top: 13px;
-  left: 13px;
-  width: 30px;
-  height: 30px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  cursor: pointer;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#dark-mode-toggle:hover {
-  background-color: #0056b3;
-  transform: scale(1.1);
-}
-
-body.dark-mode #dark-mode-toggle {
-  background-color: #444;
-  color: #ddd;
-}
-
-body.dark-mode #dark-mode-toggle:hover {
-  background-color: #222;
-  transform: scale(1.1);
-}
-
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.markdown-toolbar {
-  display: flex;
-  gap: 9px;
-  margin-left: 40px;
-  padding: 5px;
-  border: 2px solid rgb(75 75 75);
-  border-radius: 5px;
-  margin-right: 13em;
-}
-
-.markdown-toolbar-button {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-  font-size: 10px;
-  border: 1px solid rgb(108 196 250);
-  background-color: #d3d3d3;
-  color: black;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.markdown-toolbar-button:hover {
-  background-color: #c0c0c0;
-}
-
-.markdown-toolbar-button:active {
-  background-color: #a9a9a9;
-}
-
-.markdown-toolbar-dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
-  visibility: hidden;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
-  z-index: 100;
-  white-space: nowrap;
-  list-style: none;
-  padding: 5px 10px;
-  margin: 0;
-  display: flex;
-  gap: 5px;
-}
-
-.dropdown-menu button {
-  padding: 5px 8px;
-  background: none;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
-.dropdown-menu button:hover {
-  background-color: #ddd;
-}
-
-.markdown-toolbar-dropdown:hover .dropdown-menu {
-  visibility: visible;
-}
-
-#bold-btn {
-  font-weight: bold;
-}
-
-#italic-btn {
-  font-style: italic;
-  font-family: Georgia, "Times New Roman", serif;
-}
-
-#underline-btn {
-  text-decoration: underline;
-}
-
-#strikethrough-btn {
-  text-decoration: line-through;
-}
-
-.numbered-list {
-  display: block;
-}
-
-.numbered-list div {
-  margin: 4px 0;
-}
-
+/* Dark mode styles */
 body.dark-mode .markdown-toolbar-button {
   background-color: #444;
   color: #ddd;
@@ -462,9 +549,8 @@ body.dark-mode #bold-btn {
 }
 
 body.dark-mode #italic-btn {
-  font-style: italic;
-  font-family: Georgia, "Times New Roman", serif;
-  color: #add8e6;
+  font-style: italic; /* Italicized */
+  color: #add8e6; /* Light blue for dark mode */
 }
 
 body.dark-mode #underline-btn {
@@ -492,18 +578,59 @@ body.dark-mode #code-btn {
   color: #aec8f6;
 }
 
-body.dark-mode .markdown-toolbar-dropdown .dropdown-menu {
-  background-color: #444;
-  border: 1px solid #555;
-  box-shadow: 0 2px 5px rgb(0 0 0 / 50%);
+
+  body.dark-mode .logo-image {
+    content: url(../assets/logo-dark.png);
+  }
+  
+
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: #121212;
+  color: #eee;
 }
 
-body.dark-mode .markdown-toolbar-dropdown .dropdown-menu button {
-  background: none;
-  border: 1px solid #666;
-  color: #ddd;
+header.dark-mode {
+  background-color: #1e1e1e;
+  border-bottom: 2px solid #333;
 }
 
-body.dark-mode .markdown-toolbar-dropdown .dropdown-menu button:hover {
-  background-color: #555;
+main.content.dark-mode {
+  background-color: #1e1e1e;
+  border: 2px solid #333;
+}
+
+.welcome-message.dark-mode .highlight {
+  color: #82aaff; /* Softer blue for dark mode */
+}
+
+.dark-mode .welcome-message {
+  color: #fff;
+}
+
+/* Transition for smooth mode switching */
+body, header, main.content > button {
+  transition: all 0.3s ease;
+}
+
+
+.cell-container.last-cell > .add-new-buttons > .new-cell-buttons {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.cell-container:hover .hover-only {
+  visibility: visible;
+  opacity: 1;
+}
+
+.cell-container.last-cell > .add-new-buttons {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.cell-container.last-cell > .add-new-buttons > hr {
+  visibility: visible;
+  opacity: 1;
 }

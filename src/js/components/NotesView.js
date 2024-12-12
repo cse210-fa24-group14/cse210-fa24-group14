@@ -45,6 +45,7 @@ export class NotesView {
       }
 
       this.addCellAfterCurrent(this.container, defaultCell);
+
       return;
     }
 
@@ -131,7 +132,7 @@ export class NotesView {
       let debounceTimeout;
       const debouncedHighlighting = () => {
         clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(updateSyntaxHighlighting, 0);
+        debounceTimeout = setTimeout(updateSyntaxHighlighting, 10);
       };
 
       // Event listeners
@@ -286,6 +287,9 @@ export class NotesView {
 
     // Add the new cell to the container
     newCellContainer.appendChild(newCell);
+
+    // Handle 'last-cell' class
+    this.updateLastCellClass(newCellContainer);
     this.addNewCellButtons(newCellContainer);
 
     // Insert the new cell after the next existing notes while displaying
@@ -436,6 +440,9 @@ export class NotesView {
         if (cellContainer) {
           const parentElement = cellContainer.parentElement;
           parentElement.removeChild(cellContainer);
+
+          // Handle 'last-cell' logic
+          this.handleLastCellLogic();
         }
         // Check if there are any remaining cells
         const remainingCells =
@@ -445,6 +452,46 @@ export class NotesView {
         }
       } catch (error) {
         console.error('Failed to delete cell:', error);
+      }
+    }
+  }
+
+  // Function to manage 'last-cell' class
+  updateLastCellClass(newCellContainer) {
+    // Remove 'last-cell' from any existing cells
+    const allCells = document.querySelectorAll('.cell-container');
+    allCells.forEach((cell) => cell.classList.remove('last-cell'));
+
+    // Add 'last-cell' to the newly added cell
+    newCellContainer.classList.add('last-cell');
+  }
+
+  handleLastCellLogic() {
+    const allCells = document.querySelectorAll('.cell-container');
+
+    if (allCells.length > 0) {
+      // Assign 'last-cell' to the last remaining cell
+      const lastCell = allCells[allCells.length - 1];
+      allCells.forEach((cell) => cell.classList.remove('last-cell')); // Remove from others
+      lastCell.classList.add('last-cell');
+    } else {
+      // If no cells exist, create a new default cell
+      console.log('No cells remaining. Creating a new default cell.');
+
+      const defaultCell = {
+        content: '',
+        cellType: 'markdown',
+        timestamp: new Date().toISOString(),
+      };
+
+      // Trigger the add cell logic
+      if (this.onAddCell) {
+        this.onAddCell(
+          defaultCell.timestamp,
+          defaultCell.content,
+          defaultCell.cellType,
+          null, // No target timestamp
+        ).then(() => this.addCellAfterCurrent(this.container, defaultCell));
       }
     }
   }
