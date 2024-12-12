@@ -31,7 +31,7 @@ export function parseMarkdown(markdownText) {
 
     // Handle links
     {
-      regex: /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+      regex: /\[([^\]]+)\]\((https?:\/\/[^\s)]+|\S+)\)/g,
       replacement:
         '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
     },
