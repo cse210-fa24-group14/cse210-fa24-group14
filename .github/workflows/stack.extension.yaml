@@ -1,0 +1,35 @@
+name: "CD: Deploy Extension To Chrome Web Store"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflow/cd.extension.yaml"
+      - "src/**"
+
+  push:
+    branches:
+      - "main"
+
+jobs:
+  tests:
+    uses: ./.github/workflows/ci.tests.yaml
+
+  deploy-to-chrome-web-store:
+    needs: tests
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Create ZIP file
+        run: |
+          zip -r dev-inks.zip .
+
+      - name: Deploy to Chrome Web Store
+        uses: mnao305/chrome-extension-upload@v5.0.0
+        with:
+          file-path: dist/dev-inks.zip
+          extension-id: dev-inks
+          client-id: ${{ secrets.CLIENT_ID }}
+          client-secret: ${{ secrets.CLIENT_SECRET }}
+          refresh-token: ${{ secrets.REFRESH_TOKEN }}
