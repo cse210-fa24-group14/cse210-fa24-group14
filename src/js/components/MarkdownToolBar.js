@@ -28,6 +28,7 @@ export class MarkdownToolBar {
         suffix: '**',
         tooltip: 'Bold',
         icon: 'fa-solid fa-bold',
+        shortcut: 'Ctrl+B / ⌘B',
       },
       {
         id: 'italic-btn',
@@ -35,6 +36,7 @@ export class MarkdownToolBar {
         suffix: '*',
         tooltip: 'Italics',
         icon: 'fa-solid fa-italic',
+        shortcut: 'Ctrl+I / ⌘I',
       },
       {
         id: 'underline-btn',
@@ -42,6 +44,7 @@ export class MarkdownToolBar {
         suffix: '</u>',
         tooltip: 'Underline',
         icon: 'fa-solid fa-underline',
+        shortcut: 'Ctrl+U / ⌘U',
       },
       {
         id: 'strikethrough-btn',
@@ -49,6 +52,7 @@ export class MarkdownToolBar {
         suffix: '~~',
         tooltip: 'Strikethrough',
         icon: 'fa-solid fa-strikethrough',
+        shortcut: 'Ctrl+Shift+S / ⌘Shift+S',
       },
       {
         id: 'unordered-list-btn',
@@ -56,6 +60,7 @@ export class MarkdownToolBar {
         suffix: '',
         tooltip: 'List',
         icon: 'fa-solid fa-list',
+        shortcut: 'Ctrl+L / ⌘L',
       },
       {
         id: 'code-btn',
@@ -63,6 +68,7 @@ export class MarkdownToolBar {
         suffix: '```',
         tooltip: 'Code Snippet',
         icon: 'fa-solid fa-code',
+        shortcut: 'Ctrl+` / ⌘`',
       },
       {
         id: 'hr-btn',
@@ -70,6 +76,7 @@ export class MarkdownToolBar {
         suffix: '\n---',
         tooltip: 'Horizontal Rule',
         icon: 'fa-solid fa-minus',
+        shortcut: 'Ctrl+H / ⌘H',
       },
       {
         id: 'link-btn',
@@ -77,8 +84,12 @@ export class MarkdownToolBar {
         suffix: '](url)',
         tooltip: 'Link',
         icon: 'fa-solid fa-link',
+        shortcut: 'Ctrl+K / ⌘K',
       },
     ];
+
+    // Register shortcuts
+    this.registerShortcuts();
   }
 
   render() {
@@ -150,60 +161,56 @@ export class MarkdownToolBar {
       return;
     }
 
-    // Save the current scroll position of the textarea
     const scrollTop = this.textArea.scrollTop;
-
     const start = this.textArea.selectionStart;
     const end = this.textArea.selectionEnd;
     const text = this.textArea.value;
 
     const selectedText = text.slice(start, end);
-
-    // Special handling for unordered lists
-    if (prefix === '- ') {
-      const lines = selectedText.split('\n');
-      const allLinesAreBullets = lines.every((line) => line.startsWith('- '));
-      const newText = lines
-        .map((line) => (allLinesAreBullets ? line.slice(2) : `- ${line}`))
-        .join('\n');
-
-      this.textArea.value = text.slice(0, start) + newText + text.slice(end);
-
-      const cursorPosition = start + newText.length;
-      this.textArea.focus();
-      this.textArea.setSelectionRange(cursorPosition, cursorPosition);
-
-      // Restore the scroll position after updating
-      this.textArea.scrollTop = scrollTop;
-
-      // Update the cell content
-      if (this.onUpdateCell) {
-        const timestamp = this.cell.timestamp;
-        this.onUpdateCell(timestamp, this.textArea.value, 'markdown');
-      }
-
-      return; // Exit after handling lists
-    }
-
-    // Add the Markdown syntax around the selected text
     const newText =
       text.slice(0, start) + prefix + selectedText + suffix + text.slice(end);
     this.textArea.value = newText;
 
-    // Calculate the new cursor position
     const cursorPosition = start + prefix.length + selectedText.length;
 
-    // Restore focus to the textarea
     this.textArea.focus();
     this.textArea.setSelectionRange(cursorPosition, cursorPosition);
-
-    // Restore the scroll position explicitly
     this.textArea.scrollTop = scrollTop;
 
-    // Update the cell content
     if (this.onUpdateCell) {
       const timestamp = this.cell.timestamp;
       this.onUpdateCell(timestamp, this.textArea.value, 'markdown');
     }
+  }
+
+  registerShortcuts() {
+    document.addEventListener('keydown', (event) => {
+      const isShortcutKey = event.ctrlKey || event.metaKey;
+      if (!isShortcutKey || !this.textArea) return;
+
+      const key = event.key.toLowerCase();
+
+      // Define a map of recognized shortcuts
+      const shortcuts = {
+        b: { prefix: '**', suffix: '**' },
+        i: { prefix: '*', suffix: '*' },
+        u: { prefix: '<u>', suffix: '</u>' },
+        s: event.shiftKey ? { prefix: '~~', suffix: '~~' } : null,
+        l: { prefix: '- ', suffix: '' },
+        '`': { prefix: '```', suffix: '```' },
+        h: { prefix: '', suffix: '\n---' },
+        k: { prefix: '[', suffix: '](url)' },
+      };
+
+      const shortcut = shortcuts[key];
+
+      // Only prevent default if the shortcut is recognized
+      if (shortcut) {
+        event.preventDefault();
+        if (shortcut.prefix !== undefined && shortcut.suffix !== undefined) {
+          this.insertMarkdown(shortcut.prefix, shortcut.suffix);
+        }
+      }
+    });
   }
 }
