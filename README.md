@@ -1,6 +1,6 @@
 # DevInks Chrome Extension
 
-![DevInks](admin/pictures/logo-dark.png)
+![DevInks](https://github.com/user-attachments/assets/7f31b63d-8ebf-4bd7-b350-a5b93b8df165)
 
 
 DevInks is a Chrome extension that allows you to take rich markdown notes and code snippets directly on any webpage. The extension supports both dark mode and light mode, provides a user-friendly Markdown toolbar, and preserves note states between sessions—ensuring your notes are always there when you need them.
