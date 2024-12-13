@@ -28,7 +28,7 @@ Easily switch between raw markdown editing and rendered markdown preview. When r
   Speed up your workflow with keyboard shortcuts for common formatting actions (e.g., `Ctrl+B`/`⌘B` for bold, `Ctrl+I`/`⌘I` for italic, and so forth), without interfering with standard browser shortcuts like copy and paste.
 
 - **Persistent Notes**:  
-  Notes are saved and persisted using IndexDB. Even after you close the extension or restart your browser, your notes remain intact.
+  Notes are saved and persisted using IndexedDB. Even after you close the extension or restart your browser, your notes remain intact.
 
 ## Installation
 
@@ -93,9 +93,13 @@ Easily switch between raw markdown editing and rendered markdown preview. When r
 2. Commit changes with clear and descriptive commit messages.
 3. Open a pull request for review.
 
-## License
+## Privacy Policy
+Privacy Policy for DevInks
 
-This project is released under the [MIT License](LICENSE).
+DevInks does not collect, store, or transmit any personal data or user information. All data, including notes created using this extension, is stored locally on the user's device using IndexedDB. No information is sent to external servers or shared with third parties.
+
+If you have any questions about this policy, please contact us at [cse210.fa24.group14@gmail.com](mailto:cse210.fa24.group14@gmail.com).
+
 
 ---
 
