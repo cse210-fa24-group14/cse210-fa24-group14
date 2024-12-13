@@ -16,8 +16,8 @@ Easily switch between raw markdown editing and rendered markdown preview. When r
 
 - **Code Snippets with Syntax Highlighting**:  
   Add code cells to your notes. The code editor supports syntax highlighting, making it easy to read and maintain code snippets directly within your notes.
-  
-<img src="admin/pictures/code.png" alt="Code" width="500" height="580">
+
+  <img src="admin/pictures/code.png" alt="Code" width="500" height="580">
 
 - **Dark Mode Compatibility**:  
   The extension automatically respects system-level dark mode preferences. A toggle button also lets you manually switch between light and dark modes, providing a comfortable writing environment for any lighting condition.
