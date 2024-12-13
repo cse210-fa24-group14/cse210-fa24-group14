@@ -6,14 +6,23 @@ This document provides a status update on the current state of the Continuous In
 
 ### 1. **Linting**  
 
-Currently, linting is applied to pull requests (PRs) specifically for the PR title. This helps enforce standardized naming conventions and ensure that all PRs follow a consistent format before they are merged. Future iterations may extend this to code linting using tools like ESLint or Prettier, both within the editor and during the CI pipeline.
+Currently, linting is applied to pull requests (PRs) for both the PR title and code.
+
+- **Code Linting:** Tools like **ESLint** and **Prettier** are integrated into the CI pipeline and development environments to enforce consistent coding standards.
+- **PR Title Linting:** Ensures standardized naming conventions for pull requests.
 Below is the current linting frame in our repository.
 
 ![Lint PR title](./linting.png)
 
 ### 2. **Code Quality via Automation**
 
-We are using GitHub Actions for automating code quality checks. The pipeline will integrate with static analysis tools like **CodeClimate** or **Codacy** in the future to provide automated insights into the codebase’s maintainability and identify potential issues, such as code complexity or duplicated code. This process helps maintain high-quality code without manual intervention.
+Our repository integrates with **Codacy**, which provides automated code quality checks and insights, such as:
+
+- Identifying maintainability issues.
+- Highlighting code complexity or duplication.
+- Providing actionable feedback on coding standards and potential bugs.
+
+Codacy is integrated via GitHub Actions to ensure real-time feedback on every PR.
 Below is the current code quality checking component in our repository.
 
 ![ ](./code-quality1.png)
@@ -22,31 +31,59 @@ Below is the current code quality checking component in our repository.
 
 ### 3. **Human Code Review (via Pull Requests)**
 
- Every change submitted via a pull request undergoes peer review. Reviewers examine the code for correctness, clarity, and adherence to best practices before approving the changes. This process ensures that the codebase remains clean and maintainable and allows for knowledge sharing among team members.
+ Every change submitted via a pull request undergoes peer review. Reviewers check for:
+
+- Correctness.
+- Adherence to best practices.
+- Code clarity and maintainability.
+
+This ensures a robust and collaborative codebase.
 
 ### 4. **Unit Testing via Automation**
 
-Automated unit tests are an integral part of the CI pipeline. Currently, **Jest** and **Mocha/Chai** are being used for unit testing. These tests are triggered automatically whenever code changes are pushed or pull requests are submitted. Unit tests help ensure that the individual components of the code work as expected and that new changes do not introduce regressions.
+Automated unit tests are crucial for maintaining a stable codebase. Our repository uses **Jest** for JavaScript and **Mocha/Chai** for broader testing needs.
+
+- Unit tests are triggered automatically during PR submissions or code pushes.
+- These tests ensure that individual components of the code work as expected.
+
 Below is the current unit tests in our repository.
 
 ![Unit Test](./unit.png)
 
 ### 5. **End-to-End Testing (E2E)**
 
-End-to-end testing has been implemented using **Cypress** and **Playwright**. These tests simulate user behavior and interactions with the application to ensure that all parts of the system work together correctly. The E2E tests are automated in the pipeline, running with each PR to verify that the application functions as expected from a user's perspective.
+End-to-end testing has been implemented using **Cypress** and **Playwright**. These tests simulate real user behavior and interactions with the application to ensure that all parts of the system work together correctly. The E2E tests are automated in the pipeline, running with each PR to verify that the application functions as expected from a user's perspective.
 Below is the current e2e tests in our repository.
 
 ![e2e Test](./e2e.png)
 
-## Planned or In Progress
+### 6. **Performance Testing**
 
-### 1. **Linting on Code (Editor and Pipeline)**
+Performance testing ensures the repository's codebase meets scalability and efficiency requirements under various workloads. This testing stage evaluates metrics such as response time, throughput, and resource utilization.
 
-While PR title linting is functional, future work will extend linting capabilities to the code itself. Tools like **ESLint** or **Prettier** will be integrated into both the editor and the CI pipeline to enforce coding standards automatically. This will help reduce errors and inconsistencies in the codebase.
+- Performance tests are triggered automatically during PR submissions or specific performance-related code changes.
+- Tools like **Apache JMeter** or **Locust** are used to simulate user traffic and analyze performance bottlenecks.
 
-### 2. **Documentation Generation**
+Below are the key performance metrics evaluated in our repository.
+
+![performance Test](./performance.png)
+
+## Works can be done in the future
+
+### 1. **Documentation Generation**
 
 We plan to integrate documentation generation into the pipeline. Tools like **JSDoc** will be used to automatically generate documentation based on the code. This will keep the project’s documentation up to date with minimal manual effort.
+
+### 2. **Code Coverage Reporting**
+
+To enhance test reliability, we will integrate code coverage tools, such as **Codecov** or **Coveralls**, to:
+
+- Monitor the percentage of code covered by tests.
+- Highlight untested areas.
+
+### 3. **Deployment Pipeline (CD)**
+
+While currently focused on CI, future iterations will include Continuous Deployment (CD) for automatic deployment to a staging or production environment.
 
 ## Diagram: CI Pipeline Overview
 
@@ -56,4 +93,4 @@ Below is the current diagram representing the stages of the CI pipeline, highlig
 
 ## Conclusion
 
-The CI pipeline is evolving steadily with key features already in place to ensure high code quality, efficient testing, and thorough human review. As the pipeline grows, additional steps for code coverage, packaging, and documentation generation will be implemented to further enhance the development workflow. However, at this stage, deployment (CD) is not yet part of the pipeline since the app is being developed and tested locally without a server-based deployment process.
+The CI pipeline is evolving steadily with key features already in place to ensure high code quality, efficient testing, and thorough human review. As the pipeline grows, additional steps for code coverage, packaging, and documentation generation will be implemented to further enhance the development workflow.
