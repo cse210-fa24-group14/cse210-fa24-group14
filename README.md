@@ -1,5 +1,8 @@
 # DevInks Chrome Extension
 
+![DevInks](admin/pictures/logo-dark.png)
+
+
 DevInks is a Chrome extension that allows you to take rich markdown notes and code snippets directly on any webpage. The extension supports both dark mode and light mode, provides a user-friendly Markdown toolbar, and preserves note states between sessions—ensuring your notes are always there when you need them.
 
 ## Features
@@ -7,14 +10,19 @@ DevInks is a Chrome extension that allows you to take rich markdown notes and co
 - **Markdown Support**:  
   Create and edit notes with full Markdown support. A dedicated Markdown toolbar helps you quickly insert headings, bold text, italics, strikethrough, underline, code blocks, and more.
 
+- **Markdown/Rendered Toggle**:  
+Easily switch between raw markdown editing and rendered markdown preview. When rendered, the Markdown toolbar is hidden for a distraction-free reading experience.
+
+![Markdown](admin/pictures/markdown.gif)
+
 - **Code Snippets with Syntax Highlighting**:  
   Add code cells to your notes. The code editor supports syntax highlighting, making it easy to read and maintain code snippets directly within your notes.
-
-- **Markdown/Rendered Toggle**:  
-  Easily switch between raw markdown editing and rendered markdown preview. When rendered, the Markdown toolbar is hidden for a distraction-free reading experience.
+<img src="admin/pictures/code.png" alt="Code" width="500" height="580">
 
 - **Dark Mode Compatibility**:  
   The extension automatically respects system-level dark mode preferences. A toggle button also lets you manually switch between light and dark modes, providing a comfortable writing environment for any lighting condition.
+
+![Darkmode](admin/pictures/darkmode.gif)
 
 - **Keyboard Shortcuts**:  
   Speed up your workflow with keyboard shortcuts for common formatting actions (e.g., `Ctrl+B`/`⌘B` for bold, `Ctrl+I`/`⌘I` for italic, and so forth), without interfering with standard browser shortcuts like copy and paste.
@@ -24,6 +32,12 @@ DevInks is a Chrome extension that allows you to take rich markdown notes and co
 
 ## Installation
 
+### From the Chrome Web Store
+1. Go to the [DevInks Chrome Web Store page](https://chrome.google.com/webstore).
+2. Click on **"Add to Chrome"**.
+3. Confirm the installation.
+
+### Manual Installation
 1. **Clone or Download the Repository**:
    ```bash
    git clone https://github.com/your-username/devinks.git
@@ -37,6 +51,7 @@ DevInks is a Chrome extension that allows you to take rich markdown notes and co
 3. **Access the Extension**:
    - The extension’s icon will appear in your Chrome toolbar.
    - Pin it for quick access if desired.
+
 
 ## Usage
 
