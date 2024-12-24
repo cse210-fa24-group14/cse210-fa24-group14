@@ -34,7 +34,7 @@ Easily switch between raw markdown editing and rendered markdown preview. When r
 
 ### From the Chrome Web Store
 
-1. Go to the [DevInks Chrome Web Store page](https://chrome.google.com/webstore).
+1. Go to the [DevInks Chrome Web Store page](https://chromewebstore.google.com/detail/devinks/mcclnlnfgfcahhcmdhapbebdnfampnhk).
 2. Click on **"Add to Chrome"**.
 3. Confirm the installation.
 
